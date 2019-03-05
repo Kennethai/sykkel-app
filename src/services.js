@@ -1,43 +1,5 @@
 import { connection } from './mysql_connection';
 
-class CourseService {
-  getCourses(success) {
-    connection.query('select * from Emnene', (error, results) => {
-      if (error) return console.error(error);
-
-      success(results);
-    });
-  }
-
-  getCourse(id, success) {
-    connection.query('select * from Emnene where id=?', [id], (error, results) => {
-      if (error) return console.error(error);
-
-      success(results[0]);
-    });
-  }
-
-  updateCourse(course, success) {
-    connection.query(
-      'update Emnene set name=?, emne_kode=? where id=?',
-      [course.name, course.emne_kode, course.id],
-      (error, results) => {
-        if (error) return console.error(error);
-
-        success();
-      }
-    );
-  }
-  addCourse(emne_kode, name, success) {
-    connection.query('insert into Emnene (emne_kode, name) values (?,?)', [emne_kode, name], error => {
-      if (error) return console.error(error);
-
-      success();
-    });
-  }
-}
-export let courseService = new CourseService();
-
 class StudentService {
   getStudents(success) {
     connection.query('select * from Students', (error, results) => {
@@ -66,12 +28,71 @@ class StudentService {
       }
     );
   }
-  addStudent(name, email, success) {
-    connection.query('insert into Students (name, email) values (?,?)', [name, email], error => {
+
+  createStudent(newStudent, success) {
+    connection.query('insert Students (name, email) values (?,?)', [newStudent.name, newStudent.email], (error, results) => {
       if (error) return console.error(error);
 
       success();
     });
   }
-}
+
+  deleteStudent(id, success) {
+      connection.query('delete from Students where id = ?', [id], (error, results) => {
+        if (error) return console.error(error);
+
+        success();
+      });
+    }
+  }
+
 export let studentService = new StudentService();
+
+// SUBJECT------------------------------------------------------------------
+
+class SubjectService {
+  getSubjects(success) {
+    connection.query('select * from Subjects', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+
+  getSubject(id, success) {
+    connection.query('select * from Subjects where id=?', [id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results[0]);
+    });
+  }
+
+  updateSubject(subject, success) {
+    connection.query(
+      'update Subjects set name=?, kode=? where id=?',
+      [subject.name, subject.kode, subject.id],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success();
+      }
+    );
+  }
+
+  createSubject(newSubject, success) {
+    connection.query('insert Subjects (name, kode) values (?,?)', [newSubject.name, newSubject.kode], (error, results) => {
+      if (error) return console.error(error);
+
+      success();
+    });
+  }
+
+  deleteSubject(id, success) {
+      connection.query('delete from Subjects where id = ?', [id], (error, results) => {
+        if (error) return console.error(error);
+
+        success();
+      });
+    }
+}
+export let subjectService = new SubjectService();
