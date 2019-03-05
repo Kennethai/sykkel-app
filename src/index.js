@@ -2,9 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { studentService } from './services';
-import { courseService } from './services';
-
+import { studentService, subjectService } from './services';
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 
 import createHashHistory from 'history/createHashHistory';
@@ -15,7 +13,7 @@ class Menu extends Component {
     return (
       <NavBar brand="WhiteBoard">
         <NavBar.Link to="/students">Students</NavBar.Link>
-        <NavBar.Link to="/courses">Course</NavBar.Link>
+        <NavBar.Link to="/subjects">Subjects</NavBar.Link>
       </NavBar>
     );
   }
@@ -26,125 +24,13 @@ class Home extends Component {
     return <Card title="Welcome">Welcome to WhiteBoard</Card>;
   }
 }
-
-class CourseList extends Component {
-  courses = [];
-
-  render() {
-    return (
-      <Card title="Courses">
-        <List>
-          {this.courses.map(course => (
-            <List.Item key={course.id} to={'/courses/' + course.id}>
-              {course.name}
-            </List.Item>
-          ))}
-        </List>
-      </Card>
-    );
-  }
-
-  mounted() {
-    courseService.getCourses(courses => {
-      this.courses = courses;
-    });
-  }
-}
-
-class CourseDetails extends Component {
-  course = null;
-
-  render() {
-    if (!this.course) return null;
-
-    return (
-      <div>
-        <Card title="Course details">
-          <Row>
-            <Column width={2}>Name:</Column>
-            <Column>{this.course.name}</Column>
-          </Row>
-          <Row>
-            <Column width={2}>Emne kode:</Column>
-            <Column>{this.course.emne_kode}</Column>
-          </Row>
-        </Card>
-        <Button.Light onClick={this.edit}>Edit</Button.Light>
-      </div>
-    );
-  }
-
-  mounted() {
-    courseService.getCourse(this.props.match.params.id, course => {
-      this.course = course;
-    });
-  }
-
-  edit() {
-    history.push('/courses/' + this.course.id + '/edit');
-  }
-}
-
-class CourseEdit extends Component {
-  course = null;
-
-  render() {
-    if (!this.course) return null;
-
-    return (
-      <div>
-        <Card title="Edit course">
-          <Form.Label>Name:</Form.Label>
-          <Form.Input type="text" value={this.course.name} onChange={e => (this.course.name = e.target.value)} />
-          <Form.Label>Emne-kode:</Form.Label>
-          <Form.Input
-            type="text"
-            value={this.course.emne_kode}
-            onChange={e => (this.course.emne_kode = e.target.value)}
-          />
-        </Card>
-        <Row>
-          <Column>
-            <Button.Success onClick={this.save}>Save</Button.Success>
-          </Column>
-          <Column left>
-            <Button.Success onClick={this.add}>Add</Button.Success>
-          </Column>
-          <Column right>
-            <Button.Light onClick={this.cancel}>Cancel</Button.Light>
-          </Column>
-        </Row>
-      </div>
-    );
-  }
-
-  mounted() {
-    courseService.getCourse(this.props.match.params.id, course => {
-      this.course = course;
-    });
-  }
-
-  save() {
-    courseService.updateCourse(this.course, () => {
-      history.push('/courses/' + this.props.match.params.id);
-    });
-  }
-
-  cancel() {
-    history.push('/courses/' + this.props.match.params.id);
-  }
-  add() {
-    courseService.addCourse(this.course.emne_kode, this.course.name, () => {
-      history.push('/courses');
-    });
-  }
-}
-
+// STUDENTS -----------------------------------------
 class StudentList extends Component {
   students = [];
 
   render() {
     return (
+      <div>
       <Card title="Students">
         <List>
           {this.students.map(student => (
@@ -154,6 +40,8 @@ class StudentList extends Component {
           ))}
         </List>
       </Card>
+      <Button.Light onClick={this.add}>Add</Button.Light>
+      </div>
     );
   }
 
@@ -161,6 +49,9 @@ class StudentList extends Component {
     studentService.getStudents(students => {
       this.students = students;
     });
+  }
+  add() {
+    history.push('/students/add');
   }
 }
 
@@ -217,7 +108,7 @@ class StudentEdit extends Component {
             <Button.Success onClick={this.save}>Save</Button.Success>
           </Column>
           <Column>
-            <Button.Success onClick={this.add}>Add</Button.Success>
+            <Button.Light onClick={this.delete}>Delete</Button.Light>
           </Column>
           <Column right>
             <Button.Light onClick={this.cancel}>Cancel</Button.Light>
@@ -239,15 +130,224 @@ class StudentEdit extends Component {
     });
   }
 
+  delete() {
+    studentService.deleteStudent(this.props.match.params.id, () => history.push('/students'));
+  }
+
   cancel() {
     history.push('/students/' + this.props.match.params.id);
   }
-  add() {
-    studentService.addStudent(this.student.name, this.student.email, () => {
-      history.push('/students');
+}
+
+class StudentNew extends Component {
+  newStudent = {
+    name : '',
+    email : ''
+  };
+
+  render() {
+    return (
+      <div>
+        <Card title="New student">
+          <Form.Label>Name:</Form.Label>
+          <Form.Input type="text" value={this.newStudent.name} onChange={e => (this.newStudent.name = e.target.value)} />
+          <Form.Label>Email:</Form.Label>
+          <Form.Input type="text" value={this.newStudent.email} onChange={e => (this.newStudent.email = e.target.value)} />
+        </Card>
+        <Row>
+          <Column>
+            <Button.Success onClick={this.create}>Save</Button.Success>
+          </Column>
+          <Column right>
+            <Button.Light onClick={this.cancel}>Cancel</Button.Light>
+          </Column>
+        </Row>
+      </div>
+    );
+  }
+
+  mounted() {
+    studentService.getStudent(this.props.match.params.id, student => {
+      this.student = student;
     });
   }
+
+  create() {
+    studentService.createStudent(this.newStudent, () => {
+      studentService.getStudents(students => {
+        this.students = students;
+      });
+    })
+    history.push('/students/');
+  }
+
+  cancel() {
+    history.push('/students/');
+  }
 }
+// SUBJECTS -------------------------------------
+class SubjectList extends Component {
+  subjects = [];
+
+  render() {
+    return (
+      <div>
+      <Card title="Subjects">
+        <List>
+          {this.subjects.map(subject => (
+            <List.Item key={subject.id} to={'/subjects/' + subject.id}>
+              {subject.name}
+            </List.Item>
+          ))}
+        </List>
+      </Card>
+      <Button.Light onClick={this.add}>Add</Button.Light>
+      </div>
+    );
+  }
+
+  mounted() {
+    subjectService.getSubjects(subjects => {
+      this.subjects = subjects;
+    });
+  }
+  add() {
+    history.push('/subjects/add');
+  }
+}
+
+class SubjectDetails extends Component {
+  subject = null;
+
+  render() {
+    if (!this.subject) return null;
+
+    return (
+      <div>
+        <Card title="Subject details">
+          <Row>
+            <Column width={2}>Name:</Column>
+            <Column>{this.subject.name}</Column>
+          </Row>
+          <Row>
+            <Column width={2}>Code:</Column>
+            <Column>{this.subject.kode}</Column>
+          </Row>
+        </Card>
+        <Button.Light onClick={this.edit}>Edit</Button.Light>
+      </div>
+    );
+  }
+
+  mounted() {
+    subjectService.getSubject(this.props.match.params.id, subject => {
+      this.subject = subject;
+    });
+  }
+
+  edit() {
+    history.push('/subjects/' + this.subject.id + '/edit');
+  }
+}
+
+class SubjectEdit extends Component {
+  subject = null;
+
+  render() {
+    if (!this.subject) return null;
+
+    return (
+      <div>
+        <Card title="Edit subject">
+          <Form.Label>Name:</Form.Label>
+          <Form.Input type="text" value={this.subject.name} onChange={e => (this.subject.name = e.target.value)} />
+          <Form.Label>Code:</Form.Label>
+          <Form.Input type="text" value={this.subject.kode} onChange={e => (this.subject.kode = e.target.value)} />
+        </Card>
+        <Row>
+          <Column>
+            <Button.Success onClick={this.save}>Save</Button.Success>
+          </Column>
+          <Column>
+            <Button.Light onClick={this.delete}>Delete</Button.Light>
+          </Column>
+          <Column right>
+            <Button.Light onClick={this.cancel}>Cancel</Button.Light>
+          </Column>
+        </Row>
+      </div>
+    );
+  }
+
+  mounted() {
+    subjectService.getSubject(this.props.match.params.id, subject => {
+      this.subject = subject;
+    });
+  }
+
+  save() {
+    subjectService.updateSubject(this.subject, () => {
+      history.push('/subjects/' + this.props.match.params.id);
+    });
+  }
+
+  delete() {
+    subjectService.deleteSubject(this.props.match.params.id, () => history.push('/students'));
+  }
+
+  cancel() {
+    history.push('/subjects/' + this.props.match.params.id);
+  }
+}
+
+class SubjectNew extends Component {
+  newSubject = {
+    name : '',
+    kode : ''
+  };
+
+  render() {
+    return (
+      <div>
+        <Card title="New subject">
+          <Form.Label>Name:</Form.Label>
+          <Form.Input type="text" value={this.newSubject.name} onChange={e => (this.newSubject.name = e.target.value)} />
+          <Form.Label>Code:</Form.Label>
+          <Form.Input type="text" value={this.newSubject.kode} onChange={e => (this.newSubject.kode = e.target.value)} />
+        </Card>
+        <Row>
+          <Column>
+            <Button.Success onClick={this.create}>Save</Button.Success>
+          </Column>
+          <Column right>
+            <Button.Light onClick={this.cancel}>Cancel</Button.Light>
+          </Column>
+        </Row>
+      </div>
+    );
+  }
+
+  mounted() {
+    studentService.getStudent(this.props.match.params.id, student => {
+      this.student = student;
+    });
+  }
+
+  create() {
+    subjectService.createSubject(this.newSubject, () => {
+      subjectService.getSubjects(subjects => {
+        this.subjects = subjects;
+      });
+    })
+    history.push('/subjects/');
+  }
+
+  cancel() {
+    history.push('/subjects/');
+  }
+}
+
+// ---------------------------------------------------------------------
 
 ReactDOM.render(
   <HashRouter>
@@ -257,9 +357,11 @@ ReactDOM.render(
       <Route exact path="/students" component={StudentList} />
       <Route exact path="/students/:id" component={StudentDetails} />
       <Route exact path="/students/:id/edit" component={StudentEdit} />
-      <Route exact path="/courses" component={CourseList} />
-      <Route exact path="/courses/:id" component={CourseDetails} />
-      <Route exact path="/courses/:id/edit" component={CourseEdit} />
+      <Route exact path="/students/add" component={StudentNew} />
+      <Route exact path="/subjects" component={SubjectList} />
+      <Route exact path="/subjects/:id" component={SubjectDetails} />
+      <Route exact path="/subjects/:id/edit" component={SubjectEdit} />
+      <Route exact path="/subjects/add" component={SubjectNew} />
     </div>
   </HashRouter>,
   document.getElementById('root')
