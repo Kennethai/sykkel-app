@@ -1,5 +1,53 @@
 import { connection } from './mysql_connection';
 
+class UtleieTjenester {
+  hentKunder(success) {
+    connection.query('select * from kunder', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+
+  hentKunde(id, success) {
+    connection.query('select * from Kunder where id=?', [id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results[0]);
+    });
+  }
+
+  oppdaterKunde(student, success) {
+    connection.query(
+      'update kunder set name=?, email=? where id=?',
+      [kunde.navn, kunde.epost, kunde.tlf, kunde.id],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success();
+      }
+    );
+  }
+
+  opprettUtleie(nyKunde, success) {
+    connection.query('insert Students (name, email) values (?,?)', [newStudent.name, newStudent.email], (error, results) => {
+      if (error) return console.error(error);
+
+      success();
+    });
+  }
+
+  deleteStudent(id, success) {
+      connection.query('delete from Students where id = ?', [id], (error, results) => {
+        if (error) return console.error(error);
+
+        success();
+      });
+    }
+  }
+
+export let utleieTjenester = new UtleieTjenester();
+
 class StudentService {
   getStudents(success) {
     connection.query('select * from Students', (error, results) => {
