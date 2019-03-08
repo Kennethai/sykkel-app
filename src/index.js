@@ -32,10 +32,13 @@ class Utleie extends Component {
     epost : '',
     tlf : ''
   };
-  kunde = {
-    navn : '',
-    epost : '',
-    tlf : ''
+  utleieData = {
+    utlevering : '',
+    innlevering : '',
+    fraDato : '',
+    tilDato : '',
+    fraKl : '',
+    tilKl : ''
   };
 
   render() {
@@ -51,8 +54,8 @@ class Utleie extends Component {
         </Column>
         <Column>
           <div className="form-group">
-            <label htmlFor="sel1">Utlevering:</label>
-            <select className="form-control" id="sel1">
+            <label htmlFor="utlevering">Utlevering:</label>
+            <select className="form-control" id="utlevering" onChange={e => (this.utleieData.utlevering = e.target.value)}>
               <option>1</option>
               <option>2</option>
               <option>3</option>
@@ -60,8 +63,8 @@ class Utleie extends Component {
             </select>
           </div>
           <div className="form-group">
-            <label htmlFor="sel1">Innlevering:</label>
-            <select className="form-control" id="sel1">
+            <label htmlFor="inn">Innlevering:</label>
+            <select className="form-control" id="innlevering" onChange={e => (this.utleieData.innlevering = e.target.value)}>
               <option>1</option>
               <option>2</option>
               <option>3</option>
@@ -71,11 +74,11 @@ class Utleie extends Component {
         </Column>
         <Column>
           <Form.Label>Leie fra:</Form.Label>
-          <Form.Input type="time"/>
-          <Form.Input type="date"/>
+          <Form.Input type="time" onChange={e => (this.utleieData.fraKl = e.target.value)}/>
+          <Form.Input type="date" onChange={e => (this.utleieData.fraDato = e.target.value)}/>
           <Form.Label>Leie til:</Form.Label>
-          <Form.Input type="time"/>
-          <Form.Input type="date"/>
+          <Form.Input type="time" onChange={e => (this.utleieData.tilKl = e.target.value)}/>
+          <Form.Input type="date" onChange={e => (this.utleieData.tilDato = e.target.value)}/>
         </Column>
         <Column>
           <NavLink to="/utleie/sykkel">Velg sykkel</NavLink>
