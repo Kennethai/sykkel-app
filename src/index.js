@@ -85,7 +85,7 @@ class Utleie extends Component {
         </Column>
         <Column>
           < div className="form-group">
-            <label htmlFor="sykkelArea">Sykler:</label>
+            <label htmlFor="sykkelArea">Bestilling:</label>
             <textarea className="form-control" rows="5" id="sykkelArea"></textarea>
           </div>
         </Column>
@@ -106,7 +106,7 @@ class Utleie extends Component {
   }
 
   mounted() {
-    sykkelArea.value=JSON.stringify(sykkelValg);
+    sykkelArea.value=JSON.stringify(sykkelValg)+JSON.stringify(utstyrValg);
   }
 
   create() {
@@ -136,7 +136,6 @@ let sykkelValg = {
   };
 
 class VelgSykkel extends Component {
-
 
   render() {
     return (
@@ -170,23 +169,23 @@ class VelgSykkel extends Component {
   }
 }
 
-class VelgUtstyr extends Component {
-  kunde = {
-    navn : '',
-    epost : '',
-    tlf : ''
+let utstyrValg = {
+    hjelm : '0',
+    veske : '0',
+    barnevogn : '0'
   };
 
+class VelgUtstyr extends Component {
   render() {
     return (
       <div>
         <Column>
-          <Form.Label>Kundenavn:</Form.Label>
-          <Form.Input type="number" value={this.kunde.navn} onChange={e => (this.kunde.navn = e.target.value)} />
-          <Form.Label>Epost:</Form.Label>
-          <Form.Input type="number" value={this.kunde.epost} onChange={e => (this.kunde.epost = e.target.value)} />
-          <Form.Label>Tlf:</Form.Label>
-          <Form.Input type="number" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
+          <Form.Label>Hjelm:</Form.Label>
+          <Form.Input type="number" onChange={e => (utstyrValg.hjelm = e.target.value)} />
+          <Form.Label>Veske:</Form.Label>
+          <Form.Input type="number" onChange={e => (utstyrValg.veske = e.target.value)} />
+          <Form.Label>Barnevogn:</Form.Label>
+          <Form.Input type="number" onChange={e => (utstyrValg.barnevogn = e.target.value)} />
         </Column>
         <Row>
           <Button.Success onClick={this.create}>Legg inn</Button.Success>
@@ -197,11 +196,6 @@ class VelgUtstyr extends Component {
   }
 
   create() {
-    kundeTjenester.opprettUtleie(this.kunde, () => {
-      kundeTjenester.hentKunder(kunder => {
-        this.kunder = kunder;
-      });
-    })
     history.push('/utleie/');
   }
 
