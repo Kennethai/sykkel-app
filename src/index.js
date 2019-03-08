@@ -14,6 +14,7 @@ class Menu extends Component {
       <NavBar brand="WhiteBoard">
         <NavBar.Link to="/students">Students</NavBar.Link>
         <NavBar.Link to="/subjects">Subjects</NavBar.Link>
+        <NavBar.Link to="/mottak">Mottak</NavBar.Link>
       </NavBar>
     );
   }
@@ -24,6 +25,28 @@ class Home extends Component {
     return <Card title="Welcome">Welcome to WhiteBoard</Card>;
   }
 }
+
+class KundeListe extends Component {
+  kunder = [];
+
+  render() {
+    return (
+      <div>
+        <Card title="Kunder">
+          <List>
+            {this.kunder.map(kunde => (
+              <List.Item key={kunde.id} to={'/kunder/' + kunde.id}>
+                {kunde.navn}
+              </List.Item>
+            ))}
+          </List>
+        </Card>
+        <Button.Light onClick={this.values}>Søk</Button.Light>
+      </div>
+    );
+  }
+}
+
 // STUDENTS -----------------------------------------
 class StudentList extends Component {
   students = [];
@@ -31,16 +54,16 @@ class StudentList extends Component {
   render() {
     return (
       <div>
-      <Card title="Students">
-        <List>
-          {this.students.map(student => (
-            <List.Item key={student.id} to={'/students/' + student.id}>
-              {student.name}
-            </List.Item>
-          ))}
-        </List>
-      </Card>
-      <Button.Light onClick={this.add}>Add</Button.Light>
+        <Card title="Students">
+          <List>
+            {this.students.map(student => (
+              <List.Item key={student.id} to={'/students/' + student.id}>
+                {student.name}
+              </List.Item>
+            ))}
+          </List>
+        </Card>
+        <Button.Light onClick={this.add}>Add</Button.Light>
       </div>
     );
   }
@@ -141,8 +164,8 @@ class StudentEdit extends Component {
 
 class StudentNew extends Component {
   newStudent = {
-    name : '',
-    email : ''
+    name: '',
+    email: ''
   };
 
   render() {
@@ -150,9 +173,17 @@ class StudentNew extends Component {
       <div>
         <Card title="New student">
           <Form.Label>Name:</Form.Label>
-          <Form.Input type="text" value={this.newStudent.name} onChange={e => (this.newStudent.name = e.target.value)} />
+          <Form.Input
+            type="text"
+            value={this.newStudent.name}
+            onChange={e => (this.newStudent.name = e.target.value)}
+          />
           <Form.Label>Email:</Form.Label>
-          <Form.Input type="text" value={this.newStudent.email} onChange={e => (this.newStudent.email = e.target.value)} />
+          <Form.Input
+            type="text"
+            value={this.newStudent.email}
+            onChange={e => (this.newStudent.email = e.target.value)}
+          />
         </Card>
         <Row>
           <Column>
@@ -177,7 +208,7 @@ class StudentNew extends Component {
       studentService.getStudents(students => {
         this.students = students;
       });
-    })
+    });
     history.push('/students/');
   }
 
@@ -192,16 +223,16 @@ class SubjectList extends Component {
   render() {
     return (
       <div>
-      <Card title="Subjects">
-        <List>
-          {this.subjects.map(subject => (
-            <List.Item key={subject.id} to={'/subjects/' + subject.id}>
-              {subject.name}
-            </List.Item>
-          ))}
-        </List>
-      </Card>
-      <Button.Light onClick={this.add}>Add</Button.Light>
+        <Card title="Subjects">
+          <List>
+            {this.subjects.map(subject => (
+              <List.Item key={subject.id} to={'/subjects/' + subject.id}>
+                {subject.name}
+              </List.Item>
+            ))}
+          </List>
+        </Card>
+        <Button.Light onClick={this.add}>Add</Button.Light>
       </div>
     );
   }
@@ -302,8 +333,8 @@ class SubjectEdit extends Component {
 
 class SubjectNew extends Component {
   newSubject = {
-    name : '',
-    kode : ''
+    name: '',
+    kode: ''
   };
 
   render() {
@@ -311,9 +342,17 @@ class SubjectNew extends Component {
       <div>
         <Card title="New subject">
           <Form.Label>Name:</Form.Label>
-          <Form.Input type="text" value={this.newSubject.name} onChange={e => (this.newSubject.name = e.target.value)} />
+          <Form.Input
+            type="text"
+            value={this.newSubject.name}
+            onChange={e => (this.newSubject.name = e.target.value)}
+          />
           <Form.Label>Code:</Form.Label>
-          <Form.Input type="text" value={this.newSubject.kode} onChange={e => (this.newSubject.kode = e.target.value)} />
+          <Form.Input
+            type="text"
+            value={this.newSubject.kode}
+            onChange={e => (this.newSubject.kode = e.target.value)}
+          />
         </Card>
         <Row>
           <Column>
@@ -338,7 +377,7 @@ class SubjectNew extends Component {
       subjectService.getSubjects(subjects => {
         this.subjects = subjects;
       });
-    })
+    });
     history.push('/subjects/');
   }
 

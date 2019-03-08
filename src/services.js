@@ -30,21 +30,25 @@ class StudentService {
   }
 
   createStudent(newStudent, success) {
-    connection.query('insert Students (name, email) values (?,?)', [newStudent.name, newStudent.email], (error, results) => {
+    connection.query(
+      'insert Students (name, email) values (?,?)',
+      [newStudent.name, newStudent.email],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success();
+      }
+    );
+  }
+
+  deleteStudent(id, success) {
+    connection.query('delete from Students where id = ?', [id], (error, results) => {
       if (error) return console.error(error);
 
       success();
     });
   }
-
-  deleteStudent(id, success) {
-      connection.query('delete from Students where id = ?', [id], (error, results) => {
-        if (error) return console.error(error);
-
-        success();
-      });
-    }
-  }
+}
 
 export let studentService = new StudentService();
 
@@ -80,19 +84,23 @@ class SubjectService {
   }
 
   createSubject(newSubject, success) {
-    connection.query('insert Subjects (name, kode) values (?,?)', [newSubject.name, newSubject.kode], (error, results) => {
+    connection.query(
+      'insert Subjects (name, kode) values (?,?)',
+      [newSubject.name, newSubject.kode],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success();
+      }
+    );
+  }
+
+  deleteSubject(id, success) {
+    connection.query('delete from Subjects where id = ?', [id], (error, results) => {
       if (error) return console.error(error);
 
       success();
     });
   }
-
-  deleteSubject(id, success) {
-      connection.query('delete from Subjects where id = ?', [id], (error, results) => {
-        if (error) return console.error(error);
-
-        success();
-      });
-    }
 }
 export let subjectService = new SubjectService();
