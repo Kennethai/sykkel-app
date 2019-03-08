@@ -78,7 +78,16 @@ class Utleie extends Component {
           <Form.Input type="date"/>
         </Column>
         <Column>
-          <NavBar.Link to="/utleie/sykkel" className="btn btn-info" role="button">Velg sykkel</NavBar.Link>
+          <NavLink to="/utleie/sykkel">Velg sykkel</NavLink>
+        </Column>
+        <Column>
+          <NavLink to="/utleie/utstyr">Velg utstyr</NavLink>
+        </Column>
+        <Column>
+          < div className="form-group">
+            <label htmlFor="sykkelArea">Sykler:</label>
+            <textarea className="form-control" rows="5" id="sykkelArea"></textarea>
+          </div>
         </Column>
         <Row>
           <Column>
@@ -96,7 +105,9 @@ class Utleie extends Component {
     );
   }
 
-
+  mounted() {
+    sykkelArea.value=JSON.stringify(sykkelValg);
+  }
 
   create() {
     kundeTjenester.opprettUtleie(this.kunde, () => {
@@ -116,7 +127,50 @@ class Utleie extends Component {
   }
 }
 
+let sykkelValg = {
+    tur : '0',
+    terreng : '0',
+    downhill : '0',
+    racing : '0',
+    tandem : '0'
+  };
+
 class VelgSykkel extends Component {
+
+
+  render() {
+    return (
+      <div>
+        <Column>
+          <Form.Label>Tursykkel:</Form.Label>
+          <Form.Input type="number" onChange={e => (sykkelValg.tur = e.target.value)} />
+          <Form.Label>Terreng:</Form.Label>
+          <Form.Input type="number" onChange={e => (sykkelValg.terreng = e.target.value)} />
+          <Form.Label>Downhill:</Form.Label>
+          <Form.Input type="number" onChange={e => (sykkelValg.downhill = e.target.value)} />
+          <Form.Label>Racing:</Form.Label>
+          <Form.Input type="number" onChange={e => (sykkelValg.racing = e.target.value)} />
+          <Form.Label>Tandem:</Form.Label>
+          <Form.Input type="number" onChange={e => (sykkelValg.tandem = e.target.value)} />
+        </Column>
+        <Row>
+          <Button.Success onClick={this.create}>Legg inn</Button.Success>
+          <Button.Light onClick={this.cancel}>Tilbake</Button.Light>
+        </Row>
+      </div>
+    );
+  }
+
+  create() {
+    history.push('/utleie/');
+  }
+
+  cancel() {
+    history.push('/utleie/');
+  }
+}
+
+class VelgUtstyr extends Component {
   kunde = {
     navn : '',
     epost : '',
@@ -155,7 +209,6 @@ class VelgSykkel extends Component {
     history.push('/utleie/');
   }
 }
-
 
 // STUDENTS -----------------------------------------
 class StudentList extends Component {
@@ -489,6 +542,7 @@ ReactDOM.render(
       <Route exact path="/" component={Home} />
       <Route exact path="/utleie" component={Utleie} />
       <Route exact path="/utleie/sykkel" component={VelgSykkel} />
+      <Route exact path="/utleie/utstyr" component={VelgUtstyr} />
       <Route exact path="/students" component={StudentList} />
       <Route exact path="/students/:id" component={StudentDetails} />
       <Route exact path="/students/:id/edit" component={StudentEdit} />
