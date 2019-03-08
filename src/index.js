@@ -14,6 +14,7 @@ class Menu extends Component {
       <NavBar brand="WhiteBoard">
         <NavBar.Link to="/students">Students</NavBar.Link>
         <NavBar.Link to="/subjects">Subjects</NavBar.Link>
+        <NavBar.Link to="/utleie">Utleie</NavBar.Link>
       </NavBar>
     );
   }
@@ -24,6 +25,138 @@ class Home extends Component {
     return <Card title="Welcome">Welcome to WhiteBoard</Card>;
   }
 }
+
+class Utleie extends Component {
+  kunde = {
+    navn : '',
+    epost : '',
+    tlf : ''
+  };
+  kunde = {
+    navn : '',
+    epost : '',
+    tlf : ''
+  };
+
+  render() {
+    return (
+      <div>
+        <Column>
+          <Form.Label>Kundenavn:</Form.Label>
+          <Form.Input type="text" value={this.kunde.navn} onChange={e => (this.kunde.navn = e.target.value)} />
+          <Form.Label>Epost:</Form.Label>
+          <Form.Input type="text" value={this.kunde.epost} onChange={e => (this.kunde.epost = e.target.value)} />
+          <Form.Label>Tlf:</Form.Label>
+          <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
+        </Column>
+        <Column>
+          <div className="form-group">
+            <label htmlFor="sel1">Utlevering:</label>
+            <select className="form-control" id="sel1">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="sel1">Innlevering:</label>
+            <select className="form-control" id="sel1">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+            </select>
+          </div>
+        </Column>
+        <Column>
+          <Form.Label>Leie fra:</Form.Label>
+          <Form.Input type="time"/>
+          <Form.Input type="date"/>
+          <Form.Label>Leie til:</Form.Label>
+          <Form.Input type="time"/>
+          <Form.Input type="date"/>
+        </Column>
+        <Column>
+          <NavBar.Link to="/utleie/sykkel" className="btn btn-info" role="button">Velg sykkel</NavBar.Link>
+        </Column>
+        <Row>
+          <Column>
+            <Button.Success onClick={this.create}>Legg inn</Button.Success>
+          </Column>
+          <Column>
+            <Button.Light onClick={this.delete}>Delete</Button.Light>
+          </Column>
+          <Column right>
+            <Button.Light onClick={this.cancel}>Cancel</Button.Light>
+          </Column>
+
+        </Row>
+      </div>
+    );
+  }
+
+
+
+  create() {
+    kundeTjenester.opprettUtleie(this.kunde, () => {
+      kundeTjenester.hentKunder(kunder => {
+        this.kunder = kunder;
+      });
+    })
+    history.push('/utleie/');
+  }
+
+  delete() {
+    studentService.deleteStudent(this.props.match.params.id, () => history.push('/students'));
+  }
+
+  cancel() {
+    history.push('/students/' + this.props.match.params.id);
+  }
+}
+
+class VelgSykkel extends Component {
+  kunde = {
+    navn : '',
+    epost : '',
+    tlf : ''
+  };
+
+  render() {
+    return (
+      <div>
+        <Column>
+          <Form.Label>Kundenavn:</Form.Label>
+          <Form.Input type="number" value={this.kunde.navn} onChange={e => (this.kunde.navn = e.target.value)} />
+          <Form.Label>Epost:</Form.Label>
+          <Form.Input type="number" value={this.kunde.epost} onChange={e => (this.kunde.epost = e.target.value)} />
+          <Form.Label>Tlf:</Form.Label>
+          <Form.Input type="number" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
+        </Column>
+        <Row>
+          <Button.Success onClick={this.create}>Legg inn</Button.Success>
+          <Button.Light onClick={this.cancel}>Tilbake</Button.Light>
+        </Row>
+      </div>
+    );
+  }
+
+  create() {
+    kundeTjenester.opprettUtleie(this.kunde, () => {
+      kundeTjenester.hentKunder(kunder => {
+        this.kunder = kunder;
+      });
+    })
+    history.push('/utleie/');
+  }
+
+  cancel() {
+    history.push('/utleie/');
+  }
+}
+
+
 // STUDENTS -----------------------------------------
 class StudentList extends Component {
   students = [];
@@ -354,6 +487,8 @@ ReactDOM.render(
     <div>
       <Menu />
       <Route exact path="/" component={Home} />
+      <Route exact path="/utleie" component={Utleie} />
+      <Route exact path="/utleie/sykkel" component={VelgSykkel} />
       <Route exact path="/students" component={StudentList} />
       <Route exact path="/students/:id" component={StudentDetails} />
       <Route exact path="/students/:id/edit" component={StudentEdit} />
