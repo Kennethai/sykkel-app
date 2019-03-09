@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { studentService, subjectService } from './services';
+import {utleieTjenester, studentService, subjectService } from './services';
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 
 import createHashHistory from 'history/createHashHistory';
@@ -28,7 +28,8 @@ class Home extends Component {
 
 class Utleie extends Component {
   kunde = {
-    navn : '',
+    fornavn : '',
+    etternavn : '',
     epost : '',
     tlf : ''
   };
@@ -45,8 +46,10 @@ class Utleie extends Component {
     return (
       <div>
         <Column>
-          <Form.Label>Kundenavn:</Form.Label>
-          <Form.Input type="text" value={this.kunde.navn} onChange={e => (this.kunde.navn = e.target.value)} />
+          <Form.Label>Kunde fornavn:</Form.Label>
+          <Form.Input type="text" value={this.kunde.fornavn} onChange={e => (this.kunde.fornavn = e.target.value)} />
+          <Form.Label>Kunde etternavn:</Form.Label>
+          <Form.Input type="text" value={this.kunde.etternavn} onChange={e => (this.kunde.etternavn = e.target.value)} />
           <Form.Label>Epost:</Form.Label>
           <Form.Input type="text" value={this.kunde.epost} onChange={e => (this.kunde.epost = e.target.value)} />
           <Form.Label>Tlf:</Form.Label>
@@ -113,11 +116,12 @@ class Utleie extends Component {
   }
 
   create() {
-    kundeTjenester.opprettUtleie(this.kunde, () => {
-      kundeTjenester.hentKunder(kunder => {
-        this.kunder = kunder;
+    utleieTjenester.opprettKunde(this.kunde, () => {
+      utleieTjenester.hentKunder(kundes => {
+        this.kundes = kundes;
       });
     })
+
     history.push('/utleie/');
   }
 

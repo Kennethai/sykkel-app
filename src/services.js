@@ -1,25 +1,27 @@
 import { connection } from './mysql_connection';
 
 class UtleieTjenester {
+
   hentKunder(success) {
-    connection.query('select * from kunder', (error, results) => {
+    connection.query('select * from kunde', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
 
-  hentKunde(id, success) {
-    connection.query('select * from Kunder where id=?', [id], (error, results) => {
+  opprettKunde(kunde, success) {
+    connection.query('INSERT IGNORE kunde (k_fornavn, k_etternavn, k_epost, k_tlf) values (?,?,?,?)',
+    [kunde.fornavn, kunde.etternavn, kunde.epost, kunde.tlf], (error, results) => {
       if (error) return console.error(error);
 
-      success(results[0]);
+      success();
     });
   }
 
   oppdaterKunde(student, success) {
     connection.query(
-      'update kunder set name=?, email=? where id=?',
+      'UPDATE kunder set name=?, email=? where id=?',
       [kunde.navn, kunde.epost, kunde.tlf, kunde.id],
       (error, results) => {
         if (error) return console.error(error);
@@ -29,8 +31,9 @@ class UtleieTjenester {
     );
   }
 
-  opprettUtleie(nyKunde, success) {
-    connection.query('insert Students (name, email) values (?,?)', [newStudent.name, newStudent.email], (error, results) => {
+  opprettUtleie(utleieData, success) {
+    connection.query('INSERT utleie (utleie_tidspunkt, innleverings_tidspunkt, antall sykler, selger_id, avdelings_id, kunde_id) values (?,?)',
+    [newStudent.name, newStudent.email], (error, results) => {
       if (error) return console.error(error);
 
       success();
