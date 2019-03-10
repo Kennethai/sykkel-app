@@ -26,6 +26,11 @@ class Home extends Component {
   }
 }
 
+let selgerData = {
+  selger_id : '',
+  avdeling : ''
+};
+
 class Utleie extends Component {
   kunde = {
     fornavn : '',
@@ -121,7 +126,8 @@ class Utleie extends Component {
         this.kundes = kundes;
       });
     })
-
+    utleieTjenester.utleieSykkel();
+    utleieTjenester.opprettUtleie();
     history.push('/utleie/');
   }
 
@@ -142,6 +148,9 @@ let sykkelValg = {
     tandem : '0'
   };
 
+let sykkelTeller = parseInt(sykkelValg.tur) + parseInt(sykkelValg.terreng) + parseInt(sykkelValg.downhill) + parseInt(sykkelValg.racing) + parseInt(sykkelValg.tandem);
+
+
 class VelgSykkel extends Component {
 
   render() {
@@ -149,7 +158,7 @@ class VelgSykkel extends Component {
       <div>
         <Column>
           <Form.Label>Tursykkel:</Form.Label>
-          <Form.Input type="number" onChange={e => (sykkelValg.tur = e.target.value)} />
+          <Form.Input type="number" value={sykkelValg.tur} onChange={e => (sykkelValg.tur = e.target.value)} />
           <Form.Label>Terreng:</Form.Label>
           <Form.Input type="number" onChange={e => (sykkelValg.terreng = e.target.value)} />
           <Form.Label>Downhill:</Form.Label>
@@ -169,6 +178,8 @@ class VelgSykkel extends Component {
 
   create() {
     history.push('/utleie/');
+    console.log(sykkelValg);
+    console.log(sykkelTeller);
   }
 
   cancel() {

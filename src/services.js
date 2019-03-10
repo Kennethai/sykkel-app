@@ -19,26 +19,39 @@ class UtleieTjenester {
     });
   }
 
-  oppdaterKunde(student, success) {
-    connection.query(
-      'UPDATE kunder set name=?, email=? where id=?',
-      [kunde.navn, kunde.epost, kunde.tlf, kunde.id],
-      (error, results) => {
-        if (error) return console.error(error);
-
-        success();
-      }
-    );
-  }
-
-  opprettUtleie(utleieData, success) {
-    connection.query('INSERT utleie (utleie_tidspunkt, innleverings_tidspunkt, antall sykler, selger_id, avdelings_id, kunde_id) values (?,?)',
-    [newStudent.name, newStudent.email], (error, results) => {
+  opprettUtleie(utleieData, selgerData, sykkelTeller, success) {
+    connection.query('INSERT utleie (utdato, innleverigstid, antall_sykler, selger_id, avdelings_id) values (?,?,?,?,?)',
+    [utleieData.fraDato, utleieData.tilDato, sykkelTeller, selgerData.selger_id, selgerData.avdeling], (error, results) => {
       if (error) return console.error(error);
 
       success();
     });
   }
+
+  utleieSykkel(sykkelValg, success) {
+
+    let sykkelType = [sykkelValg.tur, sykkelValg.terreng, sykkelValg.downhill, sykkelValg.downhill, sykkelValg.racing, sykkelValg.tandem];
+
+    for (var i=0,  tot=sykkelType.length; i < tot; i++) {
+
+      for (let type = sykkelType[i]; type > 0; type--){
+
+        connection.query(
+          'UPDATE sykkel SET s_tilstand="Utleid" WHERE sykkeltype = ? AND s_tilstand = "Ledig"',
+          [sykkelType[i]],
+          (error, results) => {
+            if (error) return console.error(error);
+
+            success();
+          }
+        );
+        }
+
+      }
+
+    }
+
+
 
   deleteStudent(id, success) {
       connection.query('delete from Students where id = ?', [id], (error, results) => {
