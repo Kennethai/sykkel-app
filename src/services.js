@@ -2,16 +2,34 @@ import { connection } from './mysql_connection';
 
 class MottakTjenester {
   hentKunder(success) {
-    connection.query('select k_fornavn, k_etternavn from kunde', (error, results) => {
+    connection.query('select * from kunde, sykkel, utleie, utleid_sykkel', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+
+  hentKunde(k_fornavn, k_etternavn, success) {
+    connection.query('select k_fornavn=?, k_etternavn=? from kunde', (error, results) => {
       if (error) alert('Kunden finnes ikke!')(error);
       success(results);
     });
   }
-  hentTlf(success) {
-    connection.query('select k_tlf from kunde', (error, results) => {
+  hentTlf(k_tlf, success) {
+    connection.query('select k_tlf from kunde where k_tlf=?', (error, results) => {
       if (error) alert('Kunden finnnes ikke!')(error);
       success(results);
     });
+  }
+
+  hentData(success) {
+    connection.query(
+      'SELECT k_fornavn, k_etternavn, k_tlf, sykkeltype, sykkel.sykkel_id, utleietid from utleie, utleid_sykkel, kunde, sykkel where utleie.kunde_nr = kunde.kunde_nr and utleid_sykkel.utleie_id = utleie.utleie_id and sykkel.sykkel_id = utleid_sykkel.sykkel_id and (k_fornavn, k_etternavn, k_tlf) values (?,?,?)',
+      (error, results) => {
+        if (error) return console.error(error);
+        success(results);
+      }
+    );
   }
 }
 

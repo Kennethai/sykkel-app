@@ -51,13 +51,34 @@ class Kunde extends Component {
           <Form.Label>Tlf:</Form.Label>
           <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
           <Column>
-            <Button.Success onClick={this.search}>Søk</Button.Success>
+            <Button.Success onClick={this.soktlf}>Søk</Button.Success>
           </Column>
         </Column>
       </div>
     );
   }
-  soknavn() {}
+  soknavn() {
+    mottakTjenester.hentKunde(this.kunde, () => {
+      hentKunder(kunder => {
+        this.kunder = kunder;
+      });
+    });
+  }
+
+  soktlf() {
+    mottakTjenester.hentTlf(this.kunde, () => {
+      hentKunder(kunder => {
+        this.kunder = kunder;
+      });
+    });
+  }
+  hentdata() {
+    mottakTjenestester.hentData(this.kunde, () => {
+      hentKunder(kunder => {
+        this.kunder = kunder;
+      });
+    });
+  }
 }
 
 // STUDENTS -----------------------------------------
