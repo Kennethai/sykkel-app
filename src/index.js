@@ -26,12 +26,28 @@ class Home extends Component {
   }
 }
 
-class KundeListe extends Component {
-  kunder = [];
+class Kunde extends Component {
+  kunde = {
+    navn: '',
+    tlf: ''
+  };
 
   render() {
     return (
       <div>
+        <Column>
+          <Form.Label>Kundenavn:</Form.Label>
+          <Form.Input type="text" value={this.kunde.navn} onChange={e => (this.kunde.navn = e.target.value)} />
+          <Column>
+            <Button.Success onClick={this.search}>Søk</Button.Success>
+          </Column>
+          <Form.Label>Tlf::</Form.Label>
+          <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
+          <Column>
+            <Button.Light onClick={this.search}>Søk</Button.Light>
+          </Column>
+        </Column>
+
         <Card title="Kunder">
           <List>
             {this.kunder.map(kunde => (
@@ -41,10 +57,10 @@ class KundeListe extends Component {
             ))}
           </List>
         </Card>
-        <Button.Light onClick={this.values}>Søk</Button.Light>
       </div>
     );
   }
+  soknavn() {}
 }
 
 // STUDENTS -----------------------------------------
