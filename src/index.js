@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { studentService, subjectService } from './services';
+import { studentService, subjectService, mottakTjenester } from './services';
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 
 import createHashHistory from 'history/createHashHistory';
@@ -28,7 +28,8 @@ class Home extends Component {
 
 class Kunde extends Component {
   kunde = {
-    navn: '',
+    fornavn: '',
+    etternavn: '',
     tlf: ''
   };
 
@@ -36,27 +37,23 @@ class Kunde extends Component {
     return (
       <div>
         <Column>
-          <Form.Label>Kundenavn:</Form.Label>
-          <Form.Input type="text" value={this.kunde.navn} onChange={e => (this.kunde.navn = e.target.value)} />
+          <Form.Label>Fornavn:</Form.Label>
+          <Form.Input type="text" value={this.kunde.fornavn} onChange={e => (this.kunde.fornavn = e.target.value)} />
+          <Form.Label>Etternavn:</Form.Label>
+          <Form.Input
+            type="text"
+            value={this.kunde.etternavn}
+            onChange={e => (this.kunde.etternavn = e.target.value)}
+          />
+          <Column>
+            <Button.Success onClick={this.soknavn}>Søk</Button.Success>
+          </Column>
+          <Form.Label>Tlf:</Form.Label>
+          <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
           <Column>
             <Button.Success onClick={this.search}>Søk</Button.Success>
           </Column>
-          <Form.Label>Tlf::</Form.Label>
-          <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
-          <Column>
-            <Button.Light onClick={this.search}>Søk</Button.Light>
-          </Column>
         </Column>
-
-        <Card title="Kunder">
-          <List>
-            {this.kunder.map(kunde => (
-              <List.Item key={kunde.id} to={'/kunder/' + kunde.id}>
-                {kunde.navn}
-              </List.Item>
-            ))}
-          </List>
-        </Card>
       </div>
     );
   }
@@ -409,6 +406,7 @@ ReactDOM.render(
     <div>
       <Menu />
       <Route exact path="/" component={Home} />
+      <Route exact path="/mottak" component={Kunde} />
       <Route exact path="/students" component={StudentList} />
       <Route exact path="/students/:id" component={StudentDetails} />
       <Route exact path="/students/:id/edit" component={StudentEdit} />

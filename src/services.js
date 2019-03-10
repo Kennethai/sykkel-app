@@ -1,5 +1,22 @@
 import { connection } from './mysql_connection';
 
+class MottakTjenester {
+  hentKunder(success) {
+    connection.query('select k_fornavn, k_etternavn from kunde', (error, results) => {
+      if (error) alert('Kunden finnes ikke!')(error);
+      success(results);
+    });
+  }
+  hentTlf(success) {
+    connection.query('select k_tlf from kunde', (error, results) => {
+      if (error) alert('Kunden finnnes ikke!')(error);
+      success(results);
+    });
+  }
+}
+
+export let mottakTjenester = new MottakTjenester();
+
 class StudentService {
   getStudents(success) {
     connection.query('select * from Students', (error, results) => {
