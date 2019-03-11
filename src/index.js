@@ -27,6 +27,8 @@ class Home extends Component {
 }
 
 class Kunde extends Component {
+  info = [];
+
   kunde = {
     fornavn: '',
     etternavn: '',
@@ -53,13 +55,23 @@ class Kunde extends Component {
           <Column>
             <Button.Success onClick={this.soktlf}>Søk</Button.Success>
           </Column>
+          <Column>
+            <Button.Success onClick={this.hentdata}>Søk</Button.Success>
+          </Column>
         </Column>
+        <List>
+          {this.info.map(kunde => (
+            <List.Item key={this.kunde.id} to={'/info/' + kunde.id} />
+          ))}
+        </List>
+        <div id="utdata" />
       </div>
     );
   }
+
   soknavn() {
     mottakTjenester.hentKunde(this.kunde, () => {
-      hentKunder(kunder => {
+      mottakTjenester.hentKunder(kunder => {
         this.kunder = kunder;
       });
     });
@@ -67,17 +79,20 @@ class Kunde extends Component {
 
   soktlf() {
     mottakTjenester.hentTlf(this.kunde, () => {
-      hentKunder(kunder => {
+      mottakTjenester.hentKunder(kunder => {
         this.kunder = kunder;
       });
     });
   }
   hentdata() {
-    mottakTjenestester.hentData(this.kunde, () => {
-      hentKunder(kunder => {
+    let data = mottakTjenester.hentData(this.kunde);
+
+    mottakTjenester.hentData(this.kunde, () => {
+      mottakTjenester.hentKunder(kunder => {
         this.kunder = kunder;
       });
     });
+    document.getElementById('utdata').innerHTML = data;
   }
 }
 
