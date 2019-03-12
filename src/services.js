@@ -28,38 +28,27 @@ class UtleieTjenester {
     });
   }
 
-  utleieSykkel(sykkelValg, success) {
+  utleieSykkel(sykkelValg) {
 
-    let sykkelType = [sykkelValg.tur, sykkelValg.terreng, sykkelValg.downhill, sykkelValg.downhill, sykkelValg.racing, sykkelValg.tandem];
+    let type = ['tursykkel', 'terreng', 'downhill', 'grusracer', 'hybrid'];
 
-    for (var i=0,  tot=sykkelType.length; i < tot; i++) {
-
-      for (let type = sykkelType[i]; type > 0; type--){
+    for (var i=0 ; i < type.length; i++) {
+      Object.keys(sykkelValg).forEach(function(key) {
+        let x = Number(sykkelValg[key]);
+      });
 
         connection.query(
-          'UPDATE sykkel SET s_tilstand="Utleid" WHERE sykkeltype = ? AND s_tilstand = "Ledig"',
-          [sykkelType[i]],
+          'UPDATE sykkel SET s_tilstand="Utleid" WHERE sykkeltype = ? AND s_tilstand = "Ledig" LIMIT ?;',
+          [type[i],
+          x ],
           (error, results) => {
             if (error) return console.error(error);
-
-            success();
           }
         );
-        }
-
+        // console.log(sykkelValg[i]);
       }
-
     }
 
-
-
-  deleteStudent(id, success) {
-      connection.query('delete from Students where id = ?', [id], (error, results) => {
-        if (error) return console.error(error);
-
-        success();
-      });
-    }
   }
 
 export let utleieTjenester = new UtleieTjenester();

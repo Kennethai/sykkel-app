@@ -117,7 +117,10 @@ class Utleie extends Component {
   }
 
   mounted() {
-    sykkelArea.value=JSON.stringify(sykkelValg)+JSON.stringify(utstyrValg);
+    // sykkelArea.value=JSON.stringify(sykkelValg)+JSON.stringify(utstyrValg);
+    Object.keys(sykkelValg).forEach(function(key) {
+    sykkelArea.value+= key + ' ' + sykkelValg[key]+'\n';
+});
   }
 
   create() {
@@ -127,7 +130,7 @@ class Utleie extends Component {
       });
     })
     utleieTjenester.utleieSykkel();
-    utleieTjenester.opprettUtleie();
+    // utleieTjenester.opprettUtleie();
     history.push('/utleie/');
   }
 
@@ -141,14 +144,14 @@ class Utleie extends Component {
 }
 
 let sykkelValg = {
-    tur : '0',
-    terreng : '0',
-    downhill : '0',
-    racing : '0',
-    tandem : '0'
+    tursykkel : 0,
+    terreng : 0,
+    downhill : 0,
+    grusracer : 0,
+    tandem : 0
   };
 
-let sykkelTeller = parseInt(sykkelValg.tur) + parseInt(sykkelValg.terreng) + parseInt(sykkelValg.downhill) + parseInt(sykkelValg.racing) + parseInt(sykkelValg.tandem);
+let sykkelTeller = Number(sykkelValg.tursykkel) + Number(sykkelValg.terreng) + Number(sykkelValg.downhill) + Number(sykkelValg.grusracer) + Number(sykkelValg.tandem);
 
 
 class VelgSykkel extends Component {
@@ -158,13 +161,13 @@ class VelgSykkel extends Component {
       <div>
         <Column>
           <Form.Label>Tursykkel:</Form.Label>
-          <Form.Input type="number" value={sykkelValg.tur} onChange={e => (sykkelValg.tur = e.target.value)} />
+          <Form.Input type="number" onChange={e => (sykkelValg.tursykkel = e.target.value)} />
           <Form.Label>Terreng:</Form.Label>
           <Form.Input type="number" onChange={e => (sykkelValg.terreng = e.target.value)} />
           <Form.Label>Downhill:</Form.Label>
           <Form.Input type="number" onChange={e => (sykkelValg.downhill = e.target.value)} />
           <Form.Label>Racing:</Form.Label>
-          <Form.Input type="number" onChange={e => (sykkelValg.racing = e.target.value)} />
+          <Form.Input type="number" onChange={e => (sykkelValg.grusracer = e.target.value)} />
           <Form.Label>Tandem:</Form.Label>
           <Form.Input type="number" onChange={e => (sykkelValg.tandem = e.target.value)} />
         </Column>
@@ -180,6 +183,10 @@ class VelgSykkel extends Component {
     history.push('/utleie/');
     console.log(sykkelValg);
     console.log(sykkelTeller);
+    console.log(Number(sykkelValg.terreng));
+    Object.keys(sykkelValg).forEach(function(key) {
+    console.log(key, sykkelValg[key]);
+});
   }
 
   cancel() {
