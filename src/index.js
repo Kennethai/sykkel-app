@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { studentService, subjectService, mottakTjenester } from './services';
+import { studentService, subjectService, mottakTjenester, varelager } from './services';
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 
 import createHashHistory from 'history/createHashHistory';
@@ -15,6 +15,7 @@ class Menu extends Component {
         <NavBar.Link to="/students">Students</NavBar.Link>
         <NavBar.Link to="/subjects">Subjects</NavBar.Link>
         <NavBar.Link to="/mottak">Mottak</NavBar.Link>
+        <NavBar.Link to="/varelager">Varelager</NavBar.Link>
       </NavBar>
     );
   }
@@ -22,11 +23,79 @@ class Menu extends Component {
 
 class Home extends Component {
   render() {
-    return <Card title="Welcome">Welcome to WhiteBoard</Card>;
+    return <Card title="Welcome">Velkommen til sykkelutleie</Card>;
   }
 }
 
-class Kunde extends Component {
+class Varelageret extends Component {
+  nummer = [];
+
+  id = {
+    sykkelid: '',
+    utstyrsid: ''
+  };
+
+  render() {
+    return (
+      // <Card title="id">
+      //    <List>
+      //      {this.nummer.map(ider => (
+      //        <List.Item key={ider.id} to={'/id/' + nummer.id}>
+      //          {ider.navn}
+      //        </List.Item>
+      //     ))}
+      //   </List>
+      // </Card>
+      <div>
+        <Card title="Sykkel-/utstyrs-id">
+          <Column>
+            <Form.Label>Sykkel-id:</Form.Label>
+            <Form.Input type="text" value={this.id.sykkelid} onChange={e => (this.id.sykkelid = e.target.value)} />
+          </Column>
+          <Column>
+            <Button.Success onClick={this.sykkel}>Søk</Button.Success>
+          </Column>
+          <Column>
+            <Form.Label>Utstyrs-id:</Form.Label>
+            <Form.Input type="text" value={this.id.utstyrsid} onChange={e => (this.id.utstyrsid = e.target.value)} />
+          </Column>
+          <Column>
+            <Button.Success onClick={this.utstyr}>Søk</Button.Success>
+          </Column>
+        </Card>
+      </div>
+    );
+  }
+  mounted() {
+    varelager.hentVarer(nummer => {
+      this.nummer = nummer;
+    });
+    console.log(this.nummer);
+  }
+  sykkel() {
+    varelager.hentsykkel(id => {
+      this.nummer = nummer;
+    });
+    // varelager.hentsykkel(this.id, () => {
+    //   varelager.hentVarer(id => {
+    //     this.id = nummer;
+    //   });
+    // });
+    console.log(this.nummer);
+    console.log(this.id.sykkelid);
+  }
+  utstyr() {
+    varelager.hentutstyr(this.nummer, () => {
+      varelager.hentVarer(nummer => {
+        this.nummer = id;
+      });
+    });
+  }
+}
+
+//----Mottak------------------------------
+
+class KundeListe extends Component {
   info = [];
 
   kunde = {
@@ -38,63 +107,185 @@ class Kunde extends Component {
   render() {
     return (
       <div>
-        <Column>
-          <Form.Label>Fornavn:</Form.Label>
-          <Form.Input type="text" value={this.kunde.fornavn} onChange={e => (this.kunde.fornavn = e.target.value)} />
-          <Form.Label>Etternavn:</Form.Label>
-          <Form.Input
-            type="text"
-            value={this.kunde.etternavn}
-            onChange={e => (this.kunde.etternavn = e.target.value)}
-          />
-          <Column>
-            <Button.Success onClick={this.soknavn}>Søk</Button.Success>
-          </Column>
-          <Form.Label>Tlf:</Form.Label>
-          <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
-          <Column>
-            <Button.Success onClick={this.soktlf}>Søk</Button.Success>
-          </Column>
-          <Column>
-            <Button.Success onClick={this.hentdata}>Søk</Button.Success>
-          </Column>
-        </Column>
-        <List>
-          {this.info.map(kunde => (
-            <List.Item key={this.kunde.id} to={'/info/' + kunde.id} />
-          ))}
-        </List>
-        <div id="utdata" />
+        <Card title="Finn kunde:">
+          <Row>
+            <Column>
+              <Form.Label>Fornavn:</Form.Label>
+              <Form.Input
+                type="text"
+                value={this.kunde.fornavn}
+                onChange={e => (this.kunde.fornavn = e.target.value)}
+              />
+              <Form.Label>Etternavn:</Form.Label>
+              <Form.Input
+                type="text"
+                value={this.kunde.etternavn}
+                onChange={e => (this.kunde.etternavn = e.target.value)}
+              />
+              <Form.Label>Tlf:</Form.Label>
+              <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
+              <Column>
+                <Button.Success onClick={this.sok}>Søk</Button.Success>
+              </Column>
+              <Column>
+                <div className="form-group">
+                  <label htmlFor="kundeArea">Mottak:</label>
+                  <textarea className="form-control" rows="5" id="kundeArea" />
+                </div>
+              </Column>
+            </Column>
+          </Row>
+          <List>
+            {this.info.map(kunde => (
+              <List.Item key={this.kunde.id} to={'/info/' + kunde.id}>
+                {this.kunde.fornavn}
+              </List.Item>
+            ))}
+          </List>
+        </Card>
       </div>
     );
   }
 
-  soknavn() {
-    mottakTjenester.hentKunde(this.kunde, () => {
-      mottakTjenester.hentKunder(kunder => {
-        this.kunder = kunder;
-      });
+  mounted(kunde) {
+    mottakTjenester.hentKunde(info => {
+      this.info = info;
+    });
+    Object.keys(this.info).forEach(function(key) {
+      console.log(key, this.info[key]);
+    });
+    Object.keys(kunde).forEach(function(key) {
+      console.log(key, kunde[key]);
     });
   }
-
-  soktlf() {
-    mottakTjenester.hentTlf(this.kunde, () => {
-      mottakTjenester.hentKunder(kunder => {
-        this.kunder = kunder;
+  sok(kunde) {
+    mottakTjenester.hentKunde(this.kunde, () => {
+      mottakTjenester.hentKunder(info => {
+        this.info = info;
       });
+    });
+    Object.keys(this.info).forEach(function(key) {
+      kundeArea.value += key + ' ' + this.info[key] + '\n';
     });
   }
   hentdata() {
-    let data = mottakTjenester.hentData(this.kunde);
-
     mottakTjenester.hentData(this.kunde, () => {
-      mottakTjenester.hentKunder(kunder => {
-        this.kunder = kunder;
+      mottakTjenester.hentKunder(info => {
+        this.info = info;
       });
     });
-    document.getElementById('utdata').innerHTML = data;
+    Object.keys(this.info).forEach(function(key) {
+      kundeArea.value += key + ' ' + this.info[key] + '\n';
+    });
   }
 }
+
+class KundeDetaljer extends Component {
+  kunde = null;
+
+  render() {
+    if (!this.kunde) return null;
+
+    return (
+      <div>
+        <Card title="Kunde detaljer">
+          <Row>
+            <Column>
+              <Form.Label>Fornavn:</Form.Label>
+              <Form.Input
+                type="text"
+                value={this.kunde.fornavn}
+                onChange={e => (this.kunde.fornavn = e.target.value)}
+              />
+              <Form.Label>Etternavn:</Form.Label>
+              <Form.Input
+                type="text"
+                value={this.kunde.etternavn}
+                onChange={e => (this.kunde.etternavn = e.target.value)}
+              />
+              <Form.Label>Tlf:</Form.Label>
+              <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
+              <Column>
+                <Button.Success onClick={this.sok}>Søk</Button.Success>
+              </Column>
+            </Column>
+          </Row>
+        </Card>
+      </div>
+    );
+  }
+}
+
+//
+// class Kunde extends Component {
+//   info = [];
+//
+//   kunde = {
+//     fornavn: '',
+//     etternavn: '',
+//     tlf: ''
+//   };
+//
+//   render() {
+//     return (
+//       <div>
+//         <Column>
+//           <Form.Label>Fornavn:</Form.Label>
+//           <Form.Input type="text" value={this.kunde.fornavn} onChange={e => (this.kunde.fornavn = e.target.value)} />
+//           <Form.Label>Etternavn:</Form.Label>
+//           <Form.Input
+//             type="text"
+//             value={this.kunde.etternavn}
+//             onChange={e => (this.kunde.etternavn = e.target.value)}
+//           />
+//           <Column>
+//             <Button.Success onClick={this.soknavn}>Søk</Button.Success>
+//           </Column>
+//           <Form.Label>Tlf:</Form.Label>
+//           <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
+//           <Column>
+//             <Button.Success onClick={this.soktlf}>Søk</Button.Success>
+//           </Column>
+//           <Column>
+//             <Button.Success onClick={this.hentdata}>Søk</Button.Success>
+//           </Column>
+//         </Column>
+//         <List>
+//           {this.info.map(kunde => (
+//             <List.Item key={this.kunde.id} to={'/info/' + kunde.id} />
+//           ))}
+//         </List>
+//         <div id="utdata" />
+//       </div>
+//     );
+//   }
+//
+//   soknavn() {
+//     mottakTjenester.hentKunde(this.kunde, () => {
+//       mottakTjenester.hentKunder(kunder => {
+//         this.kunder = kunder;
+//       });
+//     });
+//   }
+//
+//   soktlf() {
+//     mottakTjenester.hentTlf(this.kunde, () => {
+//       mottakTjenester.hentKunder(kunder => {
+//         this.kunder = kunder;
+//       });
+//     });
+//   }
+//   hentdata() {
+//     let data = mottakTjenester.hentData(this.kunde);
+//
+//     mottakTjenester.hentData(this.kunde, () => {
+//       mottakTjenester.hentKunder(kunder => {
+//         this.kunder = kunder;
+//       });
+//     });
+//     document.getElementById('utdata').innerHTML = data;
+//   }
+// }
 
 // STUDENTS -----------------------------------------
 class StudentList extends Component {
@@ -442,7 +633,10 @@ ReactDOM.render(
     <div>
       <Menu />
       <Route exact path="/" component={Home} />
-      <Route exact path="/mottak" component={Kunde} />
+      <Route exact path="/varelager" component={Varelageret} />
+      <Route exact path="/mottak" component={KundeListe} />
+      <Route exact path="/info/sok" component={KundeListe} />
+      <Route exact path="/students/:id" component={KundeDetaljer} />
       <Route exact path="/students" component={StudentList} />
       <Route exact path="/students/:id" component={StudentDetails} />
       <Route exact path="/students/:id/edit" component={StudentEdit} />

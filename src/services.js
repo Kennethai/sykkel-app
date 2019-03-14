@@ -1,39 +1,54 @@
 import { connection } from './mysql_connection';
+class Varelager {
+  hentVarer(success) {
+    connection.query('select * from sykkel, utstyr', (error, results) => {
+      if (error) return console.error(error);
+    });
+  }
+  hentsykkel(id, success) {
+    connection.query('select sykkelnavn from sykkel where sykkel_id=?', [id.sykkelid], (error, results) => {
+      if (error) return console.error(error);
+      // success(results);
+    });
+  }
+
+  hentutstyr(nummer, id) {
+    connection.query('select * from utstyr where id=?', [id], (error, results) => {
+      if (error) return console.error(error);
+    });
+  }
+}
+
+export let varelager = new Varelager();
 
 class MottakTjenester {
   hentKunder(success) {
+    connection.query('select * from kunde', (error, results) => {
+      if (error) return console.error(error);
+    });
+  }
+
+  hentKunde(kunde, kunde_nr) {
     connection.query(
-      'select * from kunde, sykkel, utleie, utleid_sykkel where utleie.kunde_nr = kunde.kunde_nr and utleid_sykkel.utleie_id = utleie.utleie_id and sykkel.sykkel_id = utleid_sykkel.sykkel_id',
+      'select k_fornavn, k_etternavn, k_tlf from kunde where k_fornavn =? or k_etternavn =? or k_tlf =?',
+      // [kunde.fornavn, kunde.etternavn, kunde.tlf]
       (error, results) => {
         if (error) return console.error(error);
-
-        success(results);
       }
     );
   }
+  // hentKunde(id) {
+  //   connection.query('select * from kunde where id=?'[id], (error, results) => {
+  //     if (error) return console.error(error);
+  //   });
+  // }
 
-  hentKunde(kunde, success) {
-    connection.query('select k_fornavn=?, k_etternavn=? from kunde', (error, results) => {
-      [kunde.fornavn, kunde.etternavn];
-      if (error) alert('Kunden finnes ikke!');
-      success(results);
-    });
-  }
-  hentTlf(kunde, success) {
-    connection.query('select k_tlf from kunde where k_tlf=?', (error, results) => {
-      [kunde.tlf];
-      if (error) alert('Kunden finnnes ikke!');
-      success(results);
-    });
-  }
-
-  hentData(kunde, success) {
+  hentData(kunde) {
     connection.query(
       'SELECT k_fornavn, k_etternavn, k_tlf, sykkeltype, sykkel.sykkel_id, utleietid from utleie, utleid_sykkel, kunde, sykkel where utleie.kunde_nr = kunde.kunde_nr and utleid_sykkel.utleie_id = utleie.utleie_id and sykkel.sykkel_id = utleid_sykkel.sykkel_id and k_fornavn=? or k_etternavn=? or k_tlf=?',
       [kunde.fornavn, kunde.etternavn, kunde.tlf],
       (error, results) => {
         if (error) return console.error(error);
-        success(results);
       }
     );
   }
