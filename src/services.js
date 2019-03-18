@@ -19,10 +19,18 @@ class UtleieTjenester {
     });
   }
 
-  opprettUtleie(utleieData, selgerData, sykkelTeller, success) {
-    connection.query('INSERT utleie (utdato, innleverigstid, antall_sykler, selger_id, avdelings_id) values (?,?,?,?,?)',
-    [utleieData.fraDato, utleieData.tilDato, sykkelTeller, selgerData.selger_id, selgerData.avdeling], (error, results) => {
+  hentUtleieData(success) {
+    connection.query('select * from utleie', (error, results) => {
       if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+
+  opprettUtleie(utleiedata, sykkelTellerString, success) {
+    connection.query('INSERT utleie (utleietid, innleverigstid, selger_id, avdelings_id, antall_sykler) values (?,?,?,?,?)',
+    [utleiedata.fradato, utleiedata.tildato, utleiedata.selger_id, utleiedata.avdeling, sykkelTellerString], (error, results) => {
+        if (error) return console.error(error);
 
       success();
     });

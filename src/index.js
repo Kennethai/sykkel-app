@@ -26,10 +26,7 @@ class Home extends Component {
   }
 }
 
-let selgerData = {
-  selger_id : '',
-  avdeling : ''
-};
+
 
 class Utleie extends Component {
   kunde = {
@@ -38,11 +35,13 @@ class Utleie extends Component {
     epost : '',
     tlf : ''
   };
-  utleieData = {
+  utleiedata = {
+    selger_id : '007',
+    avdeling : '2',
     utlevering : '',
     innlevering : '',
-    fraDato : '',
-    tilDato : '',
+    fradato : '',
+    tildato : '',
     fraKl : '',
     tilKl : ''
   };
@@ -58,35 +57,35 @@ class Utleie extends Component {
           <Form.Label>Epost:</Form.Label>
           <Form.Input type="text" value={this.kunde.epost} onChange={e => (this.kunde.epost = e.target.value)} />
           <Form.Label>Tlf:</Form.Label>
-          <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
+          <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} maxlength="8"/>
         </Column>
         <Column>
           <div className="form-group">
             <label htmlFor="utlevering">Utlevering:</label>
-            <select className="form-control" id="utlevering" onChange={e => (this.utleieData.utlevering = e.target.value)}>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
+            <select className="form-control" id="utlevering" onChange={e => (this.utleiedata.utlevering = e.target.value)}>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
             </select>
           </div>
           <div className="form-group">
-            <label htmlFor="inn">Innlevering:</label>
-            <select className="form-control" id="innlevering" onChange={e => (this.utleieData.innlevering = e.target.value)}>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
+            <label htmlFor="innlevering">Innlevering:</label>
+            <select className="form-control" id="innlevering" onChange={e => (this.utleiedata.innlevering = e.target.value)}>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
             </select>
           </div>
         </Column>
         <Column>
           <Form.Label>Leie fra:</Form.Label>
-          <Form.Input type="time" onChange={e => (this.utleieData.fraKl = e.target.value)}/>
-          <Form.Input type="date" onChange={e => (this.utleieData.fraDato = e.target.value)}/>
+          <Form.Input type="time" onChange={e => (this.utleiedata.fraKl = e.target.value)}/>
+          <Form.Input type="text" onChange={e => (this.utleiedata.fradato = e.target.value)}/>
           <Form.Label>Leie til:</Form.Label>
-          <Form.Input type="time" onChange={e => (this.utleieData.tilKl = e.target.value)}/>
-          <Form.Input type="date" onChange={e => (this.utleieData.tilDato = e.target.value)}/>
+          <Form.Input type="time" onChange={e => (this.utleiedata.tilKl = e.target.value)}/>
+          <Form.Input type="text" onChange={e => (this.utleiedata.tildato = e.target.value)}/>
         </Column>
         <Column>
           <NavLink to="/utleie/sykkel">Velg sykkel</NavLink>
@@ -124,13 +123,20 @@ class Utleie extends Component {
   }
 
   create() {
-    utleieTjenester.opprettKunde(this.kunde, () => {
-      utleieTjenester.hentKunder(kundes => {
-        this.kundes = kundes;
+    // Object.keys(this.utleieData).forEach(function(key) {
+    //   console.log(key, this.utleieData[key]);
+    // });
+    // utleieTjenester.opprettKunde(this.kunde, () => {
+    //   utleieTjenester.hentKunder(kundes => {
+    //     this.kundes = kundes;
+    //   });
+    // })
+    // utleieTjenester.utleieSykkel();
+    utleieTjenester.opprettUtleie(this.utleiedata, () => {
+      utleieTjenester.hentUtleieData(utleiedatas => {
+        this.utleiedatas = utleiedatas;
       });
     })
-    utleieTjenester.utleieSykkel();
-    // utleieTjenester.opprettUtleie();
     history.push('/utleie/');
   }
 
@@ -150,8 +156,32 @@ let sykkelValg = {
     grusracer : 0,
     tandem : 0
   };
+let sykkelTeller;
+// let sykkelTeller = sykkelValg.tursykkel + sykkelValg.terreng + sykkelValg.downhill + sykkelValg.grusracer + sykkelValg.tandem;
 
-let sykkelTeller = Number(sykkelValg.tursykkel) + Number(sykkelValg.terreng) + Number(sykkelValg.downhill) + Number(sykkelValg.grusracer) + Number(sykkelValg.tandem);
+Object.keys(sykkelValg).forEach(function(key) {
+   sykkelTeller = + Number(sykkelValg[key]);
+});
+
+let sykkelTellerString = sykkelTeller.toString();
+console.log(sykkelTeller);
+
+function GetPropertyValue(sykkelValg, dataToRetrieve) {
+  return dataToRetrieve
+    .split('.') // split string based on `.`
+    .reduce(function(o, k) {
+      return o && o[k]; // get inner property if `o` is defined else get `o` and return
+    }, sykkelValg) // set initial value as object
+}
+
+
+console.log(
+  GetPropertyValue(sykkelValg, "Tursykkel"),
+  GetPropertyValue(sykkelValg, "Terreng"),
+  GetPropertyValue(sykkelValg, "Downhill"),
+  GetPropertyValue(sykkelValg, "Grusracer"),
+  GetPropertyValue(sykkelValg, "Tandem")
+)
 
 
 class VelgSykkel extends Component {
@@ -185,8 +215,16 @@ class VelgSykkel extends Component {
     console.log(sykkelTeller);
     console.log(Number(sykkelValg.terreng));
     Object.keys(sykkelValg).forEach(function(key) {
-    console.log(key, sykkelValg[key]);
-});
+      console.log(key, sykkelValg[key]);
+    });
+    console.log(sykkelTellerString);
+    console.log(
+      GetPropertyValue(sykkelValg, "Tursykkel"),
+      GetPropertyValue(sykkelValg, "Terreng"),
+      GetPropertyValue(sykkelValg, "Downhill"),
+      GetPropertyValue(sykkelValg, "Grusracer"),
+      GetPropertyValue(sykkelValg, "Tandem")
+    )
   }
 
   cancel() {
