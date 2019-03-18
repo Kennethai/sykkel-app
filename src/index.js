@@ -28,11 +28,21 @@ class Home extends Component {
 }
 
 class Varelageret extends Component {
-  nummer = [];
-
-  id = {
+  info = {
     sykkelid: '',
-    utstyrsid: ''
+    sykkelnavn: '',
+    sykkeltype: '',
+    aar: '',
+    tilhorighet: '',
+    utleiepris: '',
+    tilstand: '',
+    beskrivelse: '',
+    utstyrsid: '',
+    utstyrnavn: '',
+    utstyrstype: '',
+    u_tilhørighet: '',
+    upris: '',
+    utilstand: ''
   };
 
   render() {
@@ -50,14 +60,18 @@ class Varelageret extends Component {
         <Card title="Sykkel-/utstyrs-id">
           <Column>
             <Form.Label>Sykkel-id:</Form.Label>
-            <Form.Input type="text" value={this.id.sykkelid} onChange={e => (this.id.sykkelid = e.target.value)} />
+            <Form.Input type="text" value={this.info.sykkelid} onChange={e => (this.info.sykkelid = e.target.value)} />
           </Column>
           <Column>
             <Button.Success onClick={this.sykkel}>Søk</Button.Success>
           </Column>
           <Column>
             <Form.Label>Utstyrs-id:</Form.Label>
-            <Form.Input type="text" value={this.id.utstyrsid} onChange={e => (this.id.utstyrsid = e.target.value)} />
+            <Form.Input
+              type="text"
+              value={this.info.utstyrsid}
+              onChange={e => (this.info.utstyrsid = e.target.value)}
+            />
           </Column>
           <Column>
             <Button.Success onClick={this.utstyr}>Søk</Button.Success>
@@ -66,28 +80,28 @@ class Varelageret extends Component {
       </div>
     );
   }
-  mounted() {
-    varelager.hentVarer(nummer => {
-      this.nummer = nummer;
+  mounted(info) {
+    varelager.hentSykkeltabell(info => {
+      this.info = info;
     });
-    console.log(this.nummer);
+    console.log(this.info);
   }
-  sykkel() {
-    varelager.hentsykkel(id => {
-      this.nummer = nummer;
+  sykkel(info) {
+    varelager.hentsykkel(this.props.match.params.sykkelid, info => {
+      this.info = info;
     });
-    // varelager.hentsykkel(this.id, () => {
-    //   varelager.hentVarer(id => {
-    //     this.id = nummer;
+    // varelager.hentsykkel(this.info, () => {
+    //   varelager.hentSykkelTabell(info => {
+    //     this.info = info;
     //   });
     // });
-    console.log(this.nummer);
-    console.log(this.id.sykkelid);
+    console.log(this.info);
+    console.log(this.info.sykkelid);
   }
   utstyr() {
-    varelager.hentutstyr(this.nummer, () => {
-      varelager.hentVarer(nummer => {
-        this.nummer = id;
+    varelager.hentutstyr(this.info, () => {
+      varelager.hentUtsyr(info => {
+        this.info = info;
       });
     });
   }

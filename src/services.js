@@ -1,14 +1,32 @@
 import { connection } from './mysql_connection';
 class Varelager {
-  hentVarer(success) {
-    connection.query('select * from sykkel, utstyr', (error, results) => {
+  hentSykkeltabell(success) {
+    connection.query('select * from sykkel', (error, results) => {
       if (error) return console.error(error);
     });
   }
-  hentsykkel(id, success) {
-    connection.query('select sykkelnavn from sykkel where sykkel_id=?', [id.sykkelid], (error, results) => {
+  hentsykkel(Varelageret, info) {
+    connection.query(
+      'select sykkelnavn, sykkeltype, s_aar, s_tilhorighet, s_utleiepris, s_tilstand, s_beskrivelse from sykkel where sykkel_id=?',
+      [
+        // info.sykkelnavn,
+        // info.sykkeltype,
+        // info.aar,
+        // info.tilhorighet,
+        // info.utleiepris,
+        // info.tilstand,
+        // info.beskrivelse,
+        info.sykkelid
+      ],
+      (error, results) => {
+        if (error) return console.error(error);
+        // success(results);
+      }
+    );
+  }
+  hentUtstyr(success) {
+    connection.query('select * from utstyr', (error, results) => {
       if (error) return console.error(error);
-      // success(results);
     });
   }
 
