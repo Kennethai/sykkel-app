@@ -10,7 +10,7 @@ class Varelager {
   }
   hentsykkel(info, success) {
     connection.query(
-      'select * from sykkel where sykkel_id=?',
+      'select sykkel_id ID, sykkelnavn Navn, sykkeltype Type, s_tilhorighet Tilhørighet, s_aar År, s_tilstand Tilstand, s_beskrivelse Beskrivelse, Kommentar from sykkel where sykkel_id=?',
       [
         // info.sykkelnavn,
         // info.sykkeltype,
@@ -36,10 +36,14 @@ class Varelager {
   }
 
   hentutstyr(info, success) {
-    connection.query('select * from utstyr where utstyr_id=?', [info.utstyrsid], (error, results) => {
-      if (error) return console.error(error);
-      success(results[0]);
-    });
+    connection.query(
+      'select utstyr_id ID, u_navn Navn, utstyrstype Type, u_sykkeltype Sykkeltilhørighet, u_tilhorighet Tilhørighet, u_utleiepris Pris, u_tilstand Tilstand from utstyr where utstyr_id=?',
+      [info.utstyrsid],
+      (error, results) => {
+        if (error) return console.error(error);
+        success(results[0]);
+      }
+    );
   }
 }
 
@@ -55,6 +59,13 @@ class MottakTjenester {
         success(results[0]);
       }
     );
+  }
+
+  hentKunde(kunde, success) {
+    connection.query('select * from kunde', (error, results) => {
+      if (error) return console.error(error);
+      success(results);
+    });
   }
 }
 

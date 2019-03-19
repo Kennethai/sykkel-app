@@ -3,7 +3,7 @@ import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { studentService, subjectService, mottakTjenester, varelager } from './services';
-import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
+import { Card, List, Row, Column, NavBar, Button, Form, Table } from './widgets';
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -58,34 +58,53 @@ class Varelageret extends Component {
             <Button.Success onClick={this.utstyr}>Søk</Button.Success>
           </Column>
         </Card>
+
         <div id="utdata" />
         <div id="utdata2" />
+
+        <Card title="Sykkel">
+          <List>
+            {this.sykler.map(sykkel => (
+              <List.Item key={sykkel.sykkel_id}>
+                ID: {sykkel.sykkel_id}, Navn: {sykkel.sykkelnavn}, Type: {sykkel.sykkeltype}, Tilhørighet:{' '}
+                {sykkel.s_tilhorighet}, År: {sykkel.s_aar}, Tilstand: {sykkel.s_tilstand}, Beskrivelse:{' '}
+                {sykkel.s_beskrivelse}, Kommentar: {sykkel.Kommentar}
+              </List.Item>
+            ))}
+          </List>
+        </Card>
       </div>
     );
   }
+
   mounted() {
-    varelager.hentSykkeltabell(this.info, info => {
-      this.info = info;
-      console.log(this.info);
-      // utdata.innerText = '';
-      // Object.keys(this.info).forEach(function(key) {
-      //   utdata.innerText += key + ' ' + info[key] + '\n';
-      // });
+    // MALIN
+    varelager.hentSykkeltabell(this.sykler, sykler => {
+      this.sykler = sykler;
+      console.log(this.sykler);
     });
-    varelager.hentUtstyrtabell(this.info, info => {
-      this.info = info;
-      console.log(this.info);
-      Object.keys(this.info).forEach(function(key) {
-        utdata2.innerText += key + ' ' + info[key] + '\n';
-      });
-    });
+
+    // varelager.hentSykkeltabell(this.info, info => {
+    //   this.info = info;
+    //   console.log(this.info);
+    //   utdata.innerText = '';
+    //   Object.keys(this.info).forEach(function(key) {
+    //     utdata.innerText += key + ' ' + info[key] + '\n';
+    //   });
+    // });
+    // varelager.hentUtstyrtabell(this.info, info => {
+    //   this.info = info;
+    //   console.log(this.info);
+    //   Object.keys(this.info).forEach(function(key) {
+    //     utdata2.innerText += key + ' ' + info[key] + '\n';
+    //   });
+    // });
   }
   sykkel() {
     varelager.hentsykkel(this.info, info => {
       this.info = info;
       console.log(this.info);
       utdata.innerText = '';
-      utdata2.innerText = '';
       Object.keys(this.info).forEach(function(key) {
         utdata.innerText += key + ' ' + info[key] + '\n';
       });
@@ -111,6 +130,7 @@ class KundeListe extends Component {
     etternavn: '',
     tlf: ''
   };
+  kunder = [];
 
   render() {
     return (
@@ -138,15 +158,26 @@ class KundeListe extends Component {
             </Column>
           </Row>
         </Card>
+
+        <Card title="Sykkel">
+          <List>
+            {this.kunder.map(kunde => (
+              <List.Item key={kunde.kunde_id} to={'/kunde/' + kunde.kunde_id}>
+                {kunde.k_fornavn}
+              </List.Item>
+            ))}
+          </List>
+        </Card>
+
         <div id="utdata" />
       </div>
     );
   }
 
   mounted() {
-    // mottakTjenester.hentKunde(info => {
-    //   this.info = info;
-    // });
+    mottakTjenester.hentKunde(this.kunder, kunder => {
+      this.kunder = kunder;
+    });
     // Object.keys(this.info).forEach(function(key) {
     //   console.log(key, this.info[key]);
     // });
