@@ -30,32 +30,13 @@ class Home extends Component {
 class Varelageret extends Component {
   info = {
     sykkelid: '',
-    sykkelnavn: '',
-    sykkeltype: '',
-    aar: '',
-    tilhorighet: '',
-    utleiepris: '',
-    tilstand: '',
-    beskrivelse: '',
-    utstyrsid: '',
-    utstyrnavn: '',
-    utstyrstype: '',
-    u_tilhørighet: '',
-    upris: '',
-    utilstand: ''
+    utstyrsid: ''
   };
+
+  sykler = [];
 
   render() {
     return (
-      // <Card title="id">
-      //    <List>
-      //      {this.nummer.map(ider => (
-      //        <List.Item key={ider.id} to={'/id/' + nummer.id}>
-      //          {ider.navn}
-      //        </List.Item>
-      //     ))}
-      //   </List>
-      // </Card>
       <div>
         <Card title="Sykkel-/utstyrs-id">
           <Column>
@@ -77,31 +58,46 @@ class Varelageret extends Component {
             <Button.Success onClick={this.utstyr}>Søk</Button.Success>
           </Column>
         </Card>
+        <div id="utdata" />
+        <div id="utdata2" />
       </div>
     );
   }
-  mounted(info) {
-    varelager.hentSykkeltabell(info => {
+  mounted() {
+    varelager.hentSykkeltabell(this.info, info => {
       this.info = info;
+      console.log(this.info);
+      // utdata.innerText = '';
+      // Object.keys(this.info).forEach(function(key) {
+      //   utdata.innerText += key + ' ' + info[key] + '\n';
+      // });
     });
-    console.log(this.info);
+    varelager.hentUtstyrtabell(this.info, info => {
+      this.info = info;
+      console.log(this.info);
+      Object.keys(this.info).forEach(function(key) {
+        utdata2.innerText += key + ' ' + info[key] + '\n';
+      });
+    });
   }
-  sykkel(info) {
-    varelager.hentsykkel(this.props.match.params.sykkelid, info => {
+  sykkel() {
+    varelager.hentsykkel(this.info, info => {
       this.info = info;
+      console.log(this.info);
+      utdata.innerText = '';
+      utdata2.innerText = '';
+      Object.keys(this.info).forEach(function(key) {
+        utdata.innerText += key + ' ' + info[key] + '\n';
+      });
     });
-    // varelager.hentsykkel(this.info, () => {
-    //   varelager.hentSykkelTabell(info => {
-    //     this.info = info;
-    //   });
-    // });
-    console.log(this.info);
-    console.log(this.info.sykkelid);
   }
   utstyr() {
-    varelager.hentutstyr(this.info, () => {
-      varelager.hentUtsyr(info => {
-        this.info = info;
+    varelager.hentutstyr(this.info, info => {
+      this.info = info;
+      console.log = this.info;
+      utdata.innerText = '';
+      Object.keys(this.info).forEach(function(key) {
+        utdata.innerText += key + ' ' + info[key] + '\n';
       });
     });
   }
@@ -110,8 +106,6 @@ class Varelageret extends Component {
 //----Mottak------------------------------
 
 class KundeListe extends Component {
-  info = [];
-
   kunde = {
     fornavn: '',
     etternavn: '',
@@ -141,165 +135,36 @@ class KundeListe extends Component {
               <Column>
                 <Button.Success onClick={this.sok}>Søk</Button.Success>
               </Column>
-              <Column>
-                <div className="form-group">
-                  <label htmlFor="kundeArea">Mottak:</label>
-                  <textarea className="form-control" rows="5" id="kundeArea" />
-                </div>
-              </Column>
             </Column>
           </Row>
-          <List>
-            {this.info.map(kunde => (
-              <List.Item key={this.kunde.id} to={'/info/' + kunde.id}>
-                {this.kunde.fornavn}
-              </List.Item>
-            ))}
-          </List>
         </Card>
+        <div id="utdata" />
       </div>
     );
   }
 
-  mounted(kunde) {
-    mottakTjenester.hentKunde(info => {
-      this.info = info;
-    });
-    Object.keys(this.info).forEach(function(key) {
-      console.log(key, this.info[key]);
-    });
-    Object.keys(kunde).forEach(function(key) {
-      console.log(key, kunde[key]);
-    });
+  mounted() {
+    // mottakTjenester.hentKunde(info => {
+    //   this.info = info;
+    // });
+    // Object.keys(this.info).forEach(function(key) {
+    //   console.log(key, this.info[key]);
+    // });
+    // Object.keys(kunde).forEach(function(key) {
+    //   console.log(key, kunde[key]);
+    // });
   }
   sok(kunde) {
-    mottakTjenester.hentKunde(this.kunde, () => {
-      mottakTjenester.hentKunder(info => {
-        this.info = info;
+    mottakTjenester.hentData(this.kunde, kunde => {
+      this.kunde = kunde;
+      console.log(this.kunde);
+      utdata.innerText = '';
+      Object.keys(this.kunde).forEach(function(key) {
+        utdata.innerText += key + ' ' + kunde[key] + '\n';
       });
-    });
-    Object.keys(this.info).forEach(function(key) {
-      kundeArea.value += key + ' ' + this.info[key] + '\n';
-    });
-  }
-  hentdata() {
-    mottakTjenester.hentData(this.kunde, () => {
-      mottakTjenester.hentKunder(info => {
-        this.info = info;
-      });
-    });
-    Object.keys(this.info).forEach(function(key) {
-      kundeArea.value += key + ' ' + this.info[key] + '\n';
     });
   }
 }
-
-class KundeDetaljer extends Component {
-  kunde = null;
-
-  render() {
-    if (!this.kunde) return null;
-
-    return (
-      <div>
-        <Card title="Kunde detaljer">
-          <Row>
-            <Column>
-              <Form.Label>Fornavn:</Form.Label>
-              <Form.Input
-                type="text"
-                value={this.kunde.fornavn}
-                onChange={e => (this.kunde.fornavn = e.target.value)}
-              />
-              <Form.Label>Etternavn:</Form.Label>
-              <Form.Input
-                type="text"
-                value={this.kunde.etternavn}
-                onChange={e => (this.kunde.etternavn = e.target.value)}
-              />
-              <Form.Label>Tlf:</Form.Label>
-              <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
-              <Column>
-                <Button.Success onClick={this.sok}>Søk</Button.Success>
-              </Column>
-            </Column>
-          </Row>
-        </Card>
-      </div>
-    );
-  }
-}
-
-//
-// class Kunde extends Component {
-//   info = [];
-//
-//   kunde = {
-//     fornavn: '',
-//     etternavn: '',
-//     tlf: ''
-//   };
-//
-//   render() {
-//     return (
-//       <div>
-//         <Column>
-//           <Form.Label>Fornavn:</Form.Label>
-//           <Form.Input type="text" value={this.kunde.fornavn} onChange={e => (this.kunde.fornavn = e.target.value)} />
-//           <Form.Label>Etternavn:</Form.Label>
-//           <Form.Input
-//             type="text"
-//             value={this.kunde.etternavn}
-//             onChange={e => (this.kunde.etternavn = e.target.value)}
-//           />
-//           <Column>
-//             <Button.Success onClick={this.soknavn}>Søk</Button.Success>
-//           </Column>
-//           <Form.Label>Tlf:</Form.Label>
-//           <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
-//           <Column>
-//             <Button.Success onClick={this.soktlf}>Søk</Button.Success>
-//           </Column>
-//           <Column>
-//             <Button.Success onClick={this.hentdata}>Søk</Button.Success>
-//           </Column>
-//         </Column>
-//         <List>
-//           {this.info.map(kunde => (
-//             <List.Item key={this.kunde.id} to={'/info/' + kunde.id} />
-//           ))}
-//         </List>
-//         <div id="utdata" />
-//       </div>
-//     );
-//   }
-//
-//   soknavn() {
-//     mottakTjenester.hentKunde(this.kunde, () => {
-//       mottakTjenester.hentKunder(kunder => {
-//         this.kunder = kunder;
-//       });
-//     });
-//   }
-//
-//   soktlf() {
-//     mottakTjenester.hentTlf(this.kunde, () => {
-//       mottakTjenester.hentKunder(kunder => {
-//         this.kunder = kunder;
-//       });
-//     });
-//   }
-//   hentdata() {
-//     let data = mottakTjenester.hentData(this.kunde);
-//
-//     mottakTjenester.hentData(this.kunde, () => {
-//       mottakTjenester.hentKunder(kunder => {
-//         this.kunder = kunder;
-//       });
-//     });
-//     document.getElementById('utdata').innerHTML = data;
-//   }
-// }
 
 // STUDENTS -----------------------------------------
 class StudentList extends Component {
@@ -649,8 +514,6 @@ ReactDOM.render(
       <Route exact path="/" component={Home} />
       <Route exact path="/varelager" component={Varelageret} />
       <Route exact path="/mottak" component={KundeListe} />
-      <Route exact path="/info/sok" component={KundeListe} />
-      <Route exact path="/students/:id" component={KundeDetaljer} />
       <Route exact path="/students" component={StudentList} />
       <Route exact path="/students/:id" component={StudentDetails} />
       <Route exact path="/students/:id/edit" component={StudentEdit} />
