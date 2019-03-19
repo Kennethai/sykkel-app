@@ -2,28 +2,27 @@ import { connection } from './mysql_connection';
 
 class UtleieTjenester {
 
-  hentKunder(success) {
-    connection.query('select * from kunde', (error, results) => {
-      if (error) return console.error(error);
-
-      success(results);
-    });
-  }
+  // hentKunder(success) {
+  //   connection.query('select * from kunde', (error, results) => {
+  //     if (error) return console.error(error);
+  //
+  //     success(results);
+  //   });
+  // }
 
   hentKunde(kunde, success) {
-    connection.query('select * from kunde where k_tlf=?', [kunde.tlf], (error, results) => {
+    connection.query('select kunde_nr from kunde where k_tlf=?', [kunde.tlf], (error, results) => {
       if (error) return console.error(error);
 
       success(results[0]);
     });
   }
 
-  opprettKunde(kunde, success) {
+  opprettKunde(kunde) {
     connection.query('INSERT IGNORE kunde (k_fornavn, k_etternavn, k_epost, k_tlf) values (?,?,?,?)',
     [kunde.fornavn, kunde.etternavn, kunde.epost, kunde.tlf], (error, results) => {
       if (error) return console.error(error);
 
-      success();
     });
   }
 

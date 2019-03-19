@@ -26,16 +26,15 @@ class Home extends Component {
   }
 }
 
-
-
 class Utleie extends Component {
   kunde = {
     fornavn : '',
     etternavn : '',
     epost : '',
-    tlf : '',
-    kunde_nr : ''
+    tlf : ''
   };
+  kundeTest = {};
+
   utleiedata = {
     selger_id : '007',
     avdeling : '2',
@@ -46,7 +45,7 @@ class Utleie extends Component {
     fraKl : '',
     tilKl : '',
     antall_sykler : sykkelTeller,
-    kunde_nr : this.kunde.kunde_nr
+    kunde_nr : this.kundeTest.kunde_nr
   };
 
   render() {
@@ -129,21 +128,17 @@ class Utleie extends Component {
     // Object.keys(this.utleieData).forEach(function(key) {
     //   console.log(key, this.utleieData[key]);
     // });
-    utleieTjenester.opprettKunde(this.kunde, () => {
-      utleieTjenester.hentKunder(kunde => {
-        this.kunde = kunde;
-      });
-    })
-    utleieTjenester.hentKunde(this.props.match.params.tlf, kunde => {
-      this.kunde = kunde;
+    // utleieTjenester.opprettKunde(this.kunde);
+    utleieTjenester.hentKunde(this.kunde, kunde => {
+      this.kundeTest = kunde;
     });
-    console.log(this.kunde);
+    console.log(this.kundeTest);
     // utleieTjenester.utleieSykkel();
-    utleieTjenester.opprettUtleie(this.utleiedata, () => {
-      utleieTjenester.hentUtleieData(utleiedatas => {
-        this.utleiedatas = utleiedatas;
-      });
-    })
+    // utleieTjenester.opprettUtleie(this.utleiedata, () => {
+    //   utleieTjenester.hentUtleieData(utleiedata => {
+    //     this.utleiedata = utleiedata;
+    //   });
+    // })
     history.push('/utleie/');
   }
 
