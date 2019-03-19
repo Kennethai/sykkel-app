@@ -10,6 +10,14 @@ class UtleieTjenester {
     });
   }
 
+  hentKunde(kunde, success) {
+    connection.query('select * from kunde where k_tlf=?', [kunde.tlf], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results[0]);
+    });
+  }
+
   opprettKunde(kunde, success) {
     connection.query('INSERT IGNORE kunde (k_fornavn, k_etternavn, k_epost, k_tlf) values (?,?,?,?)',
     [kunde.fornavn, kunde.etternavn, kunde.epost, kunde.tlf], (error, results) => {
@@ -27,9 +35,9 @@ class UtleieTjenester {
     });
   }
 
-  opprettUtleie(utleiedata, sykkelTellerString, success) {
-    connection.query('INSERT utleie (utleietid, innleverigstid, selger_id, avdelings_id, antall_sykler) values (?,?,?,?,?)',
-    [utleiedata.fradato, utleiedata.tildato, utleiedata.selger_id, utleiedata.avdeling, sykkelTellerString], (error, results) => {
+  opprettUtleie(utleiedata, success) {
+    connection.query('INSERT utleie (utleietid, innleverigstid, selger_id, avdelings_id, antall_sykler, kunde_nr) values (?,?,?,?,?,?)',
+    [utleiedata.fradato, utleiedata.tildato, utleiedata.selger_id, utleiedata.avdeling, utleiedata.antall_sykler, utleiedata.kunde_nr], (error, results) => {
         if (error) return console.error(error);
 
       success();

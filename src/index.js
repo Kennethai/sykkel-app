@@ -33,7 +33,8 @@ class Utleie extends Component {
     fornavn : '',
     etternavn : '',
     epost : '',
-    tlf : ''
+    tlf : '',
+    kunde_nr : ''
   };
   utleiedata = {
     selger_id : '007',
@@ -43,7 +44,9 @@ class Utleie extends Component {
     fradato : '',
     tildato : '',
     fraKl : '',
-    tilKl : ''
+    tilKl : '',
+    antall_sykler : sykkelTeller,
+    kunde_nr : this.kunde.kunde_nr
   };
 
   render() {
@@ -126,11 +129,15 @@ class Utleie extends Component {
     // Object.keys(this.utleieData).forEach(function(key) {
     //   console.log(key, this.utleieData[key]);
     // });
-    // utleieTjenester.opprettKunde(this.kunde, () => {
-    //   utleieTjenester.hentKunder(kundes => {
-    //     this.kundes = kundes;
-    //   });
-    // })
+    utleieTjenester.opprettKunde(this.kunde, () => {
+      utleieTjenester.hentKunder(kunde => {
+        this.kunde = kunde;
+      });
+    })
+    utleieTjenester.hentKunde(this.props.match.params.tlf, kunde => {
+      this.kunde = kunde;
+    });
+    console.log(this.kunde);
     // utleieTjenester.utleieSykkel();
     utleieTjenester.opprettUtleie(this.utleiedata, () => {
       utleieTjenester.hentUtleieData(utleiedatas => {
@@ -150,21 +157,19 @@ class Utleie extends Component {
 }
 
 let sykkelValg = {
-    tursykkel : 0,
-    terreng : 0,
-    downhill : 0,
-    grusracer : 0,
-    tandem : 0
+    tursykkel : '0',
+    terreng : '0',
+    downhill : '0',
+    grusracer : '0',
+    tandem : '0'
   };
 let sykkelTeller;
-// let sykkelTeller = sykkelValg.tursykkel + sykkelValg.terreng + sykkelValg.downhill + sykkelValg.grusracer + sykkelValg.tandem;
+//
+// Object.keys(sykkelValg).forEach(function(key) {
+//    sykkelTeller = + Number(sykkelValg[key]);
+// });
 
-Object.keys(sykkelValg).forEach(function(key) {
-   sykkelTeller = + Number(sykkelValg[key]);
-});
-
-let sykkelTellerString = sykkelTeller.toString();
-console.log(sykkelTeller);
+let sykkelTellerString;
 
 function GetPropertyValue(sykkelValg, dataToRetrieve) {
   return dataToRetrieve
@@ -217,14 +222,21 @@ class VelgSykkel extends Component {
     Object.keys(sykkelValg).forEach(function(key) {
       console.log(key, sykkelValg[key]);
     });
-    console.log(sykkelTellerString);
+    sykkelTeller =
+    Number(GetPropertyValue(sykkelValg, "tursykkel"))+
+    Number(GetPropertyValue(sykkelValg, "terreng"))+
+    Number(GetPropertyValue(sykkelValg, "downhill"))+
+    Number(GetPropertyValue(sykkelValg, "grusracer"))+
+    Number(GetPropertyValue(sykkelValg, "tandem"));
+    console.log(sykkelTeller);
     console.log(
-      GetPropertyValue(sykkelValg, "Tursykkel"),
-      GetPropertyValue(sykkelValg, "Terreng"),
-      GetPropertyValue(sykkelValg, "Downhill"),
-      GetPropertyValue(sykkelValg, "Grusracer"),
-      GetPropertyValue(sykkelValg, "Tandem")
+      GetPropertyValue(sykkelValg, "tursykkel"),
+      GetPropertyValue(sykkelValg, "terreng"),
+      GetPropertyValue(sykkelValg, "downhill"),
+      GetPropertyValue(sykkelValg, "grusracer"),
+      GetPropertyValue(sykkelValg, "tandem")
     )
+    sykkelTellerString = sykkelTeller.toString();
   }
 
   cancel() {
