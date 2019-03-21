@@ -43,7 +43,11 @@ class Varelageret extends Component {
         <Card title="Sykkel-/utstyrs-id">
           <Column>
             <Form.Label>Sykkel-id:</Form.Label>
-            <Form.Input type="text" value={this.info.sykkelid} onChange={e => (this.info.sykkelid = e.target.value)} />
+            <Form.Input
+              type="Number"
+              value={this.info.sykkelid}
+              onChange={e => (this.info.sykkelid = e.target.value)}
+            />
           </Column>
           <Column>
             <Button.Success onClick={this.sykkel}>Søk</Button.Success>
@@ -51,7 +55,7 @@ class Varelageret extends Component {
           <Column>
             <Form.Label>Utstyrs-id:</Form.Label>
             <Form.Input
-              type="text"
+              type="Number"
               value={this.info.utstyrsid}
               onChange={e => (this.info.utstyrsid = e.target.value)}
             />
@@ -127,6 +131,7 @@ class Varelageret extends Component {
       });
     });
   }
+
   utstyr() {
     varelager.hentutstyr(this.info, info => {
       this.info = info;
