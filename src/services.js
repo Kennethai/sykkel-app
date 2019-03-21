@@ -47,21 +47,29 @@ class UtleieTjenester {
 
     let type = ['tursykkel', 'terreng', 'downhill', 'grusracer', 'hybrid'];
 
-    for (var i=0 ; i < type.length; i++) {
-      Object.keys(sykkelValg).forEach(function(key) {
-        let x = Number(sykkelValg[key]);
-      });
+for (var i=0; i<type.length; i++)
+{
+	let antall = Number(sykkelValg[ type[i] ]);
 
-        connection.query(
-          'UPDATE sykkel SET s_tilstand="Utleid" WHERE sykkeltype = ? AND s_tilstand = "Ledig" LIMIT ?;',
-          [type[i],
-          x ],
-          (error, results) => {
-            if (error) return console.error(error);
-          }
-        );
+  connection.query(
+    'UPDATE sykkel SET s_tilstand="Utleid" WHERE sykkeltype = ? AND s_tilstand = "Ledig" LIMIT ?;',
+    [type[i], antall ],
+    (error, results) => {
+      if (error) return console.error(error);
+    }
+  );
+}
+
+
+    //
+    // for (var i=0 ; i < type.length; i++) {
+    //   Object.keys(sykkelValg).forEach(function(key) {
+    //     let x = Number(sykkelValg[key]);
+    //   });
+
+
         // console.log(sykkelValg[i]);
-      }
+
     }
 
   }

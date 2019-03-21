@@ -45,7 +45,7 @@ class Utleie extends Component {
     fraKl : '',
     tilKl : '',
     antall_sykler : sykkelTeller,
-    kunde_nr : this.kundeTest.kunde_nr
+    kunde_nr : this.kundeTest
   };
 
   render() {
@@ -84,10 +84,10 @@ class Utleie extends Component {
         <Column>
           <Form.Label>Leie fra:</Form.Label>
           <Form.Input type="time" onChange={e => (this.utleiedata.fraKl = e.target.value)}/>
-          <Form.Input type="text" onChange={e => (this.utleiedata.fradato = e.target.value)}/>
+          <Form.Input type="date" onChange={e => (this.utleiedata.fradato = e.target.value)}/>
           <Form.Label>Leie til:</Form.Label>
           <Form.Input type="time" onChange={e => (this.utleiedata.tilKl = e.target.value)}/>
-          <Form.Input type="text" onChange={e => (this.utleiedata.tildato = e.target.value)}/>
+          <Form.Input type="date" onChange={e => (this.utleiedata.tildato = e.target.value)}/>
         </Column>
         <Column>
           <NavLink to="/utleie/sykkel">Velg sykkel</NavLink>
@@ -128,17 +128,17 @@ class Utleie extends Component {
     // Object.keys(this.utleieData).forEach(function(key) {
     //   console.log(key, this.utleieData[key]);
     // });
-    // utleieTjenester.opprettKunde(this.kunde);
+    utleieTjenester.opprettKunde(this.kunde);
     utleieTjenester.hentKunde(this.kunde, kunde => {
-      this.kundeTest = kunde;
+      this.kundeTest = kunde.kunde_nr;
     });
     console.log(this.kundeTest);
-    // utleieTjenester.utleieSykkel();
-    // utleieTjenester.opprettUtleie(this.utleiedata, () => {
-    //   utleieTjenester.hentUtleieData(utleiedata => {
-    //     this.utleiedata = utleiedata;
-    //   });
-    // })
+    utleieTjenester.utleieSykkel(sykkelValg);
+    utleieTjenester.opprettUtleie(this.utleiedata, () => {
+      utleieTjenester.hentUtleieData(utleiedata => {
+        this.utleiedata = utleiedata;
+      });
+    })
     history.push('/utleie/');
   }
 
