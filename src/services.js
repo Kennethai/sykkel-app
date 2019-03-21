@@ -1,49 +1,77 @@
 import { connection } from './mysql_connection';
 
 class UtleieTjenester {
-  hentKunder(success) {
-    connection.query('select * from kunder', (error, results) => {
-      if (error) return console.error(error);
 
-      success(results);
-    });
-  }
+  // hentKunder(success) {
+  //   connection.query('select * from kunde', (error, results) => {
+  //     if (error) return console.error(error);
+  //
+  //     success(results);
+  //   });
+  // }
 
-  hentKunde(id, success) {
-    connection.query('select * from Kunder where id=?', [id], (error, results) => {
+  hentKunde(kunde, success) {
+    connection.query('select kunde_nr from kunde where k_tlf=?', [kunde.tlf], (error, results) => {
       if (error) return console.error(error);
 
       success(results[0]);
     });
   }
 
-  oppdaterKunde(student, success) {
-    connection.query(
-      'update kunder set name=?, email=? where id=?',
-      [kunde.navn, kunde.epost, kunde.tlf, kunde.id],
-      (error, results) => {
-        if (error) return console.error(error);
+  opprettKunde(kunde) {
+    connection.query('INSERT IGNORE kunde (k_fornavn, k_etternavn, k_epost, k_tlf) values (?,?,?,?)',
+    [kunde.fornavn, kunde.etternavn, kunde.epost, kunde.tlf], (error, results) => {
+      if (error) return console.error(error);
 
-        success();
-      }
-    );
+    });
   }
 
-  opprettUtleie(nyKunde, success) {
-    connection.query('insert Students (name, email) values (?,?)', [newStudent.name, newStudent.email], (error, results) => {
+  hentUtleieData(success) {
+    connection.query('select * from utleie', (error, results) => {
       if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+
+  opprettUtleie(utleiedata, success) {
+    connection.query('INSERT utleie (utleietid, innleverigstid, selger_id, avdelings_id, antall_sykler, kunde_nr) values (?,?,?,?,?,?)',
+    [utleiedata.fradato, utleiedata.tildato, utleiedata.selger_id, utleiedata.avdeling, utleiedata.antall_sykler, utleiedata.kunde_nr], (error, results) => {
+        if (error) return console.error(error);
 
       success();
     });
   }
 
-  deleteStudent(id, success) {
-      connection.query('delete from Students where id = ?', [id], (error, results) => {
-        if (error) return console.error(error);
+  utleieSykkel(sykkelValg) {
 
-        success();
-      });
+    let type = ['tursykkel', 'terreng', 'downhill', 'grusracer', 'hybrid'];
+
+for (var i=0; i<type.length; i++)
+{
+	let antall = Number(sykkelValg[ type[i] ]);
+
+  connection.query(
+    'UPDATE sykkel SET s_tilstand="Utleid" WHERE sykkeltype = ? AND s_tilstand = "Ledig" LIMIT ?;',
+    [type[i], antall ],
+    (error, results) => {
+      if (error) return console.error(error);
     }
+  );
+}
+
+
+    //
+    // for (var i=0 ; i < type.length; i++) {
+    //   Object.keys(sykkelValg).forEach(function(key) {
+    //     let x = Number(sykkelValg[key]);
+    //   });
+
+
+        // console.log(sykkelValg[i]);
+
+    }
+
   }
 
 export let utleieTjenester = new UtleieTjenester();

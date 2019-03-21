@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { studentService, subjectService } from './services';
+import {utleieTjenester, studentService, subjectService } from './services';
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 
 import createHashHistory from 'history/createHashHistory';
@@ -28,54 +28,66 @@ class Home extends Component {
 
 class Utleie extends Component {
   kunde = {
-    navn : '',
+    fornavn : '',
+    etternavn : '',
     epost : '',
     tlf : ''
   };
-  kunde = {
-    navn : '',
-    epost : '',
-    tlf : ''
+  kundeTest = {};
+
+  utleiedata = {
+    selger_id : '007',
+    avdeling : '2',
+    utlevering : '',
+    innlevering : '',
+    fradato : '',
+    tildato : '',
+    fraKl : '',
+    tilKl : '',
+    antall_sykler : sykkelTeller,
+    kunde_nr : this.kundeTest
   };
 
   render() {
     return (
       <div>
         <Column>
-          <Form.Label>Kundenavn:</Form.Label>
-          <Form.Input type="text" value={this.kunde.navn} onChange={e => (this.kunde.navn = e.target.value)} />
+          <Form.Label>Kunde fornavn:</Form.Label>
+          <Form.Input type="text" value={this.kunde.fornavn} onChange={e => (this.kunde.fornavn = e.target.value)} />
+          <Form.Label>Kunde etternavn:</Form.Label>
+          <Form.Input type="text" value={this.kunde.etternavn} onChange={e => (this.kunde.etternavn = e.target.value)} />
           <Form.Label>Epost:</Form.Label>
           <Form.Input type="text" value={this.kunde.epost} onChange={e => (this.kunde.epost = e.target.value)} />
           <Form.Label>Tlf:</Form.Label>
-          <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
+          <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} maxlength="8"/>
         </Column>
         <Column>
           <div className="form-group">
-            <label htmlFor="sel1">Utlevering:</label>
-            <select className="form-control" id="sel1">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
+            <label htmlFor="utlevering">Utlevering:</label>
+            <select className="form-control" id="utlevering" onChange={e => (this.utleiedata.utlevering = e.target.value)}>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
             </select>
           </div>
           <div className="form-group">
-            <label htmlFor="sel1">Innlevering:</label>
-            <select className="form-control" id="sel1">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
+            <label htmlFor="innlevering">Innlevering:</label>
+            <select className="form-control" id="innlevering" onChange={e => (this.utleiedata.innlevering = e.target.value)}>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
             </select>
           </div>
         </Column>
         <Column>
           <Form.Label>Leie fra:</Form.Label>
-          <Form.Input type="time"/>
-          <Form.Input type="date"/>
+          <Form.Input type="time" onChange={e => (this.utleiedata.fraKl = e.target.value)}/>
+          <Form.Input type="date" onChange={e => (this.utleiedata.fradato = e.target.value)}/>
           <Form.Label>Leie til:</Form.Label>
-          <Form.Input type="time"/>
-          <Form.Input type="date"/>
+          <Form.Input type="time" onChange={e => (this.utleiedata.tilKl = e.target.value)}/>
+          <Form.Input type="date" onChange={e => (this.utleiedata.tildato = e.target.value)}/>
         </Column>
         <Column>
           <NavLink to="/utleie/sykkel">Velg sykkel</NavLink>
@@ -85,7 +97,7 @@ class Utleie extends Component {
         </Column>
         <Column>
           < div className="form-group">
-            <label htmlFor="sykkelArea">Sykler:</label>
+            <label htmlFor="sykkelArea">Bestilling:</label>
             <textarea className="form-control" rows="5" id="sykkelArea"></textarea>
           </div>
         </Column>
@@ -106,13 +118,25 @@ class Utleie extends Component {
   }
 
   mounted() {
-    sykkelArea.value=JSON.stringify(sykkelValg);
+    // sykkelArea.value=JSON.stringify(sykkelValg)+JSON.stringify(utstyrValg);
+    Object.keys(sykkelValg).forEach(function(key) {
+    sykkelArea.value+= key + ' ' + sykkelValg[key]+'\n';
+});
   }
 
   create() {
-    kundeTjenester.opprettUtleie(this.kunde, () => {
-      kundeTjenester.hentKunder(kunder => {
-        this.kunder = kunder;
+    // Object.keys(this.utleieData).forEach(function(key) {
+    //   console.log(key, this.utleieData[key]);
+    // });
+    utleieTjenester.opprettKunde(this.kunde);
+    utleieTjenester.hentKunde(this.kunde, kunde => {
+      this.kundeTest = kunde.kunde_nr;
+    });
+    console.log(this.kundeTest);
+    utleieTjenester.utleieSykkel(sykkelValg);
+    utleieTjenester.opprettUtleie(this.utleiedata, () => {
+      utleieTjenester.hentUtleieData(utleiedata => {
+        this.utleiedata = utleiedata;
       });
     })
     history.push('/utleie/');
@@ -128,28 +152,52 @@ class Utleie extends Component {
 }
 
 let sykkelValg = {
-    tur : '0',
+    tursykkel : '0',
     terreng : '0',
     downhill : '0',
-    racing : '0',
+    grusracer : '0',
     tandem : '0'
   };
+let sykkelTeller;
+//
+// Object.keys(sykkelValg).forEach(function(key) {
+//    sykkelTeller = + Number(sykkelValg[key]);
+// });
+
+let sykkelTellerString;
+
+function GetPropertyValue(sykkelValg, dataToRetrieve) {
+  return dataToRetrieve
+    .split('.') // split string based on `.`
+    .reduce(function(o, k) {
+      return o && o[k]; // get inner property if `o` is defined else get `o` and return
+    }, sykkelValg) // set initial value as object
+}
+
+
+console.log(
+  GetPropertyValue(sykkelValg, "Tursykkel"),
+  GetPropertyValue(sykkelValg, "Terreng"),
+  GetPropertyValue(sykkelValg, "Downhill"),
+  GetPropertyValue(sykkelValg, "Grusracer"),
+  GetPropertyValue(sykkelValg, "Tandem")
+)
+
 
 class VelgSykkel extends Component {
-
 
   render() {
     return (
       <div>
         <Column>
           <Form.Label>Tursykkel:</Form.Label>
-          <Form.Input type="number" onChange={e => (sykkelValg.tur = e.target.value)} />
+          <Form.Input type="number" onChange={e => (sykkelValg.tursykkel = e.target.value)} />
           <Form.Label>Terreng:</Form.Label>
           <Form.Input type="number" onChange={e => (sykkelValg.terreng = e.target.value)} />
           <Form.Label>Downhill:</Form.Label>
           <Form.Input type="number" onChange={e => (sykkelValg.downhill = e.target.value)} />
           <Form.Label>Racing:</Form.Label>
-          <Form.Input type="number" onChange={e => (sykkelValg.racing = e.target.value)} />
+          <Form.Input type="number" onChange={e => (sykkelValg.grusracer = e.target.value)} />
           <Form.Label>Tandem:</Form.Label>
           <Form.Input type="number" onChange={e => (sykkelValg.tandem = e.target.value)} />
         </Column>
@@ -163,6 +211,27 @@ class VelgSykkel extends Component {
 
   create() {
     history.push('/utleie/');
+    console.log(sykkelValg);
+    console.log(sykkelTeller);
+    console.log(Number(sykkelValg.terreng));
+    Object.keys(sykkelValg).forEach(function(key) {
+      console.log(key, sykkelValg[key]);
+    });
+    sykkelTeller =
+    Number(GetPropertyValue(sykkelValg, "tursykkel"))+
+    Number(GetPropertyValue(sykkelValg, "terreng"))+
+    Number(GetPropertyValue(sykkelValg, "downhill"))+
+    Number(GetPropertyValue(sykkelValg, "grusracer"))+
+    Number(GetPropertyValue(sykkelValg, "tandem"));
+    console.log(sykkelTeller);
+    console.log(
+      GetPropertyValue(sykkelValg, "tursykkel"),
+      GetPropertyValue(sykkelValg, "terreng"),
+      GetPropertyValue(sykkelValg, "downhill"),
+      GetPropertyValue(sykkelValg, "grusracer"),
+      GetPropertyValue(sykkelValg, "tandem")
+    )
+    sykkelTellerString = sykkelTeller.toString();
   }
 
   cancel() {
@@ -170,23 +239,23 @@ class VelgSykkel extends Component {
   }
 }
 
-class VelgUtstyr extends Component {
-  kunde = {
-    navn : '',
-    epost : '',
-    tlf : ''
+let utstyrValg = {
+    hjelm : '0',
+    veske : '0',
+    barnevogn : '0'
   };
 
+class VelgUtstyr extends Component {
   render() {
     return (
       <div>
         <Column>
-          <Form.Label>Kundenavn:</Form.Label>
-          <Form.Input type="number" value={this.kunde.navn} onChange={e => (this.kunde.navn = e.target.value)} />
-          <Form.Label>Epost:</Form.Label>
-          <Form.Input type="number" value={this.kunde.epost} onChange={e => (this.kunde.epost = e.target.value)} />
-          <Form.Label>Tlf:</Form.Label>
-          <Form.Input type="number" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
+          <Form.Label>Hjelm:</Form.Label>
+          <Form.Input type="number" onChange={e => (utstyrValg.hjelm = e.target.value)} />
+          <Form.Label>Veske:</Form.Label>
+          <Form.Input type="number" onChange={e => (utstyrValg.veske = e.target.value)} />
+          <Form.Label>Barnevogn:</Form.Label>
+          <Form.Input type="number" onChange={e => (utstyrValg.barnevogn = e.target.value)} />
         </Column>
         <Row>
           <Button.Success onClick={this.create}>Legg inn</Button.Success>
@@ -197,11 +266,6 @@ class VelgUtstyr extends Component {
   }
 
   create() {
-    kundeTjenester.opprettUtleie(this.kunde, () => {
-      kundeTjenester.hentKunder(kunder => {
-        this.kunder = kunder;
-      });
-    })
     history.push('/utleie/');
   }
 
