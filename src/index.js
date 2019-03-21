@@ -35,6 +35,8 @@ class Varelageret extends Component {
 
   sykler = [];
 
+  utstyr = [];
+
   render() {
     return (
       <div>
@@ -66,9 +68,20 @@ class Varelageret extends Component {
           <List>
             {this.sykler.map(sykkel => (
               <List.Item key={sykkel.sykkel_id}>
-                ID: {sykkel.sykkel_id}, Navn: {sykkel.sykkelnavn}, Type: {sykkel.sykkeltype}, Tilhørighet:{' '}
-                {sykkel.s_tilhorighet}, År: {sykkel.s_aar}, Tilstand: {sykkel.s_tilstand}, Beskrivelse:{' '}
-                {sykkel.s_beskrivelse}, Kommentar: {sykkel.Kommentar}
+                ID: {sykkel.sykkel_id}, Navn: {sykkel.sykkelnavn}, Type: {sykkel.sykkeltype}, Pris:{' '}
+                {sykkel.s_utleiepris}, Tilhørighet: {sykkel.s_tilhorighet}, År: {sykkel.s_aar}, Tilstand:{' '}
+                {sykkel.s_tilstand}, Beskrivelse: {sykkel.s_beskrivelse}, Kommentar: {sykkel.Kommentar}
+              </List.Item>
+            ))}
+          </List>
+        </Card>
+        <Card title="Utstyr">
+          <List>
+            {this.utstyr.map(utstyret => (
+              <List.Item key={utstyret.utstyr_id}>
+                ID: {utstyret.utstyr_id}, Navn: {utstyret.u_navn}, Type: {utstyret.utstyrstype}, Tilhørighet:{' '}
+                {utstyret.u_tilhorighet}, Sykkeltilhørighet: {utstyret.u_sykkeltype}, Pris: {utstyret.u_utleiepris}{' '}
+                Tilstand: {utstyret.u_tilstand}
               </List.Item>
             ))}
           </List>
@@ -82,6 +95,11 @@ class Varelageret extends Component {
     varelager.hentSykkeltabell(this.sykler, sykler => {
       this.sykler = sykler;
       console.log(this.sykler);
+    });
+
+    varelager.hentUtstyrtabell(this.utstyr, utstyr => {
+      this.utstyr = utstyr;
+      console.log(this.utstyr);
     });
 
     // varelager.hentSykkeltabell(this.info, info => {
@@ -103,7 +121,6 @@ class Varelageret extends Component {
   sykkel() {
     varelager.hentsykkel(this.info, info => {
       this.info = info;
-      console.log(this.info);
       utdata.innerText = '';
       Object.keys(this.info).forEach(function(key) {
         utdata.innerText += key + ' ' + info[key] + '\n';
@@ -130,7 +147,6 @@ class KundeListe extends Component {
     etternavn: '',
     tlf: ''
   };
-  kunder = [];
 
   render() {
     return (
@@ -158,26 +174,15 @@ class KundeListe extends Component {
             </Column>
           </Row>
         </Card>
-
-        <Card title="Sykkel">
-          <List>
-            {this.kunder.map(kunde => (
-              <List.Item key={kunde.kunde_id} to={'/kunde/' + kunde.kunde_id}>
-                {kunde.k_fornavn}
-              </List.Item>
-            ))}
-          </List>
-        </Card>
-
         <div id="utdata" />
       </div>
     );
   }
 
-  mounted() {
-    mottakTjenester.hentKunde(this.kunder, kunder => {
-      this.kunder = kunder;
-    });
+  mounted(kunde) {
+    // mottakTjenester.hentData(this.kunde, kunde => {
+    //   this.kunde = kunde;
+    // });
     // Object.keys(this.info).forEach(function(key) {
     //   console.log(key, this.info[key]);
     // });

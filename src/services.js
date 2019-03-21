@@ -10,17 +10,8 @@ class Varelager {
   }
   hentsykkel(info, success) {
     connection.query(
-      'select sykkel_id ID, sykkelnavn Navn, sykkeltype Type, s_tilhorighet Tilhørighet, s_aar År, s_tilstand Tilstand, s_beskrivelse Beskrivelse, Kommentar from sykkel where sykkel_id=?',
-      [
-        // info.sykkelnavn,
-        // info.sykkeltype,
-        // info.aar,
-        // info.tilhorighet,
-        // info.utleiepris,
-        // info.tilstand,
-        // info.beskrivelse,
-        info.sykkelid
-      ],
+      'select sykkel_id ID, sykkelnavn Navn, sykkeltype Type, s_tilhorighet Tilhørighet, s_aar År, s_utleiepris Pris, s_tilstand Tilstand, s_beskrivelse Beskrivelse, Kommentar from sykkel where sykkel_id=?',
+      [info.sykkelid],
       (error, results) => {
         if (error) return console.error(error);
 
@@ -52,7 +43,7 @@ export let varelager = new Varelager();
 class MottakTjenester {
   hentData(kunde, success) {
     connection.query(
-      'SELECT k_fornavn, k_etternavn, k_tlf, sykkeltype, sykkel.sykkel_id, utleietid from utleie, utleid_sykkel, kunde, sykkel where utleie.kunde_nr = kunde.kunde_nr and utleid_sykkel.utleie_id = utleie.utleie_id and sykkel.sykkel_id = utleid_sykkel.sykkel_id and k_fornavn=? or k_etternavn=? or k_tlf=?',
+      'SELECT k_fornavn Fornavn, k_etternavn Etternavn, k_tlf Tlf, sykkel.sykkel_id Sykkel, sykkeltype Type, utleietid Utleid from utleie, utleid_sykkel, kunde, sykkel where utleie.kunde_nr = kunde.kunde_nr and utleid_sykkel.utleie_id = utleie.utleie_id and sykkel.sykkel_id = utleid_sykkel.sykkel_id and k_fornavn=? or k_etternavn=? or k_tlf=?',
       [kunde.fornavn, kunde.etternavn, kunde.tlf],
       (error, results) => {
         if (error) return alert('Kunden finnes ikke!');
@@ -106,7 +97,6 @@ class StudentService {
       [newStudent.name, newStudent.email],
       (error, results) => {
         if (error) return console.error(error);
-
         success();
       }
     );
