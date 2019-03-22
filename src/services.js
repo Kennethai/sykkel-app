@@ -47,7 +47,7 @@ class MottakTjenester {
       [kunde.fornavn, kunde.etternavn, kunde.tlf],
       (error, results) => {
         if (error) return alert('Kunden finnes ikke!');
-        success(results[0]);
+        success(results);
       }
     );
   }
