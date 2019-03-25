@@ -3,7 +3,7 @@ import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { utleieTjenester, studentService, subjectService, mottakTjenester, varelager } from './services';
-import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
+import { Card, List, Row, Column, NavBar, Button, Form, Table } from './widgets';
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -325,8 +325,41 @@ class Varelageret extends Component {
           </Column>
         </Card>
 
-        <div id="utdata" />
-        <div id="utdata2" />
+        <div id="utdata"> </div>
+        <div id="utdata2"> </div>
+
+        <div>
+          <Table striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th> ID: </th>
+                <th> Navn: </th>
+                <th> Type: </th>
+                <th> Pris: </th>
+                <th> Tilhørighet: </th>
+                <th> År: </th>
+                <th> Tilstand: </th>
+                <th> Beskrivelse: </th>
+                <th> Kommentar: </th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.sykler.map(sykkel => (
+                <tr key={sykkel.sykkel_id}>
+                  <td> {sykkel.sykkel_id} </td>
+                  <td> {sykkel.sykkelnavn} </td>
+                  <td> {sykkel.sykkeltype} </td>
+                  <td> {sykkel.s_utleiepris} </td>
+                  <td> {sykkel.s_tilhorighet} </td>
+                  <td> {sykkel.s_aar} </td>
+                  <td> {sykkel.s_tilstand} </td>
+                  <td> {sykkel.s_beskrivelse} </td>
+                  <td> {sykkel.Kommentar} </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
 
         <Card title="Sykkel">
           <List>
@@ -339,6 +372,7 @@ class Varelageret extends Component {
             ))}
           </List>
         </Card>
+
         <Card title="Utstyr">
           <List>
             {this.utstyr.map(utstyret => (
@@ -355,7 +389,6 @@ class Varelageret extends Component {
   }
 
   mounted() {
-    // MALIN
     varelager.hentSykkeltabell(this.sykler, sykler => {
       this.sykler = sykler;
       console.log(this.sykler);
