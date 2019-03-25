@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import {utleieTjenester, studentService, subjectService } from './services';
+import { utleieTjenester, studentService, subjectService, mottakTjenester, varelager } from './services';
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 
 import createHashHistory from 'history/createHashHistory';
@@ -15,6 +15,8 @@ class Menu extends Component {
         <NavBar.Link to="/students">Students</NavBar.Link>
         <NavBar.Link to="/subjects">Subjects</NavBar.Link>
         <NavBar.Link to="/utleie">Utleie</NavBar.Link>
+        <NavBar.Link to="/mottak">Mottak</NavBar.Link>
+        <NavBar.Link to="/varelager">Varelager</NavBar.Link>
       </NavBar>
     );
   }
@@ -28,24 +30,24 @@ class Home extends Component {
 
 class Utleie extends Component {
   kunde = {
-    fornavn : '',
-    etternavn : '',
-    epost : '',
-    tlf : ''
+    fornavn: '',
+    etternavn: '',
+    epost: '',
+    tlf: ''
   };
   kundeTest = {};
 
   utleiedata = {
-    selger_id : '007',
-    avdeling : '2',
-    utlevering : '',
-    innlevering : '',
-    fradato : '',
-    tildato : '',
-    fraKl : '',
-    tilKl : '',
-    antall_sykler : sykkelTeller,
-    kunde_nr : this.kundeTest
+    selger_id: '007',
+    avdeling: '2',
+    utlevering: '',
+    innlevering: '',
+    fradato: '',
+    tildato: '',
+    fraKl: '',
+    tilKl: '',
+    antall_sykler: sykkelTeller,
+    kunde_nr: this.kundeTest
   };
 
   render() {
@@ -55,16 +57,29 @@ class Utleie extends Component {
           <Form.Label>Kunde fornavn:</Form.Label>
           <Form.Input type="text" value={this.kunde.fornavn} onChange={e => (this.kunde.fornavn = e.target.value)} />
           <Form.Label>Kunde etternavn:</Form.Label>
-          <Form.Input type="text" value={this.kunde.etternavn} onChange={e => (this.kunde.etternavn = e.target.value)} />
+          <Form.Input
+            type="text"
+            value={this.kunde.etternavn}
+            onChange={e => (this.kunde.etternavn = e.target.value)}
+          />
           <Form.Label>Epost:</Form.Label>
           <Form.Input type="text" value={this.kunde.epost} onChange={e => (this.kunde.epost = e.target.value)} />
           <Form.Label>Tlf:</Form.Label>
-          <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} maxlength="8"/>
+          <Form.Input
+            type="text"
+            value={this.kunde.tlf}
+            onChange={e => (this.kunde.tlf = e.target.value)}
+            maxlength="8"
+          />
         </Column>
         <Column>
           <div className="form-group">
             <label htmlFor="utlevering">Utlevering:</label>
-            <select className="form-control" id="utlevering" onChange={e => (this.utleiedata.utlevering = e.target.value)}>
+            <select
+              className="form-control"
+              id="utlevering"
+              onChange={e => (this.utleiedata.utlevering = e.target.value)}
+            >
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -73,7 +88,11 @@ class Utleie extends Component {
           </div>
           <div className="form-group">
             <label htmlFor="innlevering">Innlevering:</label>
-            <select className="form-control" id="innlevering" onChange={e => (this.utleiedata.innlevering = e.target.value)}>
+            <select
+              className="form-control"
+              id="innlevering"
+              onChange={e => (this.utleiedata.innlevering = e.target.value)}
+            >
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -83,11 +102,11 @@ class Utleie extends Component {
         </Column>
         <Column>
           <Form.Label>Leie fra:</Form.Label>
-          <Form.Input type="time" onChange={e => (this.utleiedata.fraKl = e.target.value)}/>
-          <Form.Input type="date" onChange={e => (this.utleiedata.fradato = e.target.value)}/>
+          <Form.Input type="time" onChange={e => (this.utleiedata.fraKl = e.target.value)} />
+          <Form.Input type="date" onChange={e => (this.utleiedata.fradato = e.target.value)} />
           <Form.Label>Leie til:</Form.Label>
-          <Form.Input type="time" onChange={e => (this.utleiedata.tilKl = e.target.value)}/>
-          <Form.Input type="date" onChange={e => (this.utleiedata.tildato = e.target.value)}/>
+          <Form.Input type="time" onChange={e => (this.utleiedata.tilKl = e.target.value)} />
+          <Form.Input type="date" onChange={e => (this.utleiedata.tildato = e.target.value)} />
         </Column>
         <Column>
           <NavLink to="/utleie/sykkel">Velg sykkel</NavLink>
@@ -96,9 +115,9 @@ class Utleie extends Component {
           <NavLink to="/utleie/utstyr">Velg utstyr</NavLink>
         </Column>
         <Column>
-          < div className="form-group">
+          <div className="form-group">
             <label htmlFor="sykkelArea">Bestilling:</label>
-            <textarea className="form-control" rows="5" id="sykkelArea"></textarea>
+            <textarea className="form-control" rows="5" id="sykkelArea" />
           </div>
         </Column>
         <Row>
@@ -111,7 +130,6 @@ class Utleie extends Component {
           <Column right>
             <Button.Light onClick={this.cancel}>Cancel</Button.Light>
           </Column>
-
         </Row>
       </div>
     );
@@ -120,8 +138,8 @@ class Utleie extends Component {
   mounted() {
     // sykkelArea.value=JSON.stringify(sykkelValg)+JSON.stringify(utstyrValg);
     Object.keys(sykkelValg).forEach(function(key) {
-    sykkelArea.value+= key + ' ' + sykkelValg[key]+'\n';
-});
+      sykkelArea.value += key + ' ' + sykkelValg[key] + '\n';
+    });
   }
 
   create() {
@@ -138,7 +156,7 @@ class Utleie extends Component {
       utleieTjenester.hentUtleieData(utleiedata => {
         this.utleiedata = utleiedata;
       });
-    })
+    });
     history.push('/utleie/');
   }
 
@@ -152,12 +170,12 @@ class Utleie extends Component {
 }
 
 let sykkelValg = {
-    tursykkel : '0',
-    terreng : '0',
-    downhill : '0',
-    grusracer : '0',
-    tandem : '0'
-  };
+  tursykkel: '0',
+  terreng: '0',
+  downhill: '0',
+  grusracer: '0',
+  tandem: '0'
+};
 let sykkelTeller;
 //
 // Object.keys(sykkelValg).forEach(function(key) {
@@ -171,21 +189,18 @@ function GetPropertyValue(sykkelValg, dataToRetrieve) {
     .split('.') // split string based on `.`
     .reduce(function(o, k) {
       return o && o[k]; // get inner property if `o` is defined else get `o` and return
-    }, sykkelValg) // set initial value as object
+    }, sykkelValg); // set initial value as object
 }
 
-
 console.log(
-  GetPropertyValue(sykkelValg, "Tursykkel"),
-  GetPropertyValue(sykkelValg, "Terreng"),
-  GetPropertyValue(sykkelValg, "Downhill"),
-  GetPropertyValue(sykkelValg, "Grusracer"),
-  GetPropertyValue(sykkelValg, "Tandem")
-)
-
+  GetPropertyValue(sykkelValg, 'Tursykkel'),
+  GetPropertyValue(sykkelValg, 'Terreng'),
+  GetPropertyValue(sykkelValg, 'Downhill'),
+  GetPropertyValue(sykkelValg, 'Grusracer'),
+  GetPropertyValue(sykkelValg, 'Tandem')
+);
 
 class VelgSykkel extends Component {
-
   render() {
     return (
       <div>
@@ -218,19 +233,19 @@ class VelgSykkel extends Component {
       console.log(key, sykkelValg[key]);
     });
     sykkelTeller =
-    Number(GetPropertyValue(sykkelValg, "tursykkel"))+
-    Number(GetPropertyValue(sykkelValg, "terreng"))+
-    Number(GetPropertyValue(sykkelValg, "downhill"))+
-    Number(GetPropertyValue(sykkelValg, "grusracer"))+
-    Number(GetPropertyValue(sykkelValg, "tandem"));
+      Number(GetPropertyValue(sykkelValg, 'tursykkel')) +
+      Number(GetPropertyValue(sykkelValg, 'terreng')) +
+      Number(GetPropertyValue(sykkelValg, 'downhill')) +
+      Number(GetPropertyValue(sykkelValg, 'grusracer')) +
+      Number(GetPropertyValue(sykkelValg, 'tandem'));
     console.log(sykkelTeller);
     console.log(
-      GetPropertyValue(sykkelValg, "tursykkel"),
-      GetPropertyValue(sykkelValg, "terreng"),
-      GetPropertyValue(sykkelValg, "downhill"),
-      GetPropertyValue(sykkelValg, "grusracer"),
-      GetPropertyValue(sykkelValg, "tandem")
-    )
+      GetPropertyValue(sykkelValg, 'tursykkel'),
+      GetPropertyValue(sykkelValg, 'terreng'),
+      GetPropertyValue(sykkelValg, 'downhill'),
+      GetPropertyValue(sykkelValg, 'grusracer'),
+      GetPropertyValue(sykkelValg, 'tandem')
+    );
     sykkelTellerString = sykkelTeller.toString();
   }
 
@@ -240,10 +255,10 @@ class VelgSykkel extends Component {
 }
 
 let utstyrValg = {
-    hjelm : '0',
-    veske : '0',
-    barnevogn : '0'
-  };
+  hjelm: '0',
+  veske: '0',
+  barnevogn: '0'
+};
 
 class VelgUtstyr extends Component {
   render() {
@@ -274,6 +289,183 @@ class VelgUtstyr extends Component {
   }
 }
 
+//---------------------------Varelager-------------------------------------
+
+class Varelageret extends Component {
+  info = {
+    sykkelid: '',
+    utstyrsid: ''
+  };
+
+  sykler = [];
+
+  utstyr = [];
+
+  render() {
+    return (
+      <div>
+        <Card title="Sykkel-/utstyrs-id">
+          <Column>
+            <Form.Label>Sykkel-id:</Form.Label>
+            <Form.Input type="text" value={this.info.sykkelid} onChange={e => (this.info.sykkelid = e.target.value)} />
+          </Column>
+          <Column>
+            <Button.Success onClick={this.sykkel}>Søk</Button.Success>
+          </Column>
+          <Column>
+            <Form.Label>Utstyrs-id:</Form.Label>
+            <Form.Input
+              type="text"
+              value={this.info.utstyrsid}
+              onChange={e => (this.info.utstyrsid = e.target.value)}
+            />
+          </Column>
+          <Column>
+            <Button.Success onClick={this.utstyrk}>Søk</Button.Success>
+          </Column>
+        </Card>
+
+        <div id="utdata" />
+        <div id="utdata2" />
+
+        <Card title="Sykkel">
+          <List>
+            {this.sykler.map(sykkel => (
+              <List.Item key={sykkel.sykkel_id}>
+                ID: {sykkel.sykkel_id}, Navn: {sykkel.sykkelnavn}, Type: {sykkel.sykkeltype}, Pris:{' '}
+                {sykkel.s_utleiepris}, Tilhørighet: {sykkel.s_tilhorighet}, År: {sykkel.s_aar}, Tilstand:{' '}
+                {sykkel.s_tilstand}, Beskrivelse: {sykkel.s_beskrivelse}, Kommentar: {sykkel.Kommentar}
+              </List.Item>
+            ))}
+          </List>
+        </Card>
+        <Card title="Utstyr">
+          <List>
+            {this.utstyr.map(utstyret => (
+              <List.Item key={utstyret.utstyr_id}>
+                ID: {utstyret.utstyr_id}, Navn: {utstyret.u_navn}, Type: {utstyret.utstyrstype}, Tilhørighet:{' '}
+                {utstyret.u_tilhorighet}, Sykkeltilhørighet: {utstyret.u_sykkeltype}, Pris: {utstyret.u_utleiepris}{' '}
+                Tilstand: {utstyret.u_tilstand}
+              </List.Item>
+            ))}
+          </List>
+        </Card>
+      </div>
+    );
+  }
+
+  mounted() {
+    // MALIN
+    varelager.hentSykkeltabell(this.sykler, sykler => {
+      this.sykler = sykler;
+      console.log(this.sykler);
+    });
+
+    varelager.hentUtstyrtabell(this.utstyr, utstyr => {
+      this.utstyr = utstyr;
+      console.log(this.utstyr);
+    });
+
+    // varelager.hentSykkeltabell(this.info, info => {
+    //   this.info = info;
+    //   console.log(this.info);
+    //   utdata.innerText = '';
+    //   Object.keys(this.info).forEach(function(key) {
+    //     utdata.innerText += key + ' ' + info[key] + '\n';
+    //   });
+    // });
+    // varelager.hentUtstyrtabell(this.info, info => {
+    //   this.info = info;
+    //   console.log(this.info);
+    //   Object.keys(this.info).forEach(function(key) {
+    //     utdata2.innerText += key + ' ' + info[key] + '\n';
+    //   });
+    // });
+  }
+  sykkel() {
+    varelager.hentsykkel(this.info, info => {
+      this.info = info;
+      utdata.innerText = '';
+      Object.keys(this.info).forEach(function(key) {
+        utdata.innerText += key + ' ' + info[key] + '\n';
+      });
+    });
+  }
+  utstyrk() {
+    varelager.hentutstyr(this.info, info => {
+      this.info = info;
+      console.log = this.info;
+      utdata.innerText = '';
+      Object.keys(this.info).forEach(function(key) {
+        utdata.innerText += key + ' ' + info[key] + '\n';
+      });
+    });
+  }
+}
+
+//----Mottak------------------------------
+
+class KundeListe extends Component {
+  kunde = {
+    fornavn: '',
+    etternavn: '',
+    tlf: ''
+  };
+
+  render() {
+    return (
+      <div>
+        <Card title="Finn kunde:">
+          <Row>
+            <Column>
+              <Form.Label>Fornavn:</Form.Label>
+              <Form.Input
+                type="text"
+                value={this.kunde.fornavn}
+                onChange={e => (this.kunde.fornavn = e.target.value)}
+              />
+              <Form.Label>Etternavn:</Form.Label>
+              <Form.Input
+                type="text"
+                value={this.kunde.etternavn}
+                onChange={e => (this.kunde.etternavn = e.target.value)}
+              />
+              <Form.Label>Tlf:</Form.Label>
+              <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
+              <Column>
+                <Button.Success onClick={this.sok}>Søk</Button.Success>
+              </Column>
+            </Column>
+          </Row>
+        </Card>
+        <div id="utdata" />
+      </div>
+    );
+  }
+
+  mounted(kunde) {
+    // mottakTjenester.hentData(this.kunde, kunde => {
+    //   this.kunde = kunde;
+    // });
+    // Object.keys(this.info).forEach(function(key) {
+    //   console.log(key, this.info[key]);
+    // });
+    // Object.keys(kunde).forEach(function(key) {
+    //   console.log(key, kunde[key]);
+    // });
+  }
+  sok(kunde) {
+    mottakTjenester.hentData(this.kunde, kunde => {
+      this.kunde = kunde;
+      console.log(this.kunde);
+      utdata.innerText = '';
+      Object.keys(this.kunde).forEach(function(key) {
+        utdata.innerText += key + ' ' + kunde[key] + '\n';
+      });
+    });
+  }
+}
+
 // STUDENTS -----------------------------------------
 class StudentList extends Component {
   students = [];
@@ -281,16 +473,16 @@ class StudentList extends Component {
   render() {
     return (
       <div>
-      <Card title="Students">
-        <List>
-          {this.students.map(student => (
-            <List.Item key={student.id} to={'/students/' + student.id}>
-              {student.name}
-            </List.Item>
-          ))}
-        </List>
-      </Card>
-      <Button.Light onClick={this.add}>Add</Button.Light>
+        <Card title="Students">
+          <List>
+            {this.students.map(student => (
+              <List.Item key={student.id} to={'/students/' + student.id}>
+                {student.name}
+              </List.Item>
+            ))}
+          </List>
+        </Card>
+        <Button.Light onClick={this.add}>Add</Button.Light>
       </div>
     );
   }
@@ -391,8 +583,8 @@ class StudentEdit extends Component {
 
 class StudentNew extends Component {
   newStudent = {
-    name : '',
-    email : ''
+    name: '',
+    email: ''
   };
 
   render() {
@@ -400,9 +592,17 @@ class StudentNew extends Component {
       <div>
         <Card title="New student">
           <Form.Label>Name:</Form.Label>
-          <Form.Input type="text" value={this.newStudent.name} onChange={e => (this.newStudent.name = e.target.value)} />
+          <Form.Input
+            type="text"
+            value={this.newStudent.name}
+            onChange={e => (this.newStudent.name = e.target.value)}
+          />
           <Form.Label>Email:</Form.Label>
-          <Form.Input type="text" value={this.newStudent.email} onChange={e => (this.newStudent.email = e.target.value)} />
+          <Form.Input
+            type="text"
+            value={this.newStudent.email}
+            onChange={e => (this.newStudent.email = e.target.value)}
+          />
         </Card>
         <Row>
           <Column>
@@ -427,7 +627,7 @@ class StudentNew extends Component {
       studentService.getStudents(students => {
         this.students = students;
       });
-    })
+    });
     history.push('/students/');
   }
 
@@ -442,16 +642,16 @@ class SubjectList extends Component {
   render() {
     return (
       <div>
-      <Card title="Subjects">
-        <List>
-          {this.subjects.map(subject => (
-            <List.Item key={subject.id} to={'/subjects/' + subject.id}>
-              {subject.name}
-            </List.Item>
-          ))}
-        </List>
-      </Card>
-      <Button.Light onClick={this.add}>Add</Button.Light>
+        <Card title="Subjects">
+          <List>
+            {this.subjects.map(subject => (
+              <List.Item key={subject.id} to={'/subjects/' + subject.id}>
+                {subject.name}
+              </List.Item>
+            ))}
+          </List>
+        </Card>
+        <Button.Light onClick={this.add}>Add</Button.Light>
       </div>
     );
   }
@@ -552,8 +752,8 @@ class SubjectEdit extends Component {
 
 class SubjectNew extends Component {
   newSubject = {
-    name : '',
-    kode : ''
+    name: '',
+    kode: ''
   };
 
   render() {
@@ -561,9 +761,17 @@ class SubjectNew extends Component {
       <div>
         <Card title="New subject">
           <Form.Label>Name:</Form.Label>
-          <Form.Input type="text" value={this.newSubject.name} onChange={e => (this.newSubject.name = e.target.value)} />
+          <Form.Input
+            type="text"
+            value={this.newSubject.name}
+            onChange={e => (this.newSubject.name = e.target.value)}
+          />
           <Form.Label>Code:</Form.Label>
-          <Form.Input type="text" value={this.newSubject.kode} onChange={e => (this.newSubject.kode = e.target.value)} />
+          <Form.Input
+            type="text"
+            value={this.newSubject.kode}
+            onChange={e => (this.newSubject.kode = e.target.value)}
+          />
         </Card>
         <Row>
           <Column>
@@ -588,7 +796,7 @@ class SubjectNew extends Component {
       subjectService.getSubjects(subjects => {
         this.subjects = subjects;
       });
-    })
+    });
     history.push('/subjects/');
   }
 
@@ -604,6 +812,8 @@ ReactDOM.render(
     <div>
       <Menu />
       <Route exact path="/" component={Home} />
+      <Route exact path="/varelager" component={Varelageret} />
+      <Route exact path="/mottak" component={KundeListe} />
       <Route exact path="/utleie" component={Utleie} />
       <Route exact path="/utleie/sykkel" component={VelgSykkel} />
       <Route exact path="/utleie/utstyr" component={VelgUtstyr} />
