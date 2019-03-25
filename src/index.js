@@ -3,7 +3,8 @@ import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { utleieTjenester, studentService, subjectService, mottakTjenester, varelager } from './services';
-import { Card, List, Row, Column, NavBar, Button, Form, Table } from './widgets';
+import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
+import { Table } from 'react-bootstrap';
 
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -328,75 +329,112 @@ class Varelageret extends Component {
         <div id="utdata"> </div>
         <div id="utdata2"> </div>
 
-        <div>
-          <Table striped bordered hover size="sm">
-            <thead>
-              <tr>
-                <th> ID: </th>
-                <th> Navn: </th>
-                <th> Type: </th>
-                <th> Pris: </th>
-                <th> Tilhørighet: </th>
-                <th> År: </th>
-                <th> Tilstand: </th>
-                <th> Beskrivelse: </th>
-                <th> Kommentar: </th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.sykler.map(sykkel => (
-                <tr key={sykkel.sykkel_id}>
-                  <td> {sykkel.sykkel_id} </td>
-                  <td> {sykkel.sykkelnavn} </td>
-                  <td> {sykkel.sykkeltype} </td>
-                  <td> {sykkel.s_utleiepris} </td>
-                  <td> {sykkel.s_tilhorighet} </td>
-                  <td> {sykkel.s_aar} </td>
-                  <td> {sykkel.s_tilstand} </td>
-                  <td> {sykkel.s_beskrivelse} </td>
-                  <td> {sykkel.Kommentar} </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+        <div class="container-fluid">
+          <div class="row">
+            <Column>
+              <Card title="Sykkel">
+                <Table striped bordered hover size="sm">
+                  <thead>
+                    <tr>
+                      <th> ID: </th>
+                      <th> Navn: </th>
+                      <th> Type: </th>
+                      <th> Pris: </th>
+                      <th> Tilhørighet: </th>
+                      <th> År: </th>
+                      <th> Tilstand: </th>
+                      <th> Beskrivelse: </th>
+                      <th> Kommentar: </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.sykler.map(sykkel => (
+                      <tr key={sykkel.sykkel_id}>
+                        <td> {sykkel.sykkel_id} </td>
+                        <td> {sykkel.sykkelnavn} </td>
+                        <td> {sykkel.sykkeltype} </td>
+                        <td> {sykkel.s_utleiepris} </td>
+                        <td> {sykkel.s_tilhorighet} </td>
+                        <td> {sykkel.s_aar} </td>
+                        <td> {sykkel.s_tilstand} </td>
+                        <td> {sykkel.s_beskrivelse} </td>
+                        <td> {sykkel.Kommentar} </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </Card>
+            </Column>
+
+            <Column>
+              <Card title="Utstyr">
+                <Table striped bordered hover size="sm">
+                  <thead>
+                    <tr>
+                      <th> ID: </th>
+                      <th> Navn: </th>
+                      <th> Type: </th>
+                      <th> Tilhørighet: </th>
+                      <th> Sykkeltilhørighet: </th>
+                      <th> Pris: </th>
+                      <th> År: </th>
+                      <th> Tilstand: </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.utstyr.map(utstyret => (
+                      <tr key={utstyret.utstyr_id}>
+                        <td> {utstyret.utstyr_id} </td>
+                        <td> {utstyret.u_navn} </td>
+                        <td> {utstyret.utstyrstype} </td>
+                        <td> {utstyret.u_tilhorighet} </td>
+                        <td> {utstyret.u_sykkeltype} </td>
+                        <td> {utstyret.u_utleiepris} </td>
+                        <td> {utstyret.s_tilstand} </td>
+                        <td> {utstyret.u_tilstand} </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </Card>
+            </Column>
+          </div>
         </div>
-
-        <Card title="Sykkel">
-          <List>
-            {this.sykler.map(sykkel => (
-              <List.Item key={sykkel.sykkel_id}>
-                ID: {sykkel.sykkel_id}, Navn: {sykkel.sykkelnavn}, Type: {sykkel.sykkeltype}, Pris:{' '}
-                {sykkel.s_utleiepris}, Tilhørighet: {sykkel.s_tilhorighet}, År: {sykkel.s_aar}, Tilstand:{' '}
-                {sykkel.s_tilstand}, Beskrivelse: {sykkel.s_beskrivelse}, Kommentar: {sykkel.Kommentar}
-              </List.Item>
-            ))}
-          </List>
-        </Card>
-
-        <Card title="Utstyr">
-          <List>
-            {this.utstyr.map(utstyret => (
-              <List.Item key={utstyret.utstyr_id}>
-                ID: {utstyret.utstyr_id}, Navn: {utstyret.u_navn}, Type: {utstyret.utstyrstype}, Tilhørighet:{' '}
-                {utstyret.u_tilhorighet}, Sykkeltilhørighet: {utstyret.u_sykkeltype}, Pris: {utstyret.u_utleiepris}{' '}
-                Tilstand: {utstyret.u_tilstand}
-              </List.Item>
-            ))}
-          </List>
-        </Card>
       </div>
     );
   }
 
+  // <Card title="Utstyr">
+  //   <List>
+  //     {this.utstyr.map(utstyret => (
+  //       <List.Item key={utstyret.utstyr_id}>
+  //         ID: {utstyret.utstyr_id}, Navn: {utstyret.u_navn}, Type: {utstyret.utstyrstype}, Tilhørighet:{' '}
+  //         {utstyret.u_tilhorighet}, Sykkeltilhørighet: {utstyret.u_sykkeltype}, Pris: {utstyret.u_utleiepris}{' '}
+  //         Tilstand: {utstyret.u_tilstand}
+  //       </List.Item>
+  //     ))}
+  //   </List>
+  // </Card>
+
+  // <Card title="Sykkel">
+  //   <List>
+  //     {this.sykler.map(sykkel => (
+  //       <List.Item key={sykkel.sykkel_id}>
+  //         ID: {sykkel.sykkel_id}, Navn: {sykkel.sykkelnavn}, Type: {sykkel.sykkeltype}, Pris:{' '}
+  //         {sykkel.s_utleiepris}, Tilhørighet: {sykkel.s_tilhorighet}, År: {sykkel.s_aar}, Tilstand:{' '}
+  //         {sykkel.s_tilstand}, Beskrivelse: {sykkel.s_beskrivelse}, Kommentar: {sykkel.Kommentar}
+  //       </List.Item>
+  //     ))}
+  //   </List>
+  // </Card>
+
   mounted() {
     varelager.hentSykkeltabell(this.sykler, sykler => {
       this.sykler = sykler;
-      console.log(this.sykler);
     });
 
     varelager.hentUtstyrtabell(this.utstyr, utstyr => {
       this.utstyr = utstyr;
-      console.log(this.utstyr);
     });
 
     // varelager.hentSykkeltabell(this.info, info => {
