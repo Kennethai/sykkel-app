@@ -321,7 +321,7 @@ class Varelageret extends Component {
             />
           </Column>
           <Column>
-            <Button.Success onClick={this.utstyr}>Søk</Button.Success>
+            <Button.Success onClick={this.utstyrk}>Søk</Button.Success>
           </Column>
         </Card>
 
@@ -391,7 +391,7 @@ class Varelageret extends Component {
       });
     });
   }
-  utstyr() {
+  utstyrk() {
     varelager.hentutstyr(this.info, info => {
       this.info = info;
       console.log = this.info;
