@@ -1,0 +1,17 @@
+/* Styler overskrift*/
+.Header {
+  font-family: Arial, Helvetica, serif;
+  font-size: 60px;
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+/* Visualiserer listen til status */
+.Liste {
+  border-radius: 7px;
+  border: 2px solid #d0d0d0;
+  background-color: #f0f0f0;
+  padding: 15px;
+  width: 92.5%;
+  height: 120px;
+}
