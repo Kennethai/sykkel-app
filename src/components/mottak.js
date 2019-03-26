@@ -36,13 +36,16 @@ export class KundeListe extends Component {
               />
               <Form.Label>Tlf:</Form.Label>
               <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
-              <Column>
+
+              <div class="text-right">
                 <Button.Success onClick={this.sok}>Søk</Button.Success>
-              </Column>
+              </div>
             </Column>
           </Row>
+          <ul>
+            <div class="Liste" id="utdata" />
+          </ul>
         </Card>
-        <div id="utdata" />
       </div>
     );
   }

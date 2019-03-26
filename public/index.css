@@ -6,12 +6,11 @@
   font-weight: bold;
 }
 
-/* Visualiserer listen til status */
+/* Visualiserer lister */
 .Liste {
   border-radius: 7px;
   border: 2px solid #d0d0d0;
   background-color: #f0f0f0;
   padding: 15px;
   width: 92.5%;
-  height: 120px;
 }
