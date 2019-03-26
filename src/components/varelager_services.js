@@ -63,3 +63,17 @@ class RegSykkel {
   }
 }
 export let regSykkel = new RegSykkel();
+
+class RegUtstyr {
+  opprettUtstyr(utstyr) {
+    connection.query(
+      'INSERT utstyr (utstyrstype, u_sykkeltype, u_tilhorighet, u_utleiepris, u_tilstand, u_navn) values (?,?,?,?,?,?);',
+      [utstyr.type, utstyr.stype, utstyr.sted, utstyr.pris, utstyr.tilstand, utstyr.merke],
+      (error, results) => {
+        if (error) return console.error(error);
+        success(results);
+      }
+    );
+  }
+}
+export let regUtstyr = new RegUtstyr();
