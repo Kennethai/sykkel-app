@@ -46,8 +46,8 @@ export class Varelageret extends Component {
         <div id="utdata"> </div>
         <div id="utdata2"> </div>
 
-        <div class="container-fluid">
-          <div class="row">
+        <div className="container-fluid">
+          <div className="row">
             <Column>
               <Card title="Sykkel">
                 <table class="table table-striped hover" size="sm">
@@ -85,7 +85,7 @@ export class Varelageret extends Component {
 
             <Column>
               <Card title="Utstyr">
-                <table class="table table-striped hover" size="sm">
+                <table className="table table-striped hover" size="sm">
                   <thead>
                     <tr>
                       <th> ID: </th>
