@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { varelager, regSykkel } from './varelager_services';
 import { Card, List, Row, Column, NavBar, Button, Form } from '../widgets';
-import { Table } from 'react-bootstrap';
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
@@ -51,7 +50,7 @@ export class Varelageret extends Component {
           <div class="row">
             <Column>
               <Card title="Sykkel">
-                <Table striped bordered hover size="sm">
+                <table class="table table-striped hover" size="sm">
                   <thead>
                     <tr>
                       <th> ID: </th>
@@ -80,13 +79,13 @@ export class Varelageret extends Component {
                       </tr>
                     ))}
                   </tbody>
-                </Table>
+                </table>
               </Card>
             </Column>
 
             <Column>
               <Card title="Utstyr">
-                <Table striped bordered hover size="sm">
+                <table class="table table-striped hover" size="sm">
                   <thead>
                     <tr>
                       <th> ID: </th>
@@ -113,7 +112,7 @@ export class Varelageret extends Component {
                       </tr>
                     ))}
                   </tbody>
-                </Table>
+                </table>
               </Card>
             </Column>
           </div>
