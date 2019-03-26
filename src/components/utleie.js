@@ -103,7 +103,9 @@ export class Utleie extends Component {
           </NavLink>
         </Column>
         <Column>
-          <NavLink to="/utleie/utstyr">Velg utstyr</NavLink>
+          <NavLink to="/utleie/utstyr" onClick={this.lagring}>
+            Velg utstyr
+          </NavLink>
         </Column>
         <Column>
           <div className="form-group">
@@ -127,8 +129,13 @@ export class Utleie extends Component {
   }
 
   mounted() {
+    sykkelArea.value += 'SYKLER\n';
     Object.keys(sykkelValg).forEach(function(key) {
       sykkelArea.value += key + ' ' + sykkelValg[key] + '\n';
+    });
+    sykkelArea.value += '\nUTSTYR\n';
+    Object.keys(utstyrValg).forEach(function(key) {
+      sykkelArea.value += key + ' ' + utstyrValg[key] + '\n';
     });
     this.kunde = kundeLagring;
     this.utleiedata = utleiedataLagring;
@@ -150,11 +157,18 @@ export class Utleie extends Component {
     console.log(kundeNr);
     console.log(sykkelValg);
     utleieTjenester.utleieSykkel(sykkelValg);
-    utleieTjenester.opprettUtleie(this.utleiedata, () => {
-      utleieTjenester.hentUtleieData(utleiedata => {
-        this.utleiedata = utleiedata;
-      });
-    });
+    utleieTjenester.utleieUtstyr(utstyrValg);
+    utleieTjenester.opprettUtleie(
+      this.utleiedata
+      //   , () => {
+      //   utleieTjenester.hentUtleieData(this.utleiedata, utleie => {
+      //     this.utleiedata = utleie;
+      //   });
+      // }
+    );
+
+    // utleieTjenester.koblingstabellSykkel(sykkelValg);
+    // utleieTjenester.koblingstabellUtstyr(utstyrValg);
     history.push('/utleie/');
   }
 
@@ -252,9 +266,11 @@ export class VelgSykkel extends Component {
 }
 
 let utstyrValg = {
-  hjelm: '0',
-  veske: '0',
-  barnevogn: '0'
+  Hjelm: '',
+  Sykkelveske: '',
+  Sykkelvogn: '',
+  Barnesete: '',
+  Drikkesekk: ''
 };
 
 export class VelgUtstyr extends Component {
@@ -263,11 +279,15 @@ export class VelgUtstyr extends Component {
       <div>
         <Column>
           <Form.Label>Hjelm:</Form.Label>
-          <Form.Input type="number" onChange={e => (utstyrValg.hjelm = e.target.value)} />
-          <Form.Label>Veske:</Form.Label>
-          <Form.Input type="number" onChange={e => (utstyrValg.veske = e.target.value)} />
-          <Form.Label>Barnevogn:</Form.Label>
-          <Form.Input type="number" onChange={e => (utstyrValg.barnevogn = e.target.value)} />
+          <Form.Input type="number" onChange={e => (utstyrValg.Hjelm = e.target.value)} />
+          <Form.Label>Sykkelveske:</Form.Label>
+          <Form.Input type="number" onChange={e => (utstyrValg.Sykkelveske = e.target.value)} />
+          <Form.Label>Sykkelvogn:</Form.Label>
+          <Form.Input type="number" onChange={e => (utstyrValg.Sykkelvogn = e.target.value)} />
+          <Form.Label>Barnesete:</Form.Label>
+          <Form.Input type="number" onChange={e => (utstyrValg.Barnesete = e.target.value)} />
+          <Form.Label>Drikkesekk:</Form.Label>
+          <Form.Input type="number" onChange={e => (utstyrValg.Drikkesekk = e.target.value)} />
         </Column>
         <Row>
           <Button.Success onClick={this.create}>Legg inn</Button.Success>

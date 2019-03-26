@@ -28,7 +28,7 @@ class UtleieTjenester {
   }
 
   hentUtleieData(success) {
-    connection.query('select * from utleie', (error, results) => {
+    connection.query('SELECT * FROM utleie ORDER BY ID DESC LIMIT 1', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -37,7 +37,7 @@ class UtleieTjenester {
 
   opprettUtleie(utleiedata, success) {
     connection.query(
-      'INSERT INTO utleie (utleietid, innleveringstid, selger_id, avdelings_id, antall_sykler, kunde_nr) values (?,?,?,?,?,?)',
+      'INSERT INTO utleie (utleietid, innleveringstid, selger_id, avdelings_id, antall_sykler, kunde_nr) VALUES(?,?,?,?,?,?)',
       [
         utleiedata.fradato,
         utleiedata.tildato,
@@ -68,15 +68,43 @@ class UtleieTjenester {
         }
       );
     }
-
-    //
-    // for (var i=0 ; i < type.length; i++) {
-    //   Object.keys(sykkelValg).forEach(function(key) {
-    //     let x = Number(sykkelValg[key]);
-    //   });
-
-    // console.log(sykkelValg[i]);
   }
+
+  // koblingstabellSykkel(utleiedata) {
+  //   connection.query(
+  //     'INSERT utleid_sykkel (status, utlevering, innlevering, utleie_id, sykkel_id) VALUES (?,?,?,?,?)',
+  //     ['utleid', utleiedata.utleietid, utleiedata.innleveringstid, utleiedata.utleie_id],
+  //     (error, results) => {
+  //       if (error) return console.error(error);
+  //     }
+  //   );
+  // }
+
+  utleieUtstyr(utstyrValg) {
+    let type = ['Hjelm', 'Sykkelveske', 'Sykkelvogn', 'Barnesete', 'Drikkesekk'];
+
+    for (var i = 0; i < type.length; i++) {
+      let antall = Number(utstyrValg[type[i]]);
+
+      connection.query(
+        'UPDATE utstyr SET u_tilstand="Utleid" WHERE utstyrstype = ? AND u_tilstand = "Ledig" LIMIT ?;',
+        [type[i], antall],
+        (error, results) => {
+          if (error) return console.error(error);
+        }
+      );
+    }
+  }
+
+  // koblingstabellUtstyr(utleiedata) {
+  //   connection.query(
+  //     'INSERT utleid_utstyr (u_status, u_utlevering, u_innlevering, utleie_id, utstyr_id) VALUES (?,?,?,?,?)',
+  //     ['utleid', utleiedata.utleietid, utleiedata.innleveringstid, utleiedata.utleie_id],
+  //     (error, results) => {
+  //       if (error) return console.error(error);
+  //     }
+  //   );
+  // }
 }
 
 export let utleieTjenester = new UtleieTjenester();
