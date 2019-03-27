@@ -97,31 +97,38 @@ export class Utleie extends Component {
             required
           />
         </Column>
+        <br />
         <Column>
           <NavLink to="/utleie/sykkel" onClick={this.lagring}>
             Velg sykkel
           </NavLink>
+          <br />
         </Column>
         <Column>
           <NavLink to="/utleie/utstyr">Velg utstyr</NavLink>
         </Column>
-        <Column>
+        <br />
+        <ul>
           <div className="form-group">
             <label htmlFor="sykkelArea">Bestilling:</label>
-            <textarea className="form-control" rows="5" id="sykkelArea" />
+            <textarea class="Liste" rows="5" id="sykkelArea" />
           </div>
-        </Column>
+        </ul>
+
         <Row>
-          <Column>
-            <Button.Success onClick={this.create}>Legg inn</Button.Success>
-          </Column>
-          <Column>
+          <Column left>
             <Button.Light onClick={this.delete}>Delete</Button.Light>
           </Column>
-          <Column right>
+          <Column>
             <Button.Light onClick={this.cancel}>Cancel</Button.Light>
           </Column>
+          <Column>
+            <div class="text-right">
+              <Button.Success onClick={this.create}>Legg inn</Button.Success>
+            </div>
+          </Column>
         </Row>
+        <br />
       </div>
     );
   }

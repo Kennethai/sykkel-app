@@ -28,7 +28,9 @@ export class Varelageret extends Component {
             <Form.Input type="text" value={this.info.sykkelid} onChange={e => (this.info.sykkelid = e.target.value)} />
           </Column>
           <Column>
-            <Button.Success onClick={this.sykkel}>Søk</Button.Success>
+            <div class="text-right">
+              <Button.Success onClick={this.sykkel}>Søk</Button.Success>
+            </div>
           </Column>
           <Column>
             <Form.Label>Utstyrs-id:</Form.Label>
@@ -39,10 +41,11 @@ export class Varelageret extends Component {
             />
           </Column>
           <Column>
-            <Button.Success onClick={this.utstyrk}>Søk</Button.Success>
+            <div class="text-right">
+              <Button.Success onClick={this.utstyrk}>Søk</Button.Success>
+            </div>
           </Column>
         </Card>
-
         <Column>
           <Button.Success onClick={this.sykkeltabell}>SYKKEL</Button.Success>
 
