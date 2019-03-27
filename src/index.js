@@ -6,6 +6,7 @@ import { Utleie, VelgSykkel, VelgUtstyr } from './components/utleie.js';
 import { StatusListe } from './components/status.js';
 import { Varelageret, Sykkel } from './components/varelager.js';
 import { KundeListe } from './components/mottak.js';
+import { InfoListe } from './components/info.js';
 import createHashHistory from 'history/createHashHistory';
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -62,6 +63,7 @@ ReactDOM.render(
       <Route exact path="/Varelager" component={Varelageret} />
       <Route exact path="/Varelager/nySykkel" component={Sykkel} />
       <Route exact path="/Status" component={StatusListe} />
+      <Route exact path="/Info" component={InfoListe} />
     </div>
   </HashRouter>,
   document.getElementById('root')

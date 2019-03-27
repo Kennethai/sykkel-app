@@ -47,13 +47,18 @@ export class Varelageret extends Component {
           </Column>
         </Card>
         <Column>
-          <Button.Success onClick={this.sykkeltabell}>SYKKEL</Button.Success>
-
-          <Button.Success onClick={this.utstyrtabell}>UTSTYR</Button.Success>
+          <div class="Midtstille">
+            <Button.Success onClick={this.sykkeltabell}> SYKKEL </Button.Success>&nbsp;&nbsp;
+            <Button.Success onClick={this.utstyrtabell}> UTSTYR </Button.Success>
+          </div>
         </Column>
-
-        <div id="utdata"> </div>
-        <div id="utdata2"> </div>
+        <br />
+        <ul>
+          <div class="Liste" id="utdata">
+            {' '}
+          </div>
+          <div id="utdata2"> </div>
+        </ul>
 
         <div className="container-fluid">
           <div className="row">
