@@ -28,9 +28,7 @@ export class Varelageret extends Component {
             <Form.Input type="text" value={this.info.sykkelid} onChange={e => (this.info.sykkelid = e.target.value)} />
           </Column>
           <Column>
-            <div class="text-right">
-              <Button.Success onClick={this.sykkel}>Søk</Button.Success>
-            </div>
+            <Button.Success onClick={this.sykkel}>Søk</Button.Success>
           </Column>
           <Column>
             <Form.Label>Utstyrs-id:</Form.Label>
@@ -41,27 +39,17 @@ export class Varelageret extends Component {
             />
           </Column>
           <Column>
-            <div class="text-right">
-              <Button.Success onClick={this.utstyrk}>Søk</Button.Success>
-            </div>
+            <Button.Success onClick={this.utstyrk}>Søk</Button.Success>
           </Column>
         </Card>
-        <Column>
-          <Button.Success onClick={this.sykkeltabell}>SYKKEL</Button.Success>
-
-          <Button.Success onClick={this.utstyrtabell}>UTSTYR</Button.Success>
-        </Column>
 
         <div id="utdata"> </div>
         <div id="utdata2"> </div>
 
         <div className="container-fluid">
           <div className="row">
-            <div id="col_sykkel">
-              <Column>
-                <h4>
-                  <b>Sykler:</b>
-                </h4>
+            <Column>
+              <Card title="Sykkel">
                 <table className="table table-striped hover" size="sm">
                   <thead>
                     <tr>
@@ -92,13 +80,11 @@ export class Varelageret extends Component {
                     ))}
                   </tbody>
                 </table>
-              </Column>
-            </div>
-            <div id="col_utstyr">
-              <Column>
-                <h4>
-                  <b> Utstyr:</b>
-                </h4>
+              </Card>
+            </Column>
+
+            <Column>
+              <Card title="Utstyr">
                 <table className="table table-striped hover" size="sm">
                   <thead>
                     <tr>
@@ -127,8 +113,8 @@ export class Varelageret extends Component {
                     ))}
                   </tbody>
                 </table>
-              </Column>
-            </div>
+              </Card>
+            </Column>
           </div>
         </div>
       </div>
@@ -159,47 +145,31 @@ export class Varelageret extends Component {
   //   </List>
   // </Card>
 
-  sykkeltabell() {
+  mounted() {
     varelager.hentSykkeltabell(this.sykler, sykler => {
       this.sykler = sykler;
-
-      let x = document.getElementById('col_sykkel');
-      let y = document.getElementById('col_utstyr');
-      if (y.style.display === 'block') {
-        (y.style.display = 'none'), (x.style.display = 'block');
-      } else {
-        x.style.display = 'block';
-      }
     });
-  }
 
-  utstyrtabell() {
     varelager.hentUtstyrtabell(this.utstyr, utstyr => {
       this.utstyr = utstyr;
-
-      let x = document.getElementById('col_utstyr');
-      let y = document.getElementById('col_sykkel');
-      if (y.style.display === 'block') {
-        (y.style.display = 'none'), (x.style.display = 'block');
-      }
     });
-  }
-  // varelager.hentSykkeltabell(this.info, info => {
-  //   this.info = info;
-  //   console.log(this.info);
-  //   utdata.innerText = '';
-  //   Object.keys(this.info).forEach(function(key) {
-  //     utdata.innerText += key + ' ' + info[key] + '\n';
-  //   });
-  // });
-  // varelager.hentUtstyrtabell(this.info, info => {
-  //   this.info = info;
-  //   console.log(this.info);
-  //   Object.keys(this.info).forEach(function(key) {
-  //     utdata2.innerText += key + ' ' + info[key] + '\n';
-  //   });
-  // });
 
+    // varelager.hentSykkeltabell(this.info, info => {
+    //   this.info = info;
+    //   console.log(this.info);
+    //   utdata.innerText = '';
+    //   Object.keys(this.info).forEach(function(key) {
+    //     utdata.innerText += key + ' ' + info[key] + '\n';
+    //   });
+    // });
+    // varelager.hentUtstyrtabell(this.info, info => {
+    //   this.info = info;
+    //   console.log(this.info);
+    //   Object.keys(this.info).forEach(function(key) {
+    //     utdata2.innerText += key + ' ' + info[key] + '\n';
+    //   });
+    // });
+  }
   sykkel() {
     varelager.hentsykkel(this.info, info => {
       this.info = info;
