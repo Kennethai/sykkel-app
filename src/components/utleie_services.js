@@ -1,16 +1,8 @@
 import { connection } from '../mysql_connection';
 
 class UtleieTjenester {
-  // hentKunder(success) {
-  //   connection.query('select * from kunde', (error, results) => {
-  //     if (error) return console.error(error);
-  //
-  //     success(results);
-  //   });
-  // }
-
   hentKunde(kunde, success) {
-    connection.query('select kunde_nr from kunde where k_tlf=?', [kunde.tlf], (error, results) => {
+    connection.query('SELECT * FROM kunde WHERE k_tlf=?', [kunde.tlf], (error, results) => {
       if (error) return console.error(error);
 
       success(results[0]);
@@ -27,11 +19,11 @@ class UtleieTjenester {
     );
   }
 
-  hentUtleieData(success) {
-    connection.query('SELECT * FROM utleie ORDER BY ID DESC LIMIT 1', (error, results) => {
+  hentUtleieId(utleiedata, success) {
+    connection.query('SELECT utleie_id FROM utleie ORDER BY utleie_id DESC', (error, results) => {
       if (error) return console.error(error);
 
-      success(results);
+      success(results[0]);
     });
   }
 
@@ -61,7 +53,7 @@ class UtleieTjenester {
       let antall = Number(sykkelValg[type[i]]);
 
       connection.query(
-        'UPDATE sykkel SET s_tilstand="Utleid" WHERE sykkeltype = ? AND s_tilstand = "Ledig" LIMIT ?;',
+        'UPDATE sykkel SET s_tilstand="Utleid" WHERE sykkeltype = ? AND s_tilstand = "Ledig" AND LAST_INSERT_ID(sykkel_id) LIMIT ?;',
         [type[i], antall],
         (error, results) => {
           if (error) return console.error(error);
@@ -70,15 +62,15 @@ class UtleieTjenester {
     }
   }
 
-  // koblingstabellSykkel(utleiedata) {
-  //   connection.query(
-  //     'INSERT utleid_sykkel (status, utlevering, innlevering, utleie_id, sykkel_id) VALUES (?,?,?,?,?)',
-  //     ['utleid', utleiedata.utleietid, utleiedata.innleveringstid, utleiedata.utleie_id],
-  //     (error, results) => {
-  //       if (error) return console.error(error);
-  //     }
-  //   );
-  // }
+  koblingstabellSykkel(utleiedata) {
+    connection.query(
+      'INSERT utleid_sykkel (utlevering, innlevering, utleie_id, sykkel_id) VALUES (?,?,?,?)',
+      [utleiedata.utlevering, utleiedata.innlevering, utleiedata.utleie_id, 'LAST_INSERT_ID()'],
+      (error, results) => {
+        if (error) return console.error(error);
+      }
+    );
+  }
 
   utleieUtstyr(utstyrValg) {
     let type = ['Hjelm', 'Sykkelveske', 'Sykkelvogn', 'Barnesete', 'Drikkesekk'];
@@ -87,7 +79,7 @@ class UtleieTjenester {
       let antall = Number(utstyrValg[type[i]]);
 
       connection.query(
-        'UPDATE utstyr SET u_tilstand="Utleid" WHERE utstyrstype = ? AND u_tilstand = "Ledig" LIMIT ?;',
+        'UPDATE utstyr SET u_tilstand="Utleid" WHERE utstyrstype = ? AND u_tilstand = "Ledig" AND LAST_INSERT_ID(utstyr_id) LIMIT ?;',
         [type[i], antall],
         (error, results) => {
           if (error) return console.error(error);
@@ -96,15 +88,15 @@ class UtleieTjenester {
     }
   }
 
-  // koblingstabellUtstyr(utleiedata) {
-  //   connection.query(
-  //     'INSERT utleid_utstyr (u_status, u_utlevering, u_innlevering, utleie_id, utstyr_id) VALUES (?,?,?,?,?)',
-  //     ['utleid', utleiedata.utleietid, utleiedata.innleveringstid, utleiedata.utleie_id],
-  //     (error, results) => {
-  //       if (error) return console.error(error);
-  //     }
-  //   );
-  // }
+  koblingstabellUtstyr(utleiedata) {
+    connection.query(
+      'INSERT utleid_utstyr (u_utlevering, u_innlevering, utleie_id, utstyr_id) VALUES (?,?,?,?)',
+      [utleiedata.utlevering, utleiedata.innlevering, utleiedata.utleie_id, 'LAST_INSERT_ID()'],
+      (error, results) => {
+        if (error) return console.error(error);
+      }
+    );
+  }
 }
 
 export let utleieTjenester = new UtleieTjenester();

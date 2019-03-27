@@ -8,19 +8,36 @@ import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
 let selgerdata = {
-  selger_id: '007',
-  avdeling: '2'
+  selger_id: '7',
+  avdeling: '1'
 };
 
-let kundeNr = {};
+let kundeNr = [];
+
+let utleieId = {};
+
+let kundeLagring = {
+  fornavn: '',
+  etternavn: '',
+  epost: '',
+  tlf: ''
+};
+
+let utleiedataLagring = {
+  selger_id: selgerdata.selger_id,
+  avdeling: selgerdata.avdeling,
+  utlevering: '1',
+  innlevering: '2',
+  fradato: '',
+  tildato: '',
+  fraKl: '',
+  tilKl: '',
+  antall_sykler: '',
+  kunde_nr: ''
+};
 
 export class Utleie extends Component {
-  kunde = {
-    fornavn: '',
-    etternavn: '',
-    epost: '',
-    tlf: ''
-  };
+  kunde = {};
 
   utleiedata = {};
 
@@ -30,14 +47,17 @@ export class Utleie extends Component {
         <Column>
           <Form.Label>Kunde fornavn:</Form.Label>
           <Form.Input type="text" value={this.kunde.fornavn} onChange={e => (this.kunde.fornavn = e.target.value)} />
+
           <Form.Label>Kunde etternavn:</Form.Label>
           <Form.Input
             type="text"
             value={this.kunde.etternavn}
             onChange={e => (this.kunde.etternavn = e.target.value)}
           />
+
           <Form.Label>Epost:</Form.Label>
           <Form.Input type="text" value={this.kunde.epost} onChange={e => (this.kunde.epost = e.target.value)} />
+
           <Form.Label>Tlf:</Form.Label>
           <Form.Input
             type="text"
@@ -47,39 +67,35 @@ export class Utleie extends Component {
             required
           />
         </Column>
+
         <Column>
           <div className="form-group">
-            <label htmlFor="utlevering">Utlevering:</label>
-            <select
-              className="form-control"
-              id="utlevering"
-              value={this.utleiedata.utlevering}
-              onChange={e => (this.utleiedata.utlevering = e.target.value)}
-            >
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
+            <label>Utlevering:</label>
+            <select className="form-control" onChange={e => (this.utleiedata.utlevering = e.target.value)}>
+              <option value="1" selected>
+                Base 1
+              </option>
+              <option value="2">Base 2</option>
+              <option value="3">Base 3</option>
+              <option value="4">Base 4</option>
             </select>
           </div>
+
           <div className="form-group">
-            <label htmlFor="innlevering">Innlevering:</label>
-            <select
-              className="form-control"
-              id="innlevering"
-              value={this.utleiedata.innlevering}
-              onChange={e => (this.utleiedata.innlevering = e.target.value)}
-            >
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
+            <label>Innlevering:</label>
+            <select className="form-control" onChange={e => (this.utleiedata.innlevering = e.target.value)}>
+              <option value="1">Base 1</option>
+              <option value="2" selected>
+                Base 2
+              </option>
+              <option value="3">Base 3</option>
+              <option value="4">Base 4</option>
             </select>
           </div>
         </Column>
+
         <Column>
           <Form.Label>Leie fra:</Form.Label>
-          <Form.Input type="time" onChange={e => (this.utleiedata.fraKl = e.target.value)} />
           <Form.Input
             type="date"
             value={this.utleiedata.fradato}
@@ -87,8 +103,8 @@ export class Utleie extends Component {
             pattern=".{10,10}"
             required
           />
+
           <Form.Label>Leie til:</Form.Label>
-          <Form.Input type="time" onChange={e => (this.utleiedata.tilKl = e.target.value)} />
           <Form.Input
             type="date"
             value={this.utleiedata.tildato}
@@ -97,22 +113,26 @@ export class Utleie extends Component {
             required
           />
         </Column>
+
         <Column>
           <NavLink to="/utleie/sykkel" onClick={this.lagring}>
             Velg sykkel
           </NavLink>
         </Column>
+
         <Column>
           <NavLink to="/utleie/utstyr" onClick={this.lagring}>
             Velg utstyr
           </NavLink>
         </Column>
+
         <Column>
           <div className="form-group">
             <label htmlFor="sykkelArea">Bestilling:</label>
             <textarea className="form-control" rows="5" id="sykkelArea" />
           </div>
         </Column>
+
         <Row>
           <Column>
             <Button.Success onClick={this.create}>Legg inn</Button.Success>
@@ -149,26 +169,33 @@ export class Utleie extends Component {
 
   create() {
     utleieTjenester.opprettKunde(this.kunde);
-    utleieTjenester.hentKunde(this.kunde, kunde => {
-      kundeNr = this.kunde.kunde_nr;
-    });
-    this.utleiedata.kunde_nr = kundeNr;
-    this.utleiedata.antall_sykler = sykkelTeller;
-    console.log(kundeNr);
-    console.log(sykkelValg);
-    utleieTjenester.utleieSykkel(sykkelValg);
-    utleieTjenester.utleieUtstyr(utstyrValg);
-    utleieTjenester.opprettUtleie(
-      this.utleiedata
-      //   , () => {
-      //   utleieTjenester.hentUtleieData(this.utleiedata, utleie => {
-      //     this.utleiedata = utleie;
-      //   });
-      // }
-    );
 
-    // utleieTjenester.koblingstabellSykkel(sykkelValg);
-    // utleieTjenester.koblingstabellUtstyr(utstyrValg);
+    utleieTjenester.hentKunde(this.kunde, kunde => {
+      this.kunde = kunde;
+    });
+
+    this.utleiedata.kunde_nr = this.kunde.kunde_nr;
+
+    this.utleiedata.antall_sykler = sykkelTeller;
+
+    console.log(this.kunde);
+    console.log(this.utleiedata);
+    console.log(sykkelValg);
+
+    utleieTjenester.utleieSykkel(sykkelValg);
+
+    utleieTjenester.utleieUtstyr(utstyrValg);
+
+    utleieTjenester.opprettUtleie(this.utleiedata);
+
+    utleieTjenester.hentUtleieId(this.utleiedata, utleiedata => {
+      this.utleieId = utleiedata;
+    });
+
+    utleieTjenester.koblingstabellSykkel(sykkelValg);
+
+    utleieTjenester.koblingstabellUtstyr(utstyrValg);
+
     history.push('/utleie/');
   }
 
@@ -180,26 +207,6 @@ export class Utleie extends Component {
     history.push('/students/' + this.props.match.params.id);
   }
 }
-
-let kundeLagring = {
-  fornavn: '',
-  etternavn: '',
-  epost: '',
-  tlf: ''
-};
-
-let utleiedataLagring = {
-  selger_id: selgerdata.selger_id,
-  avdeling: selgerdata.avdeling,
-  utlevering: '',
-  innlevering: '',
-  fradato: '',
-  tildato: '',
-  fraKl: '',
-  tilKl: '',
-  antall_sykler: '',
-  kunde_nr: ''
-};
 
 let sykkelValg = {
   tursykkel: '0',
