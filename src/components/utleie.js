@@ -32,7 +32,6 @@ let utleiedataLagring = {
   tildato: '',
   fraKl: '',
   tilKl: '',
-  antall_sykler: '',
   kunde_nr: ''
 };
 
@@ -72,7 +71,7 @@ export class Utleie extends Component {
           <div className="form-group">
             <label>Utlevering:</label>
             <select className="form-control" onChange={e => (this.utleiedata.utlevering = e.target.value)}>
-              <option value="1" selected>
+              <option value="1" defaultValue>
                 Base 1
               </option>
               <option value="2">Base 2</option>
@@ -85,7 +84,7 @@ export class Utleie extends Component {
             <label>Innlevering:</label>
             <select className="form-control" onChange={e => (this.utleiedata.innlevering = e.target.value)}>
               <option value="1">Base 1</option>
-              <option value="2" selected>
+              <option value="2" defaultValue>
                 Base 2
               </option>
               <option value="3">Base 3</option>
@@ -174,9 +173,7 @@ export class Utleie extends Component {
       this.kunde = kunde;
     });
 
-    this.utleiedata.kunde_nr = this.kunde.kunde_nr;
-
-    this.utleiedata.antall_sykler = sykkelTeller;
+    this.utleiedata.kunde_nr = this.kunde.kunde_nr.toString();
 
     console.log(this.kunde);
     console.log(this.utleiedata);
@@ -184,8 +181,9 @@ export class Utleie extends Component {
 
     utleieTjenester.utleieSykkel(sykkelValg);
 
-    utleieTjenester.utleieUtstyr(utstyrValg);
-
+    if (utstyrTeller > 0) {
+      utleieTjenester.utleieUtstyr(utstyrValg);
+    }
     utleieTjenester.opprettUtleie(this.utleiedata);
 
     utleieTjenester.hentUtleieId(this.utleiedata, utleiedata => {
@@ -194,8 +192,9 @@ export class Utleie extends Component {
 
     utleieTjenester.koblingstabellSykkel(sykkelValg);
 
-    utleieTjenester.koblingstabellUtstyr(utstyrValg);
-
+    if (utstyrTeller > 0) {
+      utleieTjenester.koblingstabellUtstyr(utstyrValg);
+    }
     history.push('/utleie/');
   }
 
@@ -280,6 +279,8 @@ let utstyrValg = {
   Drikkesekk: ''
 };
 
+let utstyrTeller;
+
 export class VelgUtstyr extends Component {
   render() {
     return (
@@ -305,6 +306,12 @@ export class VelgUtstyr extends Component {
   }
 
   create() {
+    utstyrTeller =
+      Number(GetPropertyValue(utstyrValg, 'Hjelm')) +
+      Number(GetPropertyValue(utstyrValg, 'Sykkelveske')) +
+      Number(GetPropertyValue(utstyrValg, 'Sykkelvogn')) +
+      Number(GetPropertyValue(utstyrValg, 'Barnesete')) +
+      Number(GetPropertyValue(utstyrValg, 'Drikkesekk'));
     history.push('/utleie/');
   }
 

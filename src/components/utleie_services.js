@@ -27,21 +27,12 @@ class UtleieTjenester {
     });
   }
 
-  opprettUtleie(utleiedata, success) {
+  opprettUtleie(utleiedata) {
     connection.query(
-      'INSERT INTO utleie (utleietid, innleveringstid, selger_id, avdelings_id, antall_sykler, kunde_nr) VALUES(?,?,?,?,?,?)',
-      [
-        utleiedata.fradato,
-        utleiedata.tildato,
-        utleiedata.selger_id,
-        utleiedata.avdeling,
-        utleiedata.antall_sykler,
-        utleiedata.kunde_nr
-      ],
+      'INSERT INTO utleie (utleietid, innleveringstid, selger_id, avdelings_id, kunde_nr) VALUES(?,?,?,?,?)',
+      [utleiedata.fradato, utleiedata.tildato, utleiedata.selger_id, utleiedata.avdeling, utleiedata.kunde_nr],
       (error, results) => {
         if (error) return console.error(error);
-
-        success();
       }
     );
   }
