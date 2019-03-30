@@ -14,8 +14,7 @@ class Varelager {
       'select sykkel_id "ID: ", sykkelnavn "Navn: " , sykkeltype "Type: ", s_tilhorighet "Tilhørighet: ", s_aar "År: ", s_utleiepris "Pris: ", s_tilstand "Tilstand: ", s_beskrivelse "Beskrivelse: ", Kommentar "Kommentar: " from sykkel where sykkel_id=?',
       [info.sykkelid],
       (error, results) => {
-        if (error) return alert('Kunden finnes ikke');
-
+        if (error) return console.error(error);
         success(results[0]);
       }
     );

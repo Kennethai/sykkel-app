@@ -25,7 +25,11 @@ export class Varelageret extends Component {
         <Card title="Sykkel-/utstyrs-id">
           <Column>
             <Form.Label>Sykkel-id:</Form.Label>
-            <Form.Input type="text" value={this.info.sykkelid} onChange={e => (this.info.sykkelid = e.target.value)} />
+            <Form.Input
+              type="number"
+              value={this.info.sykkelid}
+              onChange={e => (this.info.sykkelid = e.target.value)}
+            />
           </Column>
           <Column>
             <Button.Success onClick={this.sykkel}>Søk</Button.Success>
@@ -33,7 +37,7 @@ export class Varelageret extends Component {
           <Column>
             <Form.Label>Utstyrs-id:</Form.Label>
             <Form.Input
-              type="text"
+              type="number"
               value={this.info.utstyrsid}
               onChange={e => (this.info.utstyrsid = e.target.value)}
             />
@@ -159,6 +163,7 @@ export class Varelageret extends Component {
   sykkeltabell() {
     varelager.hentSykkeltabell(this.sykler, sykler => {
       this.sykler = sykler;
+      console.log(this.sykler);
 
       let x = document.getElementById('col_sykkel');
       let y = document.getElementById('col_utstyr');
