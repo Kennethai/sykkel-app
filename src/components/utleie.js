@@ -32,13 +32,12 @@ let utleiedataLagring = {
   tildato: '',
   fraKl: '',
   tilKl: '',
-  kunde_nr: ''
+  kunde_nr: 0
 };
 
 export class Utleie extends Component {
-  kunde = {};
-
-  utleiedata = {};
+  kunde = kundeLagring;
+  utleiedata = utleiedataLagring;
 
   render() {
     return (
@@ -156,8 +155,6 @@ export class Utleie extends Component {
     Object.keys(utstyrValg).forEach(function(key) {
       sykkelArea.value += key + ' ' + utstyrValg[key] + '\n';
     });
-    this.kunde = kundeLagring;
-    this.utleiedata = utleiedataLagring;
     console.log(this.utleiedata);
   }
 
@@ -171,13 +168,10 @@ export class Utleie extends Component {
 
     utleieTjenester.hentKunde(this.kunde, kunde => {
       this.kunde = kunde;
+      console.log(this.kunde);
+      console.log(this.utleiedata);
+      this.utleiedata.kunde_nr = this.kunde.kunde_nr.toString();
     });
-
-    this.utleiedata.kunde_nr = this.kunde.kunde_nr.toString();
-
-    console.log(this.kunde);
-    console.log(this.utleiedata);
-    console.log(sykkelValg);
 
     utleieTjenester.utleieSykkel(sykkelValg);
 
@@ -187,13 +181,14 @@ export class Utleie extends Component {
     utleieTjenester.opprettUtleie(this.utleiedata);
 
     utleieTjenester.hentUtleieId(this.utleiedata, utleiedata => {
-      this.utleieId = utleiedata;
+      utleieId = utleiedata;
+      this.utleiedata.utleie_id = utleieId.utleie_id.toString();
     });
 
-    utleieTjenester.koblingstabellSykkel(sykkelValg);
+    utleieTjenester.koblingstabellSykkel(this.utleiedata);
 
     if (utstyrTeller > 0) {
-      utleieTjenester.koblingstabellUtstyr(utstyrValg);
+      utleieTjenester.koblingstabellUtstyr(this.utleiedata);
     }
     history.push('/utleie/');
   }

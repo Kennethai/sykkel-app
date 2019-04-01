@@ -44,7 +44,7 @@ class UtleieTjenester {
       let antall = Number(sykkelValg[type[i]]);
 
       connection.query(
-        'UPDATE sykkel SET s_tilstand="Utleid" WHERE sykkeltype = ? AND s_tilstand = "Ledig" AND LAST_INSERT_ID(sykkel_id) LIMIT ?;',
+        'UPDATE sykkel SET s_tilstand="Utleid" WHERE sykkeltype = ? AND s_tilstand = "Ledig" LIMIT ?;',
         [type[i], antall],
         (error, results) => {
           if (error) return console.error(error);
@@ -56,7 +56,7 @@ class UtleieTjenester {
   koblingstabellSykkel(utleiedata) {
     connection.query(
       'INSERT utleid_sykkel (utlevering, innlevering, utleie_id, sykkel_id) VALUES (?,?,?,?)',
-      [utleiedata.utlevering, utleiedata.innlevering, utleiedata.utleie_id, 'LAST_INSERT_ID()'],
+      [utleiedata.utlevering, utleiedata.innlevering, utleiedata.utleie_id, LAST_INSERT_ID()],
       (error, results) => {
         if (error) return console.error(error);
       }
@@ -70,7 +70,7 @@ class UtleieTjenester {
       let antall = Number(utstyrValg[type[i]]);
 
       connection.query(
-        'UPDATE utstyr SET u_tilstand="Utleid" WHERE utstyrstype = ? AND u_tilstand = "Ledig" AND LAST_INSERT_ID(utstyr_id) LIMIT ?;',
+        'UPDATE utstyr SET u_tilstand="Utleid" WHERE utstyrstype = ? AND u_tilstand = "Ledig" LIMIT ?;',
         [type[i], antall],
         (error, results) => {
           if (error) return console.error(error);
@@ -82,7 +82,7 @@ class UtleieTjenester {
   koblingstabellUtstyr(utleiedata) {
     connection.query(
       'INSERT utleid_utstyr (u_utlevering, u_innlevering, utleie_id, utstyr_id) VALUES (?,?,?,?)',
-      [utleiedata.utlevering, utleiedata.innlevering, utleiedata.utleie_id, 'LAST_INSERT_ID()'],
+      [utleiedata.utlevering, utleiedata.innlevering, utleiedata.utleie_id, LAST_INSERT_ID()],
       (error, results) => {
         if (error) return console.error(error);
       }
