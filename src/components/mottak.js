@@ -10,11 +10,14 @@ const history = createHashHistory(); // Use history.push(...) to programmaticall
 //----Mottak------------------------------
 
 export class KundeListe extends Component {
-  kunde = {
-    fornavn: '',
-    etternavn: '',
-    tlf: ''
-  };
+  kunde = [];
+  //  {
+  //   fornavn: '',
+  //   etternavn: '',
+  //   tlf: ''
+  // };
+
+  kunder = [];
 
   syklene = [];
   utstyr = [];
@@ -137,12 +140,18 @@ export class KundeListe extends Component {
       this.utstyr = utstyr;
     });
 
-    mottakTjenester.hentKunde(this.kunde, kunde => {
-      this.kunde = kunde;
+    mottakTjenester.hentKunde(this.kunde, kunder => {
+      this.kunder = [];
+      this.kunder = kunder;
+      console.log(kunder);
       utdata.innerText = '';
-      Object.keys(this.kunde).forEach(function(key) {
-        utdata.innerText += key + ' ' + kunde[key] + '\n';
-      });
+      if (this.kunder == undefined) {
+        alert('Kunden finnes ikke!');
+      } else {
+        Object.keys(this.kunder).forEach(function(key) {
+          utdata.innerText += key + ' ' + kunder[key] + '\n';
+        });
+      }
     });
   }
 
