@@ -19,6 +19,8 @@ export class KundeListe extends Component {
   syklene = [];
   utstyr = [];
 
+  checkedSykkel = {};
+
   render() {
     return (
       <div>
@@ -60,7 +62,7 @@ export class KundeListe extends Component {
         <div className="container-fluid">
           <div className="row">
             <Column>
-              <table className="table table-striped hover" size="sm">
+              <table id="col_sykkel" className="table table-striped hover" size="sm">
                 <thead>
                   <tr>
                     <th> SykkelID: </th>
@@ -74,21 +76,14 @@ export class KundeListe extends Component {
                       <td> {sykkel.sykkel_id} </td>
                       <td> {sykkel.sykkeltype} </td>
                       <td> {sykkel.utleietid} </td>
-                      <input
-                        name="sykkel"
-                        id="sykkel1"
-                        type="checkbox"
-                        checked={this.state.motta}
-                        onClick={this.motta}
-                        onChange={this.handleInputChange}
-                      />
+                      <input name="sykkel" id="sykkel1" type="checkbox" onChange={() => this.check(sykkel.sykkel_id)} />
                     </tr>
                   ))}
                 </tbody>
               </table>
             </Column>
             <Column>
-              <table className="table table-striped hover" size="sm">
+              <table id="col_utstyr" className="table table-striped hover" size="sm">
                 <thead>
                   <tr>
                     <th> UtstyrID: </th>
@@ -105,58 +100,23 @@ export class KundeListe extends Component {
                       <input
                         name="utstyr"
                         id="utstyr1"
-                        onClick={this.motta}
                         type="checkbox"
                         checked={this.state.motta}
-                        onChange={this.handleInputChange}
+                        onChange={e => (this.col_utstyr = e.target.value)}
                       />
                     </tr>
                   ))}
                 </tbody>
               </table>
+              <div className="text-right">
+                <Button.Success onClick={this.motta}>Mottatt</Button.Success>
+              </div>
             </Column>
           </div>
         </div>
       </div>
     );
   }
-
-  // <table className="table table-striped hover" size="sm">
-  //   <thead>
-  //     <tr>
-  //       <th> KundeNR: </th>
-  //       <th> Fornavn: </th>
-  //       <th> Etternavn: </th>
-  //       <th> Tlf: </th>
-  //       <th> SykkelID: </th>
-  //       <th> Type: </th>
-  //       <th> UtstyrsID: </th>
-  //       <th> Type: </th>
-  //     </tr>
-  //   </thead>
-  //   <tbody>
-  //     {this.kunder.map(kundes => (
-  //       <tr key={kundes.kunde_nr}>
-  //         <td> {kundes.kunde_nr} </td>
-  //         <td> {kundes.k_fornavn} </td>
-  //         <td> {kundes.k_etternavn} </td>
-  //         <td> {kundes.k_tlf} </td>
-  //       </tr>
-  //     ))}
-  //     {this.syklene.map(sykkele => (
-  //       <tr key={sykkele.sykkel_id}>
-  //         <td> {sykkele.sykkel_id} </td>
-  //         <td> {sykkele.sykkeltype} </td>
-  //       </tr>
-  //     ))}
-  //     {this.utsyr.map(utstyret => (
-  //       <tr key={utstyret.utsyr_id}>
-  //         <td> {utstyret.utstyr_id} </td>
-  //         <td> {utstyret.utstyrstype} </td>
-  //       </tr>
-  //     ))}
-  //   </tbody>
-  // </table>
 
   mounted(kunde) {
     // mottakTjenester.hentData(this.kunde, kunde => {
@@ -186,10 +146,16 @@ export class KundeListe extends Component {
     });
   }
 
-  motta() {
-    mottakTjenester.mottak(this.sykkel, sykkel => {
-      this.sykkel = sykkel;
-      console.log(this.sykkel);
+  motta(sykkel_id) {
+    mottakTjenester.mottak(this.checkedSykkel[sykkel_id], checkedSykkel => {
+      this.checkedSykkel = checkedSykkel;
+      console.log(this.checkSykkel[sykkel_id]);
     });
+  }
+  check(sykkel_id) {
+    if (this.checkedSykkel[sykkel_id]) this.checkedSykkel[sykkel_id] = false;
+    else this.checkedSykkel[sykkel_id] = true;
+    for (let sykkel_id of Object.keys(this.checkedSykkel)) console.log(sykkel_id, this.checkedSykkel[sykkel_id]);
+    // this.checkedsykkel.push(this.syklene[sectionRowIndex].sykkel.sykkel_id);
   }
 }

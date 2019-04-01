@@ -111,7 +111,7 @@ export class Utleie extends Component {
         <ul>
           <div className="form-group">
             <label htmlFor="sykkelArea">Bestilling:</label>
-            <textarea class="Liste" rows="5" id="sykkelArea" />
+            <textarea className="Liste" rows="5" id="sykkelArea" />
           </div>
         </ul>
 
@@ -123,7 +123,7 @@ export class Utleie extends Component {
             <Button.Light onClick={this.cancel}>Cancel</Button.Light>
           </Column>
           <Column>
-            <div class="text-right">
+            <div className="text-right">
               <Button.Success onClick={this.create}>Legg inn</Button.Success>
             </div>
           </Column>

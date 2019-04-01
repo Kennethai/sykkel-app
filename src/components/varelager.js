@@ -183,6 +183,8 @@ export class Varelageret extends Component {
       let y = document.getElementById('col_sykkel');
       if (y.style.display === 'block') {
         (y.style.display = 'none'), (x.style.display = 'block');
+      } else {
+        x.style.display = 'block';
       }
     });
   }
