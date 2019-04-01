@@ -44,17 +44,8 @@ export let varelager = new Varelager();
 class RegSykkel {
   opprettSykkel(sykkel) {
     connection.query(
-      'INSERT sykkel (sykkelnavn, sykkeltype, s_aar, s_tilhorighet, s_utleiepris, s_tilstand, s_beskrivelse, kommentar) values (?,?,?,?,?,?,?,?)',
-      [
-        sykkel.merke,
-        sykkel.type,
-        sykkel.aar,
-        sykkel.sted,
-        sykkel.pris,
-        sykkel.tilstand,
-        sykkel.beskrivelse,
-        sykkel.kommentar
-      ],
+      'INSERT sykkel (sykkelnavn, sykkeltype, s_aar, s_tilhorighet, s_utleiepris, s_tilstand, s_beskrivelse) values (?,?,?,?,?,?,?)',
+      [sykkel.merke, sykkel.type, sykkel.aar, sykkel.sted, sykkel.pris, sykkel.tilstand, sykkel.beskrivelse],
       (error, results) => {
         if (error) return console.error(error);
         success(results);

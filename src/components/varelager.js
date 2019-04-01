@@ -201,8 +201,7 @@ export class Sykkel extends Component {
     pris: '',
     tilstand: '',
     sted: '',
-    beskrivelse: '',
-    kommentar: ''
+    beskrivelse: ''
   };
 
   render() {
@@ -246,13 +245,6 @@ export class Sykkel extends Component {
             type="text"
             value={this.sykkel.beskrivelse}
             onChange={e => (this.sykkel.beskrivelse = e.target.value)}
-          />
-
-          <Form.Label>Kommentar til sykkel :</Form.Label>
-          <Form.Input
-            type="text"
-            value={this.sykkel.kommentar}
-            onChange={e => (this.sykkel.kommentar = e.target.value)}
           />
         </Card>
         <Row>
