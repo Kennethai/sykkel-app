@@ -111,6 +111,7 @@ export class StatusListe extends Component {
     statusService.søkStatus(this.idSykkel, syklene => {
       this.syklene = [];
       this.syklene = syklene;
+      this.idSykkel = '';
       console.log(syklene);
       if (syklene.length == 0) {
         alert('OBS! Finner ingen kommentar på denne sykkelen');
