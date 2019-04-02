@@ -7,15 +7,17 @@ import { Card, List, Row, Column, NavBar, Button, Form } from '../widgets';
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
+// Lagrer info om hvilken selger som registrerer utleie + hvilken avdeling
 let selgerdata = {
   selger_id: '7',
   avdeling: '1'
 };
 
+// kundenr og utleie ID hentet fra db blir lagret her først
 let kundeNr = [];
-
 let utleieId = {};
 
+// mellomlagring for innskrevet data om kunde og utleie, slik at det ikke går tapt når man gjør valg av sykkel/utstyr
 let kundeLagring = {
   fornavn: '',
   etternavn: '',
@@ -36,6 +38,7 @@ let utleiedataLagring = {
 };
 
 export class Utleie extends Component {
+  //henter inn mellomlagring ved innlasting av siden
   kunde = kundeLagring;
   utleiedata = utleiedataLagring;
 
@@ -147,6 +150,7 @@ export class Utleie extends Component {
   }
 
   mounted() {
+    // fyller inn tekstfeltet med antall utlånt utstyr
     sykkelArea.value += 'SYKLER\n';
     Object.keys(sykkelValg).forEach(function(key) {
       sykkelArea.value += key + ' ' + sykkelValg[key] + '\n';
@@ -158,14 +162,18 @@ export class Utleie extends Component {
     console.log(this.utleiedata);
   }
 
+  // sender innfylt data til mellomlagring
   lagring() {
     kundeLagring = this.kunde;
     utleiedataLagring = this.utleiedata;
   }
 
+  // oppretter et utleie (sender alt til db)
   create() {
+    // sender kundeinfo til db
     utleieTjenester.opprettKunde(this.kunde);
 
+    //henter kundenr fra db
     utleieTjenester.hentKunde(this.kunde, kunde => {
       this.kunde = kunde;
       console.log(this.kunde);
@@ -173,23 +181,26 @@ export class Utleie extends Component {
       this.utleiedata.kunde_nr = this.kunde.kunde_nr.toString();
     });
 
-    utleieTjenester.utleieSykkel(sykkelValg);
-
-    if (utstyrTeller > 0) {
-      utleieTjenester.utleieUtstyr(utstyrValg);
-    }
+    //sender info om utlånet til db
     utleieTjenester.opprettUtleie(this.utleiedata);
 
+    // henter utleie_id fra db
     utleieTjenester.hentUtleieId(this.utleiedata, utleiedata => {
       utleieId = utleiedata;
       this.utleiedata.utleie_id = utleieId.utleie_id.toString();
+      sykkelValg.utleie_id = utleieId.utleie_id;
+      utstyrValg.utleie_id = utleieId.utleie_id;
+      console.log(sykkelValg);
     });
 
-    utleieTjenester.koblingstabellSykkel(this.utleiedata);
+    // registrerer sykler for utlån i db
+    utleieTjenester.utleieSykkel(sykkelValg);
 
+    // registrerer utstyr for utlån i db, dersom det blir lånt tilleggsutstyr
     if (utstyrTeller > 0) {
-      utleieTjenester.koblingstabellUtstyr(this.utleiedata);
+      utleieTjenester.utleieUtstyr(utstyrValg);
     }
+
     history.push('/utleie/');
   }
 
@@ -202,6 +213,7 @@ export class Utleie extends Component {
   }
 }
 
+// antall sykler av valgt type
 let sykkelValg = {
   tursykkel: '0',
   terreng: '0',
@@ -209,8 +221,10 @@ let sykkelValg = {
   grusracer: '0',
   tandem: '0'
 };
-let sykkelTeller;
 
+// sammenlagt antall
+let sykkelTeller;
+// henter antall av hver type
 function GetPropertyValue(sykkelValg, dataToRetrieve) {
   return dataToRetrieve
     .split('.') // split string based on `.`
@@ -219,6 +233,7 @@ function GetPropertyValue(sykkelValg, dataToRetrieve) {
     }, sykkelValg); // set initial value as object
 }
 
+// skjermbilde for valg av sykler
 export class VelgSykkel extends Component {
   render() {
     return (
@@ -251,13 +266,6 @@ export class VelgSykkel extends Component {
       Number(GetPropertyValue(sykkelValg, 'grusracer')) +
       Number(GetPropertyValue(sykkelValg, 'tandem'));
     console.log(sykkelTeller);
-    console.log(
-      GetPropertyValue(sykkelValg, 'tursykkel'),
-      GetPropertyValue(sykkelValg, 'terreng'),
-      GetPropertyValue(sykkelValg, 'downhill'),
-      GetPropertyValue(sykkelValg, 'grusracer'),
-      GetPropertyValue(sykkelValg, 'tandem')
-    );
     history.push('/utleie/');
   }
 
@@ -266,6 +274,7 @@ export class VelgSykkel extends Component {
   }
 }
 
+// under er samme som for sykler, men for utstyr
 let utstyrValg = {
   Hjelm: '',
   Sykkelveske: '',
