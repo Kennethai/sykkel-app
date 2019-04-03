@@ -25,6 +25,7 @@ export class Varelageret extends Component {
     return (
       <div>
         <NavLink to="/Varelager/nySykkel">Registrer sykkel</NavLink>
+        &nbsp;&nbsp;
         <NavLink to="/Varelager/nyUtstyr">Regitsrer utstyr</NavLink>
         <Card>
           <Column>
@@ -50,7 +51,6 @@ export class Varelageret extends Component {
             <Button.Success onClick={this.utstyrk}>Søk</Button.Success>
           </Column>
         </Card>
-
         <Column>
           <div class="Midtstille">
             <Button.Success onClick={this.sykkeltabell}> SYKKEL </Button.Success>&nbsp;&nbsp;
@@ -64,7 +64,6 @@ export class Varelageret extends Component {
           </div>
           <div id="utdata2"> </div>
         </ul>
-
         <div className="container-fluid">
           <div className="row">
             <div id="col_sykkel">
