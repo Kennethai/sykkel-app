@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { varelager, regSykkel } from './varelager_services';
+import { varelager, regSykkel, regUtstyr } from './varelager_services';
 import { Card, List, Row, Column, NavBar, Button, Form } from '../widgets';
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -24,6 +24,8 @@ export class Varelageret extends Component {
   render() {
     return (
       <div>
+        <NavLink to="/Varelager/nySykkel">Registrer sykkel</NavLink>
+        <NavLink to="/Varelager/nyUtstyr">Regitsrer utstyr</NavLink>
         <Card title="Sykkel-/utstyrs-id">
           <Column>
             <Form.Label>Sykkel-id:</Form.Label>
@@ -315,7 +317,84 @@ export class Sykkel extends Component {
 
   create() {
     regSykkel.opprettSykkel(this.sykkel);
-    history.push('/subjects/');
+  }
+}
+
+export class Utstyr extends Component {
+  utstyr = {
+    type: '',
+    stype: '',
+    sted: '',
+    pris: '',
+    tilstand: '',
+    merke: ''
+  };
+
+  render() {
+    return (
+      <div>
+        <Card title="Legg inn ustyr">
+          <Column>
+            <div className="form-group">
+              <label htmlFor="type">Type:</label>
+              <select className="form-control" id="type" onChange={e => (this.utstyr.type = e.target.value)}>
+                <option value="" />
+                <option value="Hjelm">Hjelm</option>
+                <option value="Racinghjelm">Racinghjelm</option>
+                <option value="Downhillhjelm">Downhillhjelm</option>
+                <option value="Barnesete">Barnesete</option>
+                <option value="Sykkelveske">Sykkelveske</option>
+                <option value="Racingdress">Racingdress</option>
+                <option value="Drikkesekk">Drikkesekk</option>
+                <option value="Sykkelvogn">Sykkelvogn</option>
+              </select>
+            </div>
+          </Column>
+
+          <Column>
+            <div className="form-group">
+              <label htmlFor="type">Passer til sykkel:</label>
+              <select className="form-control" id="type" onChange={e => (this.utstyr.stype = e.target.value)}>
+                <option value="" />
+                <option value="Tur">Tursykkel</option>
+                <option value="Terreng">Terrengsykkel</option>
+                <option value="Tandem">Tandemsykkel</option>
+                <option value="Downhill">Downhillsykkel</option>
+                <option value="Racing">Racingsykkel</option>
+              </select>
+            </div>
+          </Column>
+
+          <Form.Label>Merke:</Form.Label>
+          <Form.Input type="text" value={this.utstyr.merke} onChange={e => (this.utstyr.merke = e.target.value)} />
+
+          <Form.Label>Utleiepris:</Form.Label>
+          <Form.Input type="number" value={this.utstyr.pris} onChange={e => (this.utstyr.pris = e.target.value)} />
+
+          <Form.Label>Utstyrets tilstand:</Form.Label>
+          <Form.Input
+            type="text"
+            value={this.utstyr.tilstand}
+            onChange={e => (this.utstyr.tilstand = e.target.value)}
+          />
+
+          <Form.Label>Sykkelens tilhørighet:</Form.Label>
+          <Form.Input type="text" value={this.utstyr.sted} onChange={e => (this.utstyr.sted = e.target.value)} />
+        </Card>
+        <Row>
+          <Column>
+            <Button.Success onClick={this.create}>Lagre</Button.Success>
+          </Column>
+          <Column right>
+            <Button.Light onClick={this.cancel}>Cancel</Button.Light>
+          </Column>
+        </Row>
+      </div>
+    );
+  }
+
+  create() {
+    regUtstyr.opprettUtstyr(this.utstyr);
   }
 }
 
