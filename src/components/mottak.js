@@ -27,7 +27,8 @@ export class KundeListe extends Component {
   render() {
     return (
       <div>
-        <Card title="Mottak:">
+        <Card>
+          <p> Fyll ut alle feltene. </p>
           <Row>
             <Column>
               <Form.Label>Fornavn:</Form.Label>
@@ -79,7 +80,7 @@ export class KundeListe extends Component {
                       <td> {sykkel.sykkel_id} </td>
                       <td> {sykkel.sykkeltype} </td>
                       <td> {sykkel.utleietid} </td>
-                      <input name="sykkel" id="sykkel1" type="checkbox" onChange={() => this.check(sykkel.sykkel_id)} />
+                      <input name="sykkel" id="sykkel1" type="checkbox" onChange={() => this.motta(sykkel.sykkel_id)} />
                     </tr>
                   ))}
                 </tbody>
@@ -146,25 +147,32 @@ export class KundeListe extends Component {
       console.log(kunder);
       utdata.innerText = '';
       if (this.kunder == undefined) {
-        alert('Kunden finnes ikke!');
+        alert('Du har skrevet inn en ikke-eksisterende kunde.');
       } else {
         Object.keys(this.kunder).forEach(function(key) {
           utdata.innerText += key + ' ' + kunder[key] + '\n';
         });
       }
     });
+    this.kunde.fornavn = [];
+    this.kunde.etternavn = [];
+    this.kunde.tlf = [];
   }
 
   motta(sykkel_id) {
-    mottakTjenester.mottak(this.checkedSykkel[sykkel_id], checkedSykkel => {
-      this.checkedSykkel = checkedSykkel;
-      console.log(this.checkSykkel[sykkel_id]);
-    });
-  }
-  check(sykkel_id) {
     if (this.checkedSykkel[sykkel_id]) this.checkedSykkel[sykkel_id] = false;
     else this.checkedSykkel[sykkel_id] = true;
     for (let sykkel_id of Object.keys(this.checkedSykkel)) console.log(sykkel_id, this.checkedSykkel[sykkel_id]);
-    // this.checkedsykkel.push(this.syklene[sectionRowIndex].sykkel.sykkel_id);
+
+    mottakTjenester.mottak(this.checkedSykkel[sykkel_id], checkedSykkel => {
+      this.checkedSykkel[sykkel_id] = checkedSykkel;
+    });
+
+    console.log(this.checkedSykkel);
+  }
+  check(sykkel_id) {
+    // if (this.checkedSykkel[sykkel_id]) this.checkedSykkel[sykkel_id] = false;
+    // else this.checkedSykkel[sykkel_id] = true;
+    // for (let sykkel_id of Object.keys(this.checkedSykkel)) console.log(sykkel_id, this.checkedSykkel[sykkel_id]);
   }
 }
