@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { Utleie, VelgSykkel, VelgUtstyr } from './components/utleie.js';
 import { StatusListe } from './components/status.js';
-import { Varelageret, Sykkel } from './components/varelager.js';
+import { Varelageret, Sykkel, Utstyr } from './components/varelager.js';
 import { KundeListe } from './components/mottak.js';
 import { InfoListe } from './components/info.js';
 import createHashHistory from 'history/createHashHistory';
@@ -62,6 +62,7 @@ ReactDOM.render(
       <Route exact path="/Mottak" component={KundeListe} />
       <Route exact path="/Varelager" component={Varelageret} />
       <Route exact path="/Varelager/nySykkel" component={Sykkel} />
+      <Route exact path="/Varelager/nyUtstyr" component={Utstyr} />
       <Route exact path="/Status" component={StatusListe} />
       <Route exact path="/Info" component={InfoListe} />
     </div>
