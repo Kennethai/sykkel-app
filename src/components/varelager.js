@@ -15,6 +15,8 @@ export class Varelageret extends Component {
     utstyrsid: ''
   };
 
+  merinfo = [];
+
   sykler = [];
 
   utstyr = [];
@@ -25,7 +27,11 @@ export class Varelageret extends Component {
         <Card title="Sykkel-/utstyrs-id">
           <Column>
             <Form.Label>Sykkel-id:</Form.Label>
-            <Form.Input type="text" value={this.info.sykkelid} onChange={e => (this.info.sykkelid = e.target.value)} />
+            <Form.Input
+              type="number"
+              value={this.info.sykkelid}
+              onChange={e => (this.info.sykkelid = e.target.value)}
+            />
           </Column>
           <Column>
             <Button.Success onClick={this.sykkel}>Søk</Button.Success>
@@ -33,7 +39,7 @@ export class Varelageret extends Component {
           <Column>
             <Form.Label>Utstyrs-id:</Form.Label>
             <Form.Input
-              type="text"
+              type="number"
               value={this.info.utstyrsid}
               onChange={e => (this.info.utstyrsid = e.target.value)}
             />
@@ -75,7 +81,6 @@ export class Varelageret extends Component {
                       <th> År: </th>
                       <th> Tilstand: </th>
                       <th> Beskrivelse: </th>
-                      <th> Kommentar: </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -89,7 +94,6 @@ export class Varelageret extends Component {
                         <td> {sykkel.s_aar} </td>
                         <td> {sykkel.s_tilstand} </td>
                         <td> {sykkel.s_beskrivelse} </td>
-                        <td> {sykkel.Kommentar} </td>
                       </tr>
                     ))}
                   </tbody>
@@ -164,6 +168,7 @@ export class Varelageret extends Component {
   sykkeltabell() {
     varelager.hentSykkeltabell(this.sykler, sykler => {
       this.sykler = sykler;
+      console.log(this.sykler);
 
       let x = document.getElementById('col_sykkel');
       let y = document.getElementById('col_utstyr');
@@ -183,6 +188,8 @@ export class Varelageret extends Component {
       let y = document.getElementById('col_sykkel');
       if (y.style.display === 'block') {
         (y.style.display = 'none'), (x.style.display = 'block');
+      } else {
+        x.style.display = 'block';
       }
     });
   }
@@ -203,22 +210,31 @@ export class Varelageret extends Component {
   // });
 
   sykkel() {
-    varelager.hentsykkel(this.info, info => {
-      this.info = info;
+    varelager.hentsykkel(this.info, merinfo => {
+      this.merinfo = [];
+      this.merinfo = merinfo;
       utdata.innerText = '';
-      Object.keys(this.info).forEach(function(key) {
-        utdata.innerText += key + ' ' + info[key] + '\n';
-      });
+      if (this.merinfo == undefined) {
+        alert('Sykkel med denne IDn finnes ikke!');
+      } else {
+        Object.keys(this.merinfo).forEach(function(key) {
+          utdata.innerText += key + ' ' + merinfo[key] + '\n';
+        });
+      }
     });
   }
   utstyrk() {
-    varelager.hentutstyr(this.info, info => {
-      this.info = info;
-      console.log = this.info;
+    varelager.hentutstyr(this.info, merinfo => {
+      this.merinfo = [];
+      this.merinfo = merinfo;
       utdata.innerText = '';
-      Object.keys(this.info).forEach(function(key) {
-        utdata.innerText += key + ' ' + info[key] + '\n';
-      });
+      if (this.merinfo == undefined) {
+        alert('Utstyr med denne IDn finnes ikke!');
+      } else {
+        Object.keys(this.merinfo).forEach(function(key) {
+          utdata.innerText += key + ' ' + merinfo[key] + '\n';
+        });
+      }
     });
   }
 }
