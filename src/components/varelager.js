@@ -26,7 +26,7 @@ export class Varelageret extends Component {
       <div>
         <NavLink to="/Varelager/nySykkel">Registrer sykkel</NavLink>
         <NavLink to="/Varelager/nyUtstyr">Regitsrer utstyr</NavLink>
-        <Card title="Sykkel-/utstyrs-id">
+        <Card>
           <Column>
             <Form.Label>Sykkel-id:</Form.Label>
             <Form.Input
