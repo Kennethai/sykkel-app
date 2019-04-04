@@ -248,8 +248,7 @@ export class Sykkel extends Component {
     pris: '',
     tilstand: '',
     sted: '',
-    beskrivelse: '',
-    kommentar: ''
+    beskrivelse: ''
   };
 
   render() {
@@ -260,6 +259,7 @@ export class Sykkel extends Component {
             <div className="form-group">
               <label htmlFor="type">Type:</label>
               <select className="form-control" id="type" onChange={e => (this.sykkel.type = e.target.value)}>
+                <option value=""> </option>
                 <option value="Tur">Tursykkel</option>
                 <option value="Terreng">Terrengsykkel</option>
                 <option value="Tandem">Tandemsykkel</option>
@@ -278,12 +278,16 @@ export class Sykkel extends Component {
           <Form.Label>Pris:</Form.Label>
           <Form.Input type="text" value={this.sykkel.pris} onChange={e => (this.sykkel.pris = e.target.value)} />
 
-          <Form.Label>Tilstand:</Form.Label>
-          <Form.Input
-            type="text"
-            value={this.sykkel.tilstand}
-            onChange={e => (this.sykkel.tilstand = e.target.value)}
-          />
+          <Column>
+            <div className="form-group">
+              <label htmlFor="type">Tilstand:</label>
+              <select className="form-control" id="type" onChange={e => (this.sykkel.tilstand = e.target.value)}>
+                <option value="" />
+                <option value="Ledig">Ledig</option>
+                <option value="Utleid">Utleid</option>
+              </select>
+            </div>
+          </Column>
 
           <Form.Label>Sykkelens tilhørighet:</Form.Label>
           <Form.Input type="text" value={this.sykkel.sted} onChange={e => (this.sykkel.sted = e.target.value)} />
@@ -293,13 +297,6 @@ export class Sykkel extends Component {
             type="text"
             value={this.sykkel.beskrivelse}
             onChange={e => (this.sykkel.beskrivelse = e.target.value)}
-          />
-
-          <Form.Label>Kommentar til sykkel :</Form.Label>
-          <Form.Input
-            type="text"
-            value={this.sykkel.kommentar}
-            onChange={e => (this.sykkel.kommentar = e.target.value)}
           />
         </Card>
         <Row>
@@ -316,6 +313,8 @@ export class Sykkel extends Component {
 
   create() {
     regSykkel.opprettSykkel(this.sykkel);
+    alert('Sykkelen er lagt til');
+    history.push('/Varelager/NySykkel');
   }
 }
 
@@ -370,12 +369,16 @@ export class Utstyr extends Component {
           <Form.Label>Utleiepris:</Form.Label>
           <Form.Input type="number" value={this.utstyr.pris} onChange={e => (this.utstyr.pris = e.target.value)} />
 
-          <Form.Label>Utstyrets tilstand:</Form.Label>
-          <Form.Input
-            type="text"
-            value={this.utstyr.tilstand}
-            onChange={e => (this.utstyr.tilstand = e.target.value)}
-          />
+          <Column>
+            <div className="form-group">
+              <label htmlFor="type">Tilstand:</label>
+              <select className="form-control" id="type" onChange={e => (this.utstyr.tilstand = e.target.value)}>
+                <option value="" />
+                <option value="Ledig">Ledig</option>
+                <option value="Utleid">Utleid</option>
+              </select>
+            </div>
+          </Column>
 
           <Form.Label>Sykkelens tilhørighet:</Form.Label>
           <Form.Input type="text" value={this.utstyr.sted} onChange={e => (this.utstyr.sted = e.target.value)} />
@@ -394,6 +397,8 @@ export class Utstyr extends Component {
 
   create() {
     regUtstyr.opprettUtstyr(this.utstyr);
+    alert('Utstyret er lagt til');
+    history.push('/Varelager/NyUtstyr');
   }
 }
 
