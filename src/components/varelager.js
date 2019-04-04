@@ -269,6 +269,9 @@ export class Sykkel extends Component {
     alert('Sykkelen er lagt til');
     history.push('/Varelager/NySykkel');
   }
+  cancel() {
+    history.push('/Varelager/' + this.props.match.params.id);
+  }
 }
 
 export class Utstyr extends Component {
@@ -352,6 +355,9 @@ export class Utstyr extends Component {
     regUtstyr.opprettUtstyr(this.utstyr);
     alert('Utstyret er lagt til');
     history.push('/Varelager/NyUtstyr');
+  }
+  cancel() {
+    history.push('/Varelager/' + this.props.match.params.id);
   }
 }
 
