@@ -80,7 +80,7 @@ export class KundeListe extends Component {
                       <td> {sykkel.sykkel_id} </td>
                       <td> {sykkel.sykkeltype} </td>
                       <td> {sykkel.utleietid} </td>
-                      <input name="sykkel" id="sykkel1" type="checkbox" onChange={() => this.motta(sykkel.sykkel_id)} />
+                      <input name="sykkel" id="sykkel1" type="checkbox" onChange={() => this.check(sykkel.sykkel_id)} />
                     </tr>
                   ))}
                 </tbody>
@@ -162,17 +162,14 @@ export class KundeListe extends Component {
   motta(sykkel_id) {
     if (this.checkedSykkel[sykkel_id]) this.checkedSykkel[sykkel_id] = false;
     else this.checkedSykkel[sykkel_id] = true;
-    for (let sykkel_id of Object.keys(this.checkedSykkel)) console.log(sykkel_id, this.checkedSykkel[sykkel_id]);
 
-    mottakTjenester.mottak(this.checkedSykkel[sykkel_id], checkedSykkel => {
-      this.checkedSykkel[sykkel_id] = checkedSykkel;
-    });
+    mottakTjenester.mottak(this.checkedSykkel[sykkel_id]);
 
     console.log(this.checkedSykkel);
   }
   check(sykkel_id) {
-    // if (this.checkedSykkel[sykkel_id]) this.checkedSykkel[sykkel_id] = false;
-    // else this.checkedSykkel[sykkel_id] = true;
-    // for (let sykkel_id of Object.keys(this.checkedSykkel)) console.log(sykkel_id, this.checkedSykkel[sykkel_id]);
+    if (this.checkedSykkel[sykkel_id]) this.checkedSykkel[sykkel_id] = false;
+    else this.checkedSykkel[sykkel_id] = true;
+    for (let sykkel_id of Object.keys(this.checkedSykkel)) console.log(sykkel_id, this.checkedSykkel[sykkel_id]);
   }
 }
