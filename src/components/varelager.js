@@ -22,8 +22,8 @@ export class Varelageret extends Component {
   render() {
     return (
       <div>
-        <NavLink to="/Varelager/nySykkel">Registrer sykkel</NavLink>
-        <NavLink to="/Varelager/nyUtstyr">Regitsrer utstyr</NavLink>
+        <NavLink to="/Varelager/nySykkel">Regitsrer Sykkel </NavLink>
+        <NavLink to="/Varelager/nyUtstyr"> Regitsrer Utstyr</NavLink>
         <Card title="Sykkel-/utstyrs-id">
           <Column>
             <Form.Label>Sykkel-id:</Form.Label>
@@ -44,10 +44,8 @@ export class Varelageret extends Component {
             <Button.Success onClick={this.utstyrk}>Søk</Button.Success>
           </Column>
         </Card>
-
         <div id="utdata"> </div>
         <div id="utdata2"> </div>
-
         <div class="container-fluid">
           <div class="row">
             <Column>
@@ -212,7 +210,9 @@ export class Sykkel extends Component {
             <div className="form-group">
               <label htmlFor="type">Type:</label>
               <select className="form-control" id="type" onChange={e => (this.sykkel.type = e.target.value)}>
-                <option value=""> </option>
+                <option value="" selected disabled hidden>
+                  Velg sykkeltype her
+                </option>
                 <option value="Tur">Tursykkel</option>
                 <option value="Terreng">Terrengsykkel</option>
                 <option value="Tandem">Tandemsykkel</option>
@@ -235,7 +235,9 @@ export class Sykkel extends Component {
             <div className="form-group">
               <label htmlFor="type">Tilstand:</label>
               <select className="form-control" id="type" onChange={e => (this.sykkel.tilstand = e.target.value)}>
-                <option value="" />
+                <option value="" selected disabled hidden>
+                  Velg sykkelstatus her
+                </option>
                 <option value="Ledig">Ledig</option>
                 <option value="Utleid">Utleid</option>
               </select>
@@ -257,7 +259,7 @@ export class Sykkel extends Component {
             <Button.Success onClick={this.create}>Lagre</Button.Success>
           </Column>
           <Column right>
-            <Button.Light onClick={this.cancel}>Cancel</Button.Light>
+            <Button.Light onClick={this.cancel}>Tilbake</Button.Light>
           </Column>
         </Row>
       </div>
@@ -270,7 +272,7 @@ export class Sykkel extends Component {
     history.push('/Varelager/NySykkel');
   }
   cancel() {
-    history.push('/Varelager/' + this.props.match.params.id);
+    history.push('/Varelager');
   }
 }
 
@@ -292,7 +294,9 @@ export class Utstyr extends Component {
             <div className="form-group">
               <label htmlFor="type">Type:</label>
               <select className="form-control" id="type" onChange={e => (this.utstyr.type = e.target.value)}>
-                <option value="" />
+                <option value="" selected disabled hidden>
+                  Velg utstyrstype her
+                </option>
                 <option value="Hjelm">Hjelm</option>
                 <option value="Racinghjelm">Racinghjelm</option>
                 <option value="Downhillhjelm">Downhillhjelm</option>
@@ -301,6 +305,7 @@ export class Utstyr extends Component {
                 <option value="Racingdress">Racingdress</option>
                 <option value="Drikkesekk">Drikkesekk</option>
                 <option value="Sykkelvogn">Sykkelvogn</option>
+                <option value="Diverse">Diverse</option>
               </select>
             </div>
           </Column>
@@ -309,7 +314,10 @@ export class Utstyr extends Component {
             <div className="form-group">
               <label htmlFor="type">Passer til sykkel:</label>
               <select className="form-control" id="type" onChange={e => (this.utstyr.stype = e.target.value)}>
-                <option value="" />
+                <option value="" selected disabled hidden>
+                  Velg hvilke sykkeltype utstyret passer til
+                </option>
+                <option value="Alle">Alle</option>
                 <option value="Tur">Tursykkel</option>
                 <option value="Terreng">Terrengsykkel</option>
                 <option value="Tandem">Tandemsykkel</option>
@@ -329,7 +337,6 @@ export class Utstyr extends Component {
             <div className="form-group">
               <label htmlFor="type">Tilstand:</label>
               <select className="form-control" id="type" onChange={e => (this.utstyr.tilstand = e.target.value)}>
-                <option value="" />
                 <option value="Ledig">Ledig</option>
                 <option value="Utleid">Utleid</option>
               </select>
@@ -344,7 +351,7 @@ export class Utstyr extends Component {
             <Button.Success onClick={this.create}>Lagre</Button.Success>
           </Column>
           <Column right>
-            <Button.Light onClick={this.cancel}>Cancel</Button.Light>
+            <Button.Light onClick={this.cancel}>Tilbake</Button.Light>
           </Column>
         </Row>
       </div>
@@ -357,7 +364,7 @@ export class Utstyr extends Component {
     history.push('/Varelager/NyUtstyr');
   }
   cancel() {
-    history.push('/Varelager/' + this.props.match.params.id);
+    history.push('/Varelager/');
   }
 }
 
