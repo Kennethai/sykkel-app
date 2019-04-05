@@ -45,23 +45,84 @@ class UtleieTjenester {
     );
   }
 
-  utleieSykkel(sykkelValg) {
+  velgSykkel(sykkelValg, success) {
     let type = ['tursykkel', 'terreng', 'downhill', 'grusracer', 'tandem'];
 
     for (var i = 0; i < type.length; i++) {
       let antall = Number(sykkelValg[type[i]]);
 
       connection.query(
-        'UPDATE sykkel SET s_tilstand="Utleid", utleie_id=? WHERE sykkeltype = ? AND s_tilstand = "Ledig" LIMIT ?;',
-        [sykkelValg.utleie_id, type[i], antall],
+        'SELECT sykkel_id FROM sykkel WHERE sykkeltype = ? AND s_tilstand = "Ledig" LIMIT ?',
+        [type[i], antall],
         (error, results) => {
           if (error) return console.error(error);
+
+          success(results);
         }
       );
     }
   }
 
+  // velgSykkel(sykkelValg, success) {
+  //   let type = ['tursykkel', 'terreng', 'downhill', 'grusracer', 'tandem'];
+  //   var sykkelIds = [];
+  //
+  //   for (var i = 0; i < type.length; i++) {
+  //     let antall = Number(sykkelValg[type[i]]);
+  //
+  //     connection.query(
+  //       'SELECT sykkel_id FROM sykkel WHERE sykkeltype = ? AND s_tilstand = "Ledig" LIMIT ?',
+  //       [type[i], antall],
+  //       function(error, results) {
+  //         if (error) throw error;
+  //
+  //         sykkelIds[type[i]] = [];
+  //         sykkelIds[type[i]].push(results);
+  //         console.log(sykkelIds);
+  //       }
+  //     );
+  //   }
+  //
+  //   success(sykkelIds);
+  // }
+
+  utleieSykkel(sykkelId, kommentar) {
+    connection.query('UPDATE sykkel SET s_tilstand = "Utleid" WHERE sykkel_id = ?;', [sykkelId], (error, results) => {
+      if (error) return console.error(error);
+    });
+
+    connection.query(
+      'INSERT INTO sykkel_kommentar (sykkel_id, kommentar, sykkel_status) VALUES (?, ?, ?);',
+      [sykkelId, kommentar, 'Utleid'],
+      (error, results) => {
+        if (error) return console.error(error);
+      }
+    );
+  }
+
+  // utleieSykkel(sykkelValg) {
+  //   let type = ['tursykkel', 'terreng', 'downhill', 'grusracer', 'tandem'];
+  //
+  //   for (var i = 0; i < type.length; i++) {
+  //     let antall = Number(sykkelValg[type[i]]);
+  //
+  //     connection.query(
+  //       'UPDATE sykkel SET s_tilstand = "Utleid", utleie_id = ?, kommentar = ? WHERE sykkeltype = ? AND s_tilstand = "Ledig" LIMIT ?;',
+  //       [sykkelValg.utleie_id, sykkelValg.kommentar, type[i], antall],
+  //       (error, results) => {
+  //         if (error) return console.error(error);
+  //       }
+  //     );
+  //   }
+  // }
+
   koblingstabellSykkel(utleiedata) {
+    connection.query('SELECT sykkel_id FROM sykkel ORDER BY utleie_id DESC', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results[0]);
+    });
+
     connection.query(
       'INSERT utleid_sykkel (utlevering, innlevering, utleie_id, sykkel_id) VALUES (?,?,?,?)',
       [utleiedata.utlevering, utleiedata.innlevering, utleiedata.utleie_id, LAST_INSERT_ID()],

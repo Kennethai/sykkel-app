@@ -34,13 +34,15 @@ let utleiedataLagring = {
   tildato: '',
   fraKl: '',
   tilKl: '',
-  kunde_nr: 0
+  kunde_nr: ''
 };
 
 export class Utleie extends Component {
   //henter inn mellomlagring ved innlasting av siden
   kunde = kundeLagring;
   utleiedata = utleiedataLagring;
+  kommentar = '';
+  valgteSykler = [];
 
   render() {
     return (
@@ -139,10 +141,7 @@ export class Utleie extends Component {
             <Button.Success onClick={this.create}>Legg inn</Button.Success>
           </Column>
           <Column>
-            <Button.Light onClick={this.delete}>Delete</Button.Light>
-          </Column>
-          <Column right>
-            <Button.Light onClick={this.cancel}>Cancel</Button.Light>
+            <Button.Light onClick={this.delete}>Tøm Skjema</Button.Light>
           </Column>
         </Row>
       </div>
@@ -170,32 +169,88 @@ export class Utleie extends Component {
 
   // oppretter et utleie (sender alt til db)
   create() {
-    // sender kundeinfo til db
-    utleieTjenester.opprettKunde(this.kunde);
+    // // sender kundeinfo til db
+    // utleieTjenester.opprettKunde(this.kunde);
+    //
+    // //henter kundenr fra db
+    // utleieTjenester.hentKunde(this.kunde, kunde => {
+    //   this.kunde = kunde;
+    //   console.log(this.kunde);
+    //   console.log(this.utleiedata);
+    //   this.kunde.kunde_nr.toString();
+    //   this.utleiedata.kunde_nr = this.kunde.kunde_nr;
+    // });
+    //
+    // //sender info om utlånet til db
+    // utleieTjenester.opprettUtleie(this.utleiedata);
+    //
+    // // henter utleie_id fra db
+    // utleieTjenester.hentUtleieId(this.utleiedata, utleiedata => {
+    //   utleieId = utleiedata;
+    //   this.utleiedata.utleie_id = utleieId.utleie_id.toString();
+    //   sykkelValg.utleie_id = utleieId.utleie_id.toString();
+    //   utstyrValg.utleie_id = utleieId.utleie_id.toString();
+    //   console.log(sykkelValg);
+    // });
+    //
+    this.kommentar = 'Sykkelen er utlånt av ' + this.kunde.fornavn + ' ' + this.kunde.etternavn;
+    // sykkelValg.kommentar = this.kommentar;
 
-    //henter kundenr fra db
-    utleieTjenester.hentKunde(this.kunde, kunde => {
-      this.kunde = kunde;
-      console.log(this.kunde);
-      console.log(this.utleiedata);
-      this.utleiedata.kunde_nr = this.kunde.kunde_nr.toString();
+    // utleieTjenester.velgSykkel(sykkelValg, results => {
+    //   this.valgteSykler.tursykkel = results['tursykkel'];
+    //   this.valgteSykler.terreng = results['terreng'];
+    //   this.valgteSykler.downhill = results['downhill'];
+    //   this.valgteSykler.grusracer = results['grusracer'];
+    //   this.valgteSykler.tandem = results['tandem'];
+    //   console.log(this.valgteSykler);
+    //   console.log(JSON.stringify(this.valgteSykler, null, 4));
+    // });
+
+    // utleieTjenester.velgSykkel(sykkelValg, valgteSykler => {
+    //   for (let i = 0; i < 5; i++) {
+    //     this.valgteSykler[i] = valgteSykler[i].sykkel_id;
+    //     console.log(this.valgteSykler);
+    //   }
+    //   console.log(this.valgteSykler);
+    // });
+
+    // utleieTjenester.velgSykkel(sykkelValg, results => {
+    //   this.valgteSykler.tursykkel = results['0'].sykkel_id;
+    //   this.valgteSykler.terreng = results['1'].sykkel_id;
+    //   this.valgteSykler.downhill = results['2'].sykkel_id;
+    //   this.valgteSykler.grusracer = results['3'].sykkel_id;
+    //   this.valgteSykler.tandem = results['4'].sykkel_id;
+    //   console.log(this.valgteSykler);
+    // });
+
+    // utleieTjenester.velgSykkel(sykkelValg, results => {
+    //   for (let i = 0; i < 5; i++) {
+    //     if (results[i] != undefined) {
+    //       this.valgteSykler.push(results[i].sykkel_id);
+    //       console.log(this.valgteSykler);
+    //     }
+    //   }
+    //   sykkelValg.sykkel_id = this.valgteSykler.toString();
+    // });
+
+    let ids = [];
+    utleieTjenester.velgSykkel(sykkelValg, results => {
+      if (results != undefined) {
+        for (var i = 0; i < results.length; i++) {
+          ids.push(results[i].sykkel_id);
+          console.log(results[i].sykkel_id);
+        }
+      }
     });
-
-    //sender info om utlånet til db
-    utleieTjenester.opprettUtleie(this.utleiedata);
-
-    // henter utleie_id fra db
-    utleieTjenester.hentUtleieId(this.utleiedata, utleiedata => {
-      utleieId = utleiedata;
-      this.utleiedata.utleie_id = utleieId.utleie_id.toString();
-      sykkelValg.utleie_id = utleieId.utleie_id;
-      utstyrValg.utleie_id = utleieId.utleie_id;
-      console.log(sykkelValg);
-    });
+    console.log(ids.toString());
 
     // registrerer sykler for utlån i db
-    utleieTjenester.utleieSykkel(sykkelValg);
+    for (var i = 0; i < ids.length; i++) {
+      console.log('Oppdaterer kommentar for sykkel ' + ids[i] + '.');
+      utleieTjenester.utleieSykkel(ids[i], this.kommentar);
+    }
 
+    // utleieTjenester.utleieSykkel(sykkelValg);
     // registrerer utstyr for utlån i db, dersom det blir lånt tilleggsutstyr
     if (utstyrTeller > 0) {
       utleieTjenester.utleieUtstyr(utstyrValg);
@@ -205,11 +260,7 @@ export class Utleie extends Component {
   }
 
   delete() {
-    studentService.deleteStudent(this.props.match.params.id, () => history.push('/students'));
-  }
-
-  cancel() {
-    history.push('/students/' + this.props.match.params.id);
+    history.push('/utleie/');
   }
 }
 
