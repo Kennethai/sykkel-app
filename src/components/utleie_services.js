@@ -63,7 +63,7 @@ class UtleieTjenester {
     }
   }
 
-  utleieSykkel(sykkelId, kommentar) {
+  utleieSykkel(utleieId, sykkelId, kommentar) {
     connection.query('UPDATE sykkel SET s_tilstand = "Utleid" WHERE sykkel_id = ?;', [sykkelId], (error, results) => {
       if (error) return console.error(error);
     });
@@ -71,6 +71,14 @@ class UtleieTjenester {
     connection.query(
       'INSERT INTO sykkel_kommentar (sykkel_id, kommentar, sykkel_status) VALUES (?, ?, ?);',
       [sykkelId, kommentar, 'Utleid'],
+      (error, results) => {
+        if (error) return console.error(error);
+      }
+    );
+
+    connection.query(
+      'INSERT INTO utleide_sykler (utleie_id, sykkel_id) VALUES (?,?)',
+      [utleieId, sykkelId],
       (error, results) => {
         if (error) return console.error(error);
       }
@@ -85,7 +93,7 @@ class UtleieTjenester {
     });
 
     connection.query(
-      'INSERT utleid_sykkel (utlevering, innlevering, utleie_id, sykkel_id) VALUES (?,?,?,?)',
+      'INSERT utleide_sykler (utlevering, innlevering, utleie_id, sykkel_id) VALUES (?,?,?,?)',
       [utleiedata.utlevering, utleiedata.innlevering, utleiedata.utleie_id, LAST_INSERT_ID()],
       (error, results) => {
         if (error) return console.error(error);

@@ -169,31 +169,26 @@ export class Utleie extends Component {
 
   // oppretter et utleie (sender alt til db)
   create() {
-    // // sender kundeinfo til db
-    // utleieTjenester.opprettKunde(this.kunde);
-    //
-    // //henter kundenr fra db
-    // utleieTjenester.hentKunde(this.kunde, kunde => {
-    //   this.kunde = kunde;
-    //   console.log(this.kunde);
-    //   console.log(this.utleiedata);
-    //   this.kunde.kunde_nr.toString();
-    //   this.utleiedata.kunde_nr = this.kunde.kunde_nr;
-    // });
-    //
-    // //sender info om utlånet til db
-    // utleieTjenester.opprettUtleie(this.utleiedata);
-    //
-    // // henter utleie_id fra db
-    // utleieTjenester.hentUtleieId(this.utleiedata, utleiedata => {
-    //   utleieId = utleiedata;
-    //   this.utleiedata.utleie_id = utleieId.utleie_id.toString();
-    //   sykkelValg.utleie_id = utleieId.utleie_id.toString();
-    //   utstyrValg.utleie_id = utleieId.utleie_id.toString();
-    //   console.log(sykkelValg);
-    // });
-    //
-    this.kommentar = 'Sykkelen er utlånt av ' + this.kunde.fornavn + ' ' + this.kunde.etternavn;
+    // sender kundeinfo til db
+    utleieTjenester.opprettKunde(this.kunde);
+
+    //henter kundenr fra db
+    utleieTjenester.hentKunde(this.kunde, kunde => {
+      this.kunde = kunde;
+      console.log(this.kunde);
+      console.log(this.utleiedata);
+      this.utleiedata.kunde_nr = this.kunde.kunde_nr.toString();
+    });
+
+    //sender info om utlånet til db
+    utleieTjenester.opprettUtleie(this.utleiedata);
+
+    // henter utleie_id fra db
+    utleieTjenester.hentUtleieId(this.utleiedata, utleiedata => {
+      utleieId = utleiedata.utleie_id;
+    });
+
+    this.kommentar = 'Sykkelen er utlånt av ' + this.kunde.k_fornavn + ' ' + this.kunde.k_etternavn;
 
     let ids = [];
     utleieTjenester.velgSykkel(sykkelValg, results => {
@@ -209,7 +204,7 @@ export class Utleie extends Component {
     // registrerer sykler for utlån i db
     for (var i = 0; i < ids.length; i++) {
       console.log('Oppdaterer kommentar for sykkel ' + ids[i] + '.');
-      utleieTjenester.utleieSykkel(ids[i], this.kommentar);
+      utleieTjenester.utleieSykkel(utleieId, ids[i], this.kommentar);
     }
 
     // registrerer utstyr for utlån i db, dersom det blir lånt tilleggsutstyr
