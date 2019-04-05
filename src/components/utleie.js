@@ -194,44 +194,6 @@ export class Utleie extends Component {
     // });
     //
     this.kommentar = 'Sykkelen er utlånt av ' + this.kunde.fornavn + ' ' + this.kunde.etternavn;
-    // sykkelValg.kommentar = this.kommentar;
-
-    // utleieTjenester.velgSykkel(sykkelValg, results => {
-    //   this.valgteSykler.tursykkel = results['tursykkel'];
-    //   this.valgteSykler.terreng = results['terreng'];
-    //   this.valgteSykler.downhill = results['downhill'];
-    //   this.valgteSykler.grusracer = results['grusracer'];
-    //   this.valgteSykler.tandem = results['tandem'];
-    //   console.log(this.valgteSykler);
-    //   console.log(JSON.stringify(this.valgteSykler, null, 4));
-    // });
-
-    // utleieTjenester.velgSykkel(sykkelValg, valgteSykler => {
-    //   for (let i = 0; i < 5; i++) {
-    //     this.valgteSykler[i] = valgteSykler[i].sykkel_id;
-    //     console.log(this.valgteSykler);
-    //   }
-    //   console.log(this.valgteSykler);
-    // });
-
-    // utleieTjenester.velgSykkel(sykkelValg, results => {
-    //   this.valgteSykler.tursykkel = results['0'].sykkel_id;
-    //   this.valgteSykler.terreng = results['1'].sykkel_id;
-    //   this.valgteSykler.downhill = results['2'].sykkel_id;
-    //   this.valgteSykler.grusracer = results['3'].sykkel_id;
-    //   this.valgteSykler.tandem = results['4'].sykkel_id;
-    //   console.log(this.valgteSykler);
-    // });
-
-    // utleieTjenester.velgSykkel(sykkelValg, results => {
-    //   for (let i = 0; i < 5; i++) {
-    //     if (results[i] != undefined) {
-    //       this.valgteSykler.push(results[i].sykkel_id);
-    //       console.log(this.valgteSykler);
-    //     }
-    //   }
-    //   sykkelValg.sykkel_id = this.valgteSykler.toString();
-    // });
 
     let ids = [];
     utleieTjenester.velgSykkel(sykkelValg, results => {
@@ -250,7 +212,6 @@ export class Utleie extends Component {
       utleieTjenester.utleieSykkel(ids[i], this.kommentar);
     }
 
-    // utleieTjenester.utleieSykkel(sykkelValg);
     // registrerer utstyr for utlån i db, dersom det blir lånt tilleggsutstyr
     if (utstyrTeller > 0) {
       utleieTjenester.utleieUtstyr(utstyrValg);
