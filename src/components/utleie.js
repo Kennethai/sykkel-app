@@ -138,9 +138,9 @@ export class Utleie extends Component {
 
         <Row>
           <Column>
-            <Button.Light onClick={this.delete}>Tøm Skjema</Button.Light>
-          </Column>
-          <Column>
+            <div className="text-center">
+              <Button.Light onClick={this.delete}>Tøm Skjema</Button.Light>
+            </div>
             <div className="text-right">
               <Button.Success onClick={this.create}>Legg inn</Button.Success>
             </div>
