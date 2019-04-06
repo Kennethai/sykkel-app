@@ -32,11 +32,26 @@ class MottakTjenester {
       }
     );
   }
-  mottak(mottak_ids, success) {
-    // if (this.checkedSykkel[sykkel_id]) this.checkedSykkel[sykkel_id] = false;
-    // if (this.checkedSykkel[sykkel_id] == true);
-    // for (let keys of Object.keys(this.checkedSykkel))
-    connection.query('UPDATE sykkel SET s_tilstand = "Ledig" WHERE sykkel_id=?', [mottak_ids], (error, results) => {
+  mottak(sykkel_id, success) {
+    connection.query('UPDATE sykkel SET s_tilstand = "Ledig" WHERE sykkel_id=?', [sykkel_id], (error, results) => {
+      if (error) return console.error(error);
+      success(results[0]);
+    });
+  }
+  IKKEmottak(sykkel_id, success) {
+    connection.query('UPDATE sykkel SET s_tilstand = "Utleid" WHERE sykkel_id=?', [sykkel_id], (error, results) => {
+      if (error) return console.error(error);
+      success(results[0]);
+    });
+  }
+  Umottak(utstyr_id, success) {
+    connection.query('UPDATE utstyr SET u_tilstand = "Ledig" WHERE utstyr_id=?', [utstyr_id], (error, results) => {
+      if (error) return console.error(error);
+      success(results[0]);
+    });
+  }
+  uIKKEmottak(utstyr_id, success) {
+    connection.query('UPDATE utstyr SET u_tilstand = "Utleid" WHERE utstyr_id=?', [utstyr_id], (error, results) => {
       if (error) return console.error(error);
       success(results[0]);
     });
