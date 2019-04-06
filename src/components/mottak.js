@@ -23,6 +23,7 @@ export class KundeListe extends Component {
   utstyr = [];
 
   checkedSykkel = {};
+  checkedUtstyr = {};
 
   render() {
     return (
@@ -158,18 +159,25 @@ export class KundeListe extends Component {
     this.kunde.etternavn = [];
     this.kunde.tlf = [];
   }
-
   motta(sykkel_id) {
-    if (this.checkedSykkel[sykkel_id]) this.checkedSykkel[sykkel_id] = false;
-    else this.checkedSykkel[sykkel_id] = true;
-
-    mottakTjenester.mottak(this.checkedSykkel[sykkel_id]);
-
-    console.log(this.checkedSykkel);
+    let mottak_ids = [];
+    for (let sykkel_id of Object.keys(this.checkedSykkel)) {
+      if (this.checkedSykkel[sykkel_id] != false) {
+        mottak_ids.push(sykkel_id);
+      }
+    }
+    mottak_ids = mottak_ids.toString();
+    mottakTjenester.mottak(mottak_ids);
+    console.log(mottak_ids);
   }
+
   check(sykkel_id) {
     if (this.checkedSykkel[sykkel_id]) this.checkedSykkel[sykkel_id] = false;
     else this.checkedSykkel[sykkel_id] = true;
     for (let sykkel_id of Object.keys(this.checkedSykkel)) console.log(sykkel_id, this.checkedSykkel[sykkel_id]);
+
+    // if (this.checkedUtstyr[utstyr_id]) this.checkedUtstyr[utstyr_id] = false;
+    // else this.checkedUtstyr[utstyr_id] = true;
+    // for (let utstyr_id of Object.keys(this.checkedUtstyr)) console.log(utstyr_id, this.checkedUtstyr[utstyr_id]);
   }
 }
