@@ -46,7 +46,7 @@ class UtleieTjenester {
   }
 
   velgSykkel(sykkelValg, success) {
-    let type = ['tursykkel', 'terreng', 'downhill', 'grusracer', 'tandem'];
+    let type = ['Tursykkel', 'Terreng', 'Downhill', 'Grusracer', 'Tandem'];
 
     for (var i = 0; i < type.length; i++) {
       let antall = Number(sykkelValg[type[i]]);

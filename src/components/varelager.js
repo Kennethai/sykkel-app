@@ -52,14 +52,14 @@ export class Varelageret extends Component {
           </Column>
         </Card>
         <Column>
-          <div class="Midtstille">
+          <div className="Midtstille">
             <Button.Success onClick={this.sykkeltabell}> SYKKEL </Button.Success>&nbsp;&nbsp;
             <Button.Success onClick={this.utstyrtabell}> UTSTYR </Button.Success>
           </div>
         </Column>
         <br />
         <ul>
-          <div class="Liste" id="utdata">
+          <div className="Liste" id="utdata">
             {' '}
           </div>
           <div id="utdata2"> </div>
