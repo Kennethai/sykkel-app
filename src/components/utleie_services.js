@@ -1,16 +1,8 @@
 import { connection } from '../mysql_connection';
 
 class UtleieTjenester {
-  // hentKunder(success) {
-  //   connection.query('select * from kunde', (error, results) => {
-  //     if (error) return console.error(error);
-  //
-  //     success(results);
-  //   });
-  // }
-
   hentKunde(kunde, success) {
-    connection.query('select kunde_nr from kunde where k_tlf=?', [kunde.tlf], (error, results) => {
+    connection.query('SELECT * FROM kunde WHERE k_tlf=?', [kunde.tlf], (error, results) => {
       if (error) return console.error(error);
 
       success(results[0]);
@@ -27,55 +19,112 @@ class UtleieTjenester {
     );
   }
 
-  hentUtleieData(success) {
-    connection.query('select * from utleie', (error, results) => {
+  hentUtleieId(utleiedata, success) {
+    connection.query('SELECT utleie_id FROM utleie ORDER BY utleie_id DESC', (error, results) => {
       if (error) return console.error(error);
 
-      success(results);
+      success(results[0]);
     });
   }
 
-  opprettUtleie(utleiedata, success) {
+  opprettUtleie(utleiedata) {
     connection.query(
-      'INSERT INTO utleie (utleietid, innleveringstid, selger_id, avdelings_id, antall_sykler, kunde_nr) values (?,?,?,?,?,?)',
+      'INSERT INTO utleie (utleietid, innleveringstid, utsted, innsted, selger_id, avdelings_id, kunde_nr) VALUES(?,?,?,?,?,?,?)',
       [
         utleiedata.fradato,
         utleiedata.tildato,
+        utleiedata.utlevering,
+        utleiedata.innlevering,
         utleiedata.selger_id,
         utleiedata.avdeling,
-        utleiedata.antall_sykler,
         utleiedata.kunde_nr
       ],
       (error, results) => {
         if (error) return console.error(error);
-
-        success();
       }
     );
   }
 
-  utleieSykkel(sykkelValg) {
+  velgSykkel(sykkelValg, success) {
     let type = ['tursykkel', 'terreng', 'downhill', 'grusracer', 'tandem'];
 
     for (var i = 0; i < type.length; i++) {
       let antall = Number(sykkelValg[type[i]]);
 
       connection.query(
-        'UPDATE sykkel SET s_tilstand="Utleid" WHERE sykkeltype = ? AND s_tilstand = "Ledig" LIMIT ?;',
+        'SELECT sykkel_id FROM sykkel WHERE sykkeltype = ? AND s_tilstand = "Ledig" LIMIT ?',
         [type[i], antall],
+        (error, results) => {
+          if (error) return console.error(error);
+
+          success(results);
+        }
+      );
+    }
+  }
+
+  utleieSykkel(utleieId, sykkelId, kommentar) {
+    connection.query('UPDATE sykkel SET s_tilstand = "Utleid" WHERE sykkel_id = ?;', [sykkelId], (error, results) => {
+      if (error) return console.error(error);
+    });
+
+    connection.query(
+      'INSERT INTO sykkel_kommentar (sykkel_id, kommentar, sykkel_status) VALUES (?, ?, ?);',
+      [sykkelId, kommentar, 'Utleid'],
+      (error, results) => {
+        if (error) return console.error(error);
+      }
+    );
+
+    connection.query(
+      'INSERT INTO utleide_sykler (utleie_id, sykkel_id) VALUES (?,?)',
+      [utleieId, sykkelId],
+      (error, results) => {
+        if (error) return console.error(error);
+      }
+    );
+  }
+
+  koblingstabellSykkel(utleiedata) {
+    connection.query('SELECT sykkel_id FROM sykkel ORDER BY utleie_id DESC', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results[0]);
+    });
+
+    connection.query(
+      'INSERT utleide_sykler (utlevering, innlevering, utleie_id, sykkel_id) VALUES (?,?,?,?)',
+      [utleiedata.utlevering, utleiedata.innlevering, utleiedata.utleie_id, LAST_INSERT_ID()],
+      (error, results) => {
+        if (error) return console.error(error);
+      }
+    );
+  }
+
+  utleieUtstyr(utstyrValg) {
+    let type = ['Hjelm', 'Sykkelveske', 'Sykkelvogn', 'Barnesete', 'Drikkesekk'];
+
+    for (var i = 0; i < type.length; i++) {
+      let antall = Number(utstyrValg[type[i]]);
+
+      connection.query(
+        'UPDATE utstyr SET u_tilstand="Utleid", utleie_id=? WHERE utstyrstype = ? AND u_tilstand = "Ledig" LIMIT ?;',
+        [utstyrValg.utleie_id, type[i], antall],
         (error, results) => {
           if (error) return console.error(error);
         }
       );
     }
+  }
 
-    //
-    // for (var i=0 ; i < type.length; i++) {
-    //   Object.keys(sykkelValg).forEach(function(key) {
-    //     let x = Number(sykkelValg[key]);
-    //   });
-
-    // console.log(sykkelValg[i]);
+  koblingstabellUtstyr(utleiedata) {
+    connection.query(
+      'INSERT utleid_utstyr (u_utlevering, u_innlevering, utleie_id, utstyr_id) VALUES (?,?,?,?)',
+      [utleiedata.utlevering, utleiedata.innlevering, utleiedata.utleie_id, LAST_INSERT_ID()],
+      (error, results) => {
+        if (error) return console.error(error);
+      }
+    );
   }
 }
 
