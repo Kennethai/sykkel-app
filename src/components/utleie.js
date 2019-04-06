@@ -181,6 +181,9 @@ export class Utleie extends Component {
       console.log(this.kunde);
       console.log(this.utleiedata);
       this.utleiedata.kunde_nr = this.kunde.kunde_nr.toString();
+      if ((utleiedata.kunde_nr = '')) {
+        alert('Feil ved henting av kundenr, vennligst Force Reload og prøv igjen.');
+      }
     });
 
     //sender info om utlånet til db
@@ -212,9 +215,22 @@ export class Utleie extends Component {
 
     // registrerer utstyr for utlån i db, dersom det blir lånt tilleggsutstyr
     if (utstyrTeller > 0) {
-      utleieTjenester.utleieUtstyr(utstyrValg);
-    }
+      let u_ids = [];
+      utleieTjenester.velgUtstyr(utstyrValg, results => {
+        if (results != undefined) {
+          for (var i = 0; i < results.length; i++) {
+            u_ids.push(results[i].utstyr_id);
+            console.log(results[i].utstyr_id);
+          }
+        }
+      });
+      console.log(u_ids.toString());
 
+      for (var i = 0; i < u_ids.length; i++) {
+        utleieTjenester.utleieUtstyr(utleieId, u_ids[i]);
+      }
+    }
+    alert('Utleie registert');
     history.push('/utleie/');
   }
 
