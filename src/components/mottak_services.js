@@ -38,7 +38,7 @@ class MottakTjenester {
     // for (let keys of Object.keys(this.checkedSykkel))
     connection.query('UPDATE sykkel SET s_tilstand = "Ledig" WHERE sykkel_id=?', [mottak_ids], (error, results) => {
       if (error) return console.error(error);
-      success(results);
+      success(results[0]);
     });
   }
 }

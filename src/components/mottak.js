@@ -155,9 +155,9 @@ export class KundeListe extends Component {
         });
       }
     });
-    this.kunde.fornavn = [];
-    this.kunde.etternavn = [];
-    this.kunde.tlf = [];
+    // this.kunde.fornavn = [];
+    // this.kunde.etternavn = [];
+    // this.kunde.tlf = [];
   }
   motta(sykkel_id) {
     let mottak_ids = [];
@@ -169,6 +169,14 @@ export class KundeListe extends Component {
     mottak_ids = mottak_ids.toString();
     mottakTjenester.mottak(mottak_ids);
     console.log(mottak_ids);
+
+    mottakTjenester.hentSykkel(this.kunde, syklene => {
+      this.syklene = syklene;
+    });
+    mottakTjenester.hentUtstyr(this.kunde, utstyr => {
+      this.utstyr = utstyr;
+    });
+    this.checkedSykkel = [];
   }
 
   check(sykkel_id) {
