@@ -121,6 +121,7 @@ export class Utleie extends Component {
           <NavLink to="/utleie/sykkel" onClick={this.lagring}>
             Velg sykkel
           </NavLink>
+          <br />
         </Column>
 
         <Column>
@@ -129,11 +130,14 @@ export class Utleie extends Component {
           </NavLink>
         </Column>
 
+
         <Column>
+
           <div className="form-group">
             <label htmlFor="sykkelArea">Bestilling:</label>
-            <textarea className="form-control" rows="5" id="sykkelArea" />
+            <textarea className="Liste" rows="5" id="sykkelArea" />
           </div>
+
         </Column>
 
         <Row>
@@ -142,8 +146,15 @@ export class Utleie extends Component {
           </Column>
           <Column>
             <Button.Light onClick={this.delete}>Tøm Skjema</Button.Light>
+
+          </Column>
+          <Column>
+            <div className="text-right">
+              <Button.Success onClick={this.create}>Legg inn</Button.Success>
+            </div>
           </Column>
         </Row>
+        <br />
       </div>
     );
   }

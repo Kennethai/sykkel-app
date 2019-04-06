@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { varelager, regSykkel } from './varelager_services';
+import { varelager, regSykkel, regUtstyr } from './varelager_services';
 import { Card, List, Row, Column, NavBar, Button, Form } from '../widgets';
 import createHashHistory from 'history/createHashHistory';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -15,6 +15,8 @@ export class Varelageret extends Component {
     utstyrsid: ''
   };
 
+  merinfo = [];
+
   sykler = [];
 
   utstyr = [];
@@ -22,10 +24,17 @@ export class Varelageret extends Component {
   render() {
     return (
       <div>
-        <Card title="Sykkel-/utstyrs-id">
+        <NavLink to="/Varelager/nySykkel">Registrer sykkel</NavLink>
+        &nbsp;&nbsp;
+        <NavLink to="/Varelager/nyUtstyr">Regitsrer utstyr</NavLink>
+        <Card>
           <Column>
             <Form.Label>Sykkel-id:</Form.Label>
-            <Form.Input type="text" value={this.info.sykkelid} onChange={e => (this.info.sykkelid = e.target.value)} />
+            <Form.Input
+              type="number"
+              value={this.info.sykkelid}
+              onChange={e => (this.info.sykkelid = e.target.value)}
+            />
           </Column>
           <Column>
             <Button.Success onClick={this.sykkel}>Søk</Button.Success>
@@ -33,7 +42,7 @@ export class Varelageret extends Component {
           <Column>
             <Form.Label>Utstyrs-id:</Form.Label>
             <Form.Input
-              type="text"
+              type="number"
               value={this.info.utstyrsid}
               onChange={e => (this.info.utstyrsid = e.target.value)}
             />
@@ -42,15 +51,27 @@ export class Varelageret extends Component {
             <Button.Success onClick={this.utstyrk}>Søk</Button.Success>
           </Column>
         </Card>
-
-        <div id="utdata"> </div>
-        <div id="utdata2"> </div>
-
-        <div class="container-fluid">
-          <div class="row">
-            <Column>
-              <Card title="Sykkel">
-                <table class="table table-striped hover" size="sm">
+        <Column>
+          <div class="Midtstille">
+            <Button.Success onClick={this.sykkeltabell}> SYKKEL </Button.Success>&nbsp;&nbsp;
+            <Button.Success onClick={this.utstyrtabell}> UTSTYR </Button.Success>
+          </div>
+        </Column>
+        <br />
+        <ul>
+          <div class="Liste" id="utdata">
+            {' '}
+          </div>
+          <div id="utdata2"> </div>
+        </ul>
+        <div className="container-fluid">
+          <div className="row">
+            <div id="col_sykkel">
+              <Column>
+                <h4>
+                  <b>Sykler:</b>
+                </h4>
+                <table className="table table-striped hover" size="sm">
                   <thead>
                     <tr>
                       <th> ID: </th>
@@ -61,7 +82,6 @@ export class Varelageret extends Component {
                       <th> År: </th>
                       <th> Tilstand: </th>
                       <th> Beskrivelse: </th>
-                      <th> Kommentar: </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -75,17 +95,18 @@ export class Varelageret extends Component {
                         <td> {sykkel.s_aar} </td>
                         <td> {sykkel.s_tilstand} </td>
                         <td> {sykkel.s_beskrivelse} </td>
-                        <td> {sykkel.Kommentar} </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
-              </Card>
-            </Column>
-
-            <Column>
-              <Card title="Utstyr">
-                <table class="table table-striped hover" size="sm">
+              </Column>
+            </div>
+            <div id="col_utstyr">
+              <Column>
+                <h4>
+                  <b> Utstyr:</b>
+                </h4>
+                <table className="table table-striped hover" size="sm">
                   <thead>
                     <tr>
                       <th> ID: </th>
@@ -113,8 +134,8 @@ export class Varelageret extends Component {
                     ))}
                   </tbody>
                 </table>
-              </Card>
-            </Column>
+              </Column>
+            </div>
           </div>
         </div>
       </div>
@@ -145,48 +166,76 @@ export class Varelageret extends Component {
   //   </List>
   // </Card>
 
-  mounted() {
+  sykkeltabell() {
     varelager.hentSykkeltabell(this.sykler, sykler => {
       this.sykler = sykler;
-    });
+      console.log(this.sykler);
 
+      let x = document.getElementById('col_sykkel');
+      let y = document.getElementById('col_utstyr');
+      if (y.style.display === 'block') {
+        (y.style.display = 'none'), (x.style.display = 'block');
+      } else {
+        x.style.display = 'block';
+      }
+    });
+  }
+
+  utstyrtabell() {
     varelager.hentUtstyrtabell(this.utstyr, utstyr => {
       this.utstyr = utstyr;
-    });
 
-    // varelager.hentSykkeltabell(this.info, info => {
-    //   this.info = info;
-    //   console.log(this.info);
-    //   utdata.innerText = '';
-    //   Object.keys(this.info).forEach(function(key) {
-    //     utdata.innerText += key + ' ' + info[key] + '\n';
-    //   });
-    // });
-    // varelager.hentUtstyrtabell(this.info, info => {
-    //   this.info = info;
-    //   console.log(this.info);
-    //   Object.keys(this.info).forEach(function(key) {
-    //     utdata2.innerText += key + ' ' + info[key] + '\n';
-    //   });
-    // });
+      let x = document.getElementById('col_utstyr');
+      let y = document.getElementById('col_sykkel');
+      if (y.style.display === 'block') {
+        (y.style.display = 'none'), (x.style.display = 'block');
+      } else {
+        x.style.display = 'block';
+      }
+    });
   }
+  // varelager.hentSykkeltabell(this.info, info => {
+  //   this.info = info;
+  //   console.log(this.info);
+  //   utdata.innerText = '';
+  //   Object.keys(this.info).forEach(function(key) {
+  //     utdata.innerText += key + ' ' + info[key] + '\n';
+  //   });
+  // });
+  // varelager.hentUtstyrtabell(this.info, info => {
+  //   this.info = info;
+  //   console.log(this.info);
+  //   Object.keys(this.info).forEach(function(key) {
+  //     utdata2.innerText += key + ' ' + info[key] + '\n';
+  //   });
+  // });
+
   sykkel() {
-    varelager.hentsykkel(this.info, info => {
-      this.info = info;
+    varelager.hentsykkel(this.info, merinfo => {
+      this.merinfo = [];
+      this.merinfo = merinfo;
       utdata.innerText = '';
-      Object.keys(this.info).forEach(function(key) {
-        utdata.innerText += key + ' ' + info[key] + '\n';
-      });
+      if (this.merinfo == undefined) {
+        alert('Sykkel med denne IDn finnes ikke!');
+      } else {
+        Object.keys(this.merinfo).forEach(function(key) {
+          utdata.innerText += key + ' ' + merinfo[key] + '\n';
+        });
+      }
     });
   }
   utstyrk() {
-    varelager.hentutstyr(this.info, info => {
-      this.info = info;
-      console.log = this.info;
+    varelager.hentutstyr(this.info, merinfo => {
+      this.merinfo = [];
+      this.merinfo = merinfo;
       utdata.innerText = '';
-      Object.keys(this.info).forEach(function(key) {
-        utdata.innerText += key + ' ' + info[key] + '\n';
-      });
+      if (this.merinfo == undefined) {
+        alert('Utstyr med denne IDn finnes ikke!');
+      } else {
+        Object.keys(this.merinfo).forEach(function(key) {
+          utdata.innerText += key + ' ' + merinfo[key] + '\n';
+        });
+      }
     });
   }
 }
@@ -199,8 +248,7 @@ export class Sykkel extends Component {
     pris: '',
     tilstand: '',
     sted: '',
-    beskrivelse: '',
-    kommentar: ''
+    beskrivelse: ''
   };
 
   render() {
@@ -211,6 +259,7 @@ export class Sykkel extends Component {
             <div className="form-group">
               <label htmlFor="type">Type:</label>
               <select className="form-control" id="type" onChange={e => (this.sykkel.type = e.target.value)}>
+                <option value=""> </option>
                 <option value="Tur">Tursykkel</option>
                 <option value="Terreng">Terrengsykkel</option>
                 <option value="Tandem">Tandemsykkel</option>
@@ -229,12 +278,16 @@ export class Sykkel extends Component {
           <Form.Label>Pris:</Form.Label>
           <Form.Input type="text" value={this.sykkel.pris} onChange={e => (this.sykkel.pris = e.target.value)} />
 
-          <Form.Label>Tilstand:</Form.Label>
-          <Form.Input
-            type="text"
-            value={this.sykkel.tilstand}
-            onChange={e => (this.sykkel.tilstand = e.target.value)}
-          />
+          <Column>
+            <div className="form-group">
+              <label htmlFor="type">Tilstand:</label>
+              <select className="form-control" id="type" onChange={e => (this.sykkel.tilstand = e.target.value)}>
+                <option value="" />
+                <option value="Ledig">Ledig</option>
+                <option value="Utleid">Utleid</option>
+              </select>
+            </div>
+          </Column>
 
           <Form.Label>Sykkelens tilhørighet:</Form.Label>
           <Form.Input type="text" value={this.sykkel.sted} onChange={e => (this.sykkel.sted = e.target.value)} />
@@ -244,13 +297,6 @@ export class Sykkel extends Component {
             type="text"
             value={this.sykkel.beskrivelse}
             onChange={e => (this.sykkel.beskrivelse = e.target.value)}
-          />
-
-          <Form.Label>Kommentar til sykkel :</Form.Label>
-          <Form.Input
-            type="text"
-            value={this.sykkel.kommentar}
-            onChange={e => (this.sykkel.kommentar = e.target.value)}
           />
         </Card>
         <Row>
@@ -267,7 +313,92 @@ export class Sykkel extends Component {
 
   create() {
     regSykkel.opprettSykkel(this.sykkel);
-    history.push('/subjects/');
+    alert('Sykkelen er lagt til');
+    history.push('/Varelager/NySykkel');
+  }
+}
+
+export class Utstyr extends Component {
+  utstyr = {
+    type: '',
+    stype: '',
+    sted: '',
+    pris: '',
+    tilstand: '',
+    merke: ''
+  };
+
+  render() {
+    return (
+      <div>
+        <Card title="Legg inn ustyr">
+          <Column>
+            <div className="form-group">
+              <label htmlFor="type">Type:</label>
+              <select className="form-control" id="type" onChange={e => (this.utstyr.type = e.target.value)}>
+                <option value="" />
+                <option value="Hjelm">Hjelm</option>
+                <option value="Racinghjelm">Racinghjelm</option>
+                <option value="Downhillhjelm">Downhillhjelm</option>
+                <option value="Barnesete">Barnesete</option>
+                <option value="Sykkelveske">Sykkelveske</option>
+                <option value="Racingdress">Racingdress</option>
+                <option value="Drikkesekk">Drikkesekk</option>
+                <option value="Sykkelvogn">Sykkelvogn</option>
+              </select>
+            </div>
+          </Column>
+
+          <Column>
+            <div className="form-group">
+              <label htmlFor="type">Passer til sykkel:</label>
+              <select className="form-control" id="type" onChange={e => (this.utstyr.stype = e.target.value)}>
+                <option value="" />
+                <option value="Tur">Tursykkel</option>
+                <option value="Terreng">Terrengsykkel</option>
+                <option value="Tandem">Tandemsykkel</option>
+                <option value="Downhill">Downhillsykkel</option>
+                <option value="Racing">Racingsykkel</option>
+              </select>
+            </div>
+          </Column>
+
+          <Form.Label>Merke:</Form.Label>
+          <Form.Input type="text" value={this.utstyr.merke} onChange={e => (this.utstyr.merke = e.target.value)} />
+
+          <Form.Label>Utleiepris:</Form.Label>
+          <Form.Input type="number" value={this.utstyr.pris} onChange={e => (this.utstyr.pris = e.target.value)} />
+
+          <Column>
+            <div className="form-group">
+              <label htmlFor="type">Tilstand:</label>
+              <select className="form-control" id="type" onChange={e => (this.utstyr.tilstand = e.target.value)}>
+                <option value="" />
+                <option value="Ledig">Ledig</option>
+                <option value="Utleid">Utleid</option>
+              </select>
+            </div>
+          </Column>
+
+          <Form.Label>Sykkelens tilhørighet:</Form.Label>
+          <Form.Input type="text" value={this.utstyr.sted} onChange={e => (this.utstyr.sted = e.target.value)} />
+        </Card>
+        <Row>
+          <Column>
+            <Button.Success onClick={this.create}>Lagre</Button.Success>
+          </Column>
+          <Column right>
+            <Button.Light onClick={this.cancel}>Cancel</Button.Light>
+          </Column>
+        </Row>
+      </div>
+    );
+  }
+
+  create() {
+    regUtstyr.opprettUtstyr(this.utstyr);
+    alert('Utstyret er lagt til');
+    history.push('/Varelager/NyUtstyr');
   }
 }
 
