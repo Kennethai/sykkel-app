@@ -46,7 +46,7 @@ class UtleieTjenester {
   }
 
   velgSykkel(sykkelValg, success) {
-    let type = ['tursykkel', 'terreng', 'downhill', 'grusracer', 'tandem'];
+    let type = ['Tursykkel', 'Terreng', 'Downhill', 'Grusracer', 'Tandem'];
 
     for (var i = 0; i < type.length; i++) {
       let antall = Number(sykkelValg[type[i]]);
@@ -77,7 +77,7 @@ class UtleieTjenester {
     );
 
     connection.query(
-      'INSERT INTO utleide_sykler (utleie_id, sykkel_id) VALUES (?,?)',
+      'INSERT INTO utleid_sykler (utleie_id, sykkel_id) VALUES (?,?)',
       [utleieId, sykkelId],
       (error, results) => {
         if (error) return console.error(error);
@@ -85,42 +85,32 @@ class UtleieTjenester {
     );
   }
 
-  koblingstabellSykkel(utleiedata) {
-    connection.query('SELECT sykkel_id FROM sykkel ORDER BY utleie_id DESC', (error, results) => {
-      if (error) return console.error(error);
-
-      success(results[0]);
-    });
-
-    connection.query(
-      'INSERT utleide_sykler (utlevering, innlevering, utleie_id, sykkel_id) VALUES (?,?,?,?)',
-      [utleiedata.utlevering, utleiedata.innlevering, utleiedata.utleie_id, LAST_INSERT_ID()],
-      (error, results) => {
-        if (error) return console.error(error);
-      }
-    );
-  }
-
-  utleieUtstyr(utstyrValg) {
+  velgUtstyr(utstyrValg, success) {
     let type = ['Hjelm', 'Sykkelveske', 'Sykkelvogn', 'Barnesete', 'Drikkesekk'];
 
     for (var i = 0; i < type.length; i++) {
       let antall = Number(utstyrValg[type[i]]);
 
       connection.query(
-        'UPDATE utstyr SET u_tilstand="Utleid", utleie_id=? WHERE utstyrstype = ? AND u_tilstand = "Ledig" LIMIT ?;',
-        [utstyrValg.utleie_id, type[i], antall],
+        'SELECT utstyr_id FROM utstyr WHERE utstyrstype = ? AND u_tilstand = "Ledig" LIMIT ?',
+        [type[i], antall],
         (error, results) => {
           if (error) return console.error(error);
+
+          success(results);
         }
       );
     }
   }
 
-  koblingstabellUtstyr(utleiedata) {
+  utleieUtstyr(utleieId, utstyrId) {
+    connection.query('UPDATE utstyr SET u_tilstand = "Utleid" WHERE utstyr_id = ?;', [utstyrId], (error, results) => {
+      if (error) return console.error(error);
+    });
+
     connection.query(
-      'INSERT utleid_utstyr (u_utlevering, u_innlevering, utleie_id, utstyr_id) VALUES (?,?,?,?)',
-      [utleiedata.utlevering, utleiedata.innlevering, utleiedata.utleie_id, LAST_INSERT_ID()],
+      'INSERT INTO utleid_utstyr (utleie_id, utstyr_id) VALUES (?,?)',
+      [utleieId, utstyrId],
       (error, results) => {
         if (error) return console.error(error);
       }

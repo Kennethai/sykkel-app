@@ -42,7 +42,6 @@ export class Utleie extends Component {
   kunde = kundeLagring;
   utleiedata = utleiedataLagring;
   kommentar = '';
-  valgteSykler = [];
 
   render() {
     return (
@@ -130,23 +129,16 @@ export class Utleie extends Component {
           </NavLink>
         </Column>
 
-
         <Column>
-
           <div className="form-group">
             <label htmlFor="sykkelArea">Bestilling:</label>
             <textarea className="Liste" rows="5" id="sykkelArea" />
           </div>
-
         </Column>
 
         <Row>
           <Column>
-            <Button.Success onClick={this.create}>Legg inn</Button.Success>
-          </Column>
-          <Column>
             <Button.Light onClick={this.delete}>Tøm Skjema</Button.Light>
-
           </Column>
           <Column>
             <div className="text-right">
@@ -163,11 +155,11 @@ export class Utleie extends Component {
     // fyller inn tekstfeltet med antall utlånt utstyr
     sykkelArea.value += 'SYKLER\n';
     Object.keys(sykkelValg).forEach(function(key) {
-      sykkelArea.value += key + ' ' + sykkelValg[key] + '\n';
+      sykkelArea.value += key + ': ' + sykkelValg[key] + '\n';
     });
     sykkelArea.value += '\nUTSTYR\n';
     Object.keys(utstyrValg).forEach(function(key) {
-      sykkelArea.value += key + ' ' + utstyrValg[key] + '\n';
+      sykkelArea.value += key + ': ' + utstyrValg[key] + '\n';
     });
     console.log(this.utleiedata);
   }
@@ -189,6 +181,9 @@ export class Utleie extends Component {
       console.log(this.kunde);
       console.log(this.utleiedata);
       this.utleiedata.kunde_nr = this.kunde.kunde_nr.toString();
+      if ((utleiedata.kunde_nr = '')) {
+        alert('Feil ved henting av kundenr, vennligst Force Reload og prøv igjen.');
+      }
     });
 
     //sender info om utlånet til db
@@ -220,9 +215,22 @@ export class Utleie extends Component {
 
     // registrerer utstyr for utlån i db, dersom det blir lånt tilleggsutstyr
     if (utstyrTeller > 0) {
-      utleieTjenester.utleieUtstyr(utstyrValg);
-    }
+      let u_ids = [];
+      utleieTjenester.velgUtstyr(utstyrValg, results => {
+        if (results != undefined) {
+          for (var i = 0; i < results.length; i++) {
+            u_ids.push(results[i].utstyr_id);
+            console.log(results[i].utstyr_id);
+          }
+        }
+      });
+      console.log(u_ids.toString());
 
+      for (var i = 0; i < u_ids.length; i++) {
+        utleieTjenester.utleieUtstyr(utleieId, u_ids[i]);
+      }
+    }
+    alert('Utleie registert');
     history.push('/utleie/');
   }
 
@@ -233,11 +241,11 @@ export class Utleie extends Component {
 
 // antall sykler av valgt type
 let sykkelValg = {
-  tursykkel: '0',
-  terreng: '0',
-  downhill: '0',
-  grusracer: '0',
-  tandem: '0'
+  Tursykkel: '',
+  Terreng: '',
+  Downhill: '',
+  Grusracer: '',
+  Tandem: ''
 };
 
 // sammenlagt antall
@@ -258,15 +266,15 @@ export class VelgSykkel extends Component {
       <div>
         <Column>
           <Form.Label>Tursykkel:</Form.Label>
-          <Form.Input type="number" onChange={e => (sykkelValg.tursykkel = e.target.value)} />
+          <Form.Input type="number" onChange={e => (sykkelValg.Tursykkel = e.target.value)} />
           <Form.Label>Terreng:</Form.Label>
-          <Form.Input type="number" onChange={e => (sykkelValg.terreng = e.target.value)} />
+          <Form.Input type="number" onChange={e => (sykkelValg.Terreng = e.target.value)} />
           <Form.Label>Downhill:</Form.Label>
-          <Form.Input type="number" onChange={e => (sykkelValg.downhill = e.target.value)} />
+          <Form.Input type="number" onChange={e => (sykkelValg.Downhill = e.target.value)} />
           <Form.Label>Racing:</Form.Label>
-          <Form.Input type="number" onChange={e => (sykkelValg.grusracer = e.target.value)} />
+          <Form.Input type="number" onChange={e => (sykkelValg.Grusracer = e.target.value)} />
           <Form.Label>Tandem:</Form.Label>
-          <Form.Input type="number" onChange={e => (sykkelValg.tandem = e.target.value)} />
+          <Form.Input type="number" onChange={e => (sykkelValg.Tandem = e.target.value)} />
         </Column>
         <Row>
           <Button.Success onClick={this.create}>Legg inn</Button.Success>
@@ -278,12 +286,11 @@ export class VelgSykkel extends Component {
 
   create() {
     sykkelTeller =
-      Number(GetPropertyValue(sykkelValg, 'tursykkel')) +
-      Number(GetPropertyValue(sykkelValg, 'terreng')) +
-      Number(GetPropertyValue(sykkelValg, 'downhill')) +
-      Number(GetPropertyValue(sykkelValg, 'grusracer')) +
-      Number(GetPropertyValue(sykkelValg, 'tandem'));
-    console.log(sykkelTeller);
+      Number(GetPropertyValue(sykkelValg, 'Tursykkel')) +
+      Number(GetPropertyValue(sykkelValg, 'Terreng')) +
+      Number(GetPropertyValue(sykkelValg, 'Downhill')) +
+      Number(GetPropertyValue(sykkelValg, 'Grusracer')) +
+      Number(GetPropertyValue(sykkelValg, 'Tandem'));
     history.push('/utleie/');
   }
 
