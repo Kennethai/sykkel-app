@@ -26,6 +26,7 @@ export class InfoListe extends Component {
 
   liste2 = [];
   liste3 = [];
+  liste4 = [];
 
   utstyr = [];
   sykler = [];
@@ -59,27 +60,27 @@ export class InfoListe extends Component {
             <table className="table table-striped hover" size="sm">
               <thead>
                 <tr>
+                  <th> Utleie_id: </th>
                   <th> Fornavn: </th>
                   <th> Etternavn: </th>
                   <th> Tlf: </th>
-                  <th> Sykler: </th>
-                  <th> Utstyr: </th>
                   <th> Uteleie: </th>
                   <th> Innlevering: </th>
-                  <th> Pris: </th>
+                  <th> Sykler: </th>
+                  <th> Utstyr: </th>
                 </tr>
               </thead>
               <tbody>
-                {this.liste.map(listen => (
-                  <tr key={listen.kunde_nr}>
-                    <td> {listen.k_fornavn} </td>
-                    <td> {listen.k_etternavn} </td>
-                    <td> {listen.k_tlf} </td>
-                    <td> {listen.sykler} </td>
-                    <td> {listen.utstyr} </td>
-                    <td> {listen.utleietid} </td>
-                    <td> {listen.innleveringstid} </td>
-                    <td> {Number(listen.spris) + Number(listen.upris)} </td>
+                {this.liste.map((e1, i) => (
+                  <tr key={e1.kunde_nr}>
+                    <td> {e1.utleie_id} </td>
+                    <td> {e1.k_fornavn} </td>
+                    <td> {e1.k_etternavn} </td>
+                    <td> {e1.k_tlf} </td>
+                    <td> {e1.utleietid} </td>
+                    <td> {e1.innleveringstid} </td>
+                    <td> {this.liste4.length > i ? this.liste4[i].sykler : null} </td>
+                    <td> {this.liste4.length > i ? this.liste4[i].utstyr : null} </td>
                   </tr>
                 ))}
               </tbody>
@@ -177,16 +178,19 @@ export class InfoListe extends Component {
       console.log(this.utstyr);
     });
 
-    infoService.sykler(this.kunde, sykler => {
-      this.sykler = sykler;
-      console.log(this.sykler);
-    });
+    // infoService.sykler(this.kunde, sykler => {
+    //   this.sykler = sykler;
+    //   console.log(this.sykler);
+    // });
   }
 
   sok(kunde) {
     infoService.hentListe(this.kunde, liste => {
       this.liste = liste;
       console.log(this.liste);
+    });
+    infoService.utstyrr(this.kunde, liste4 => {
+      this.liste4 = liste4;
     });
 
     infoService.hentKunde(this.kunde, kunder => {
