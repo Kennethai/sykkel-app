@@ -79,7 +79,7 @@ export class InfoListe extends Component {
                     <td> {listen.utstyr} </td>
                     <td> {listen.utleietid} </td>
                     <td> {listen.innleveringstid} </td>
-                    <td> {Number(listen.s_utleiepris) + Number(listen.u_utleiepris)} </td>
+                    <td> {Number(listen.spris) + Number(listen.upris)} </td>
                   </tr>
                 ))}
               </tbody>
@@ -94,59 +94,27 @@ export class InfoListe extends Component {
               <table className="table table-striped hover" size="sm">
                 <thead>
                   <tr>
+                    <th> Utleie_id: </th>
                     <th> Fornavn: </th>
                     <th> Etternavn: </th>
                     <th> Tlf: </th>
                     <th> Uteleie: </th>
                     <th> Innlevering: </th>
-                    <th> Utstyr: </th>
-                    <th> Pris: </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.liste2.map(listen => (
-                    <tr key={(listen.kunde_nr, listen.utstyr_id)}>
-                      <td> {listen.k_fornavn} </td>
-                      <td> {listen.k_etternavn} </td>
-                      <td> {listen.k_tlf} </td>
-                      <td> {listen.utleietid} </td>
-                      <td> {listen.innleveringstid} </td>
-                      <td> {listen.utstyr} </td>
-                      <td> {listen.pris} </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-
-              <table className="table table-striped hover" size="sm">
-                <thead>
-                  <tr>
-                    <th> Utstyr: </th>
-                    <th> Pris: </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.utstyr.map(utstyrr => (
-                    <tr key={utstyrr.utstyr_id}>
-                      <td> {utstyrr.utstyr} </td>
-                      <td> {utstyrr.pris} </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-
-              <table className="table table-striped hover" size="sm">
-                <thead>
-                  <tr>
                     <th> Sykler: </th>
-                    <th> Pris: </th>
+                    <th> Utstyr: </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {this.sykler.map(sykkel => (
-                    <tr key={sykkel.sykkel_id}>
-                      <td> {sykkel.sykler} </td>
-                      <td> {sykkel.pris} </td>
+                  {this.liste2.map((e2, i) => (
+                    <tr key={e2.kunde_nr}>
+                      <td> {e2.utleie_id} </td>
+                      <td> {e2.k_fornavn} </td>
+                      <td> {e2.k_etternavn} </td>
+                      <td> {e2.k_tlf} </td>
+                      <td> {e2.utleietid} </td>
+                      <td> {e2.innleveringstid} </td>
+                      <td> {this.liste3.length > i ? this.liste3[i].sykler : null} </td>
+                      <td> {this.liste3.length > i ? this.liste3[i].utstyr : null} </td>
                     </tr>
                   ))}
                 </tbody>
@@ -158,12 +126,50 @@ export class InfoListe extends Component {
     );
   }
 
+  // <table className="table table-striped hover" size="sm">
+  //   <thead>
+  //     <tr>
+  //       <th> utleieid: </th>
+  //       <th> sykler: </th>
+  //       <th> utleieid: </th>
+  //       <th> utstyr: </th>
+  //     </tr>
+  //   </thead>
+  //   <tbody>
+  //     {this.utstyr.map(utstyrr => (
+  //       <tr key={utstyrr.utstyr_id}>
+  //         <td> {utstyrr.sutleie} </td>
+  //         <td> {utstyrr.sykler} </td>
+  //         <td> {utstyrr.uutleie} </td>
+  //         <td> {utstyrr.utstyr} </td>
+  //       </tr>
+  //     ))}
+  //   </tbody>
+  // </table>
+  //
+  // <table className="table table-striped hover" size="sm">
+  //   <thead>
+  //     <tr>
+  //       <th> Sykler: </th>
+  //       <th> Pris: </th>
+  //     </tr>
+  //   </thead>
+  //   <tbody>
+  //     {this.sykler.map(sykkel => (
+  //       <tr key={sykkel.sykkel_id}>
+  //         <td> {sykkel.sykler} </td>
+  //         <td> {sykkel.pris} </td>
+  //       </tr>
+  //     ))}
+  //   </tbody>
+  // </table>
+
   mounted() {
-    infoService.hentAlt(this.kunde, () => {
-      infoService.utstyr(liste2 => {
-        this.liste2 = liste2;
-        console.log(liste2);
-      });
+    infoService.hentAlt(this.kunde, liste2 => {
+      this.liste2 = liste2;
+    });
+    infoService.utstyr(this.kunde, liste3 => {
+      this.liste3 = liste3;
     });
 
     infoService.utstyr(this.kunde, utstyr => {
@@ -199,13 +205,6 @@ export class InfoListe extends Component {
     this.kunde.fornavn = [];
     this.kunde.etternavn = [];
     this.kunde.tlf = [];
-
-    let x = document.getElementById('liste1');
-    if (x.style.display === 'block') {
-      x.style.display = 'none';
-    } else {
-      x.style.display = 'block';
-    }
   }
 }
 // <td> {Number(listen.s_utleiepris) + Number(listen.u_utleiepris)} </td>

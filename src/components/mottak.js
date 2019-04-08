@@ -25,6 +25,8 @@ export class KundeListe extends Component {
   checkedSykkel = {};
   checkedUtstyr = {};
 
+  kundelager = [];
+
   render() {
     return (
       <div>
@@ -107,7 +109,7 @@ export class KundeListe extends Component {
                         id="utstyr1"
                         type="checkbox"
                         checked={this.state.motta}
-                        onChange={e => (this.col_utstyr = e.target.value)}
+                        onChange={() => this.utstyr_check(utstyret.utstyr_id)}
                       />
                     </tr>
                   ))}
@@ -155,20 +157,18 @@ export class KundeListe extends Component {
         });
       }
     });
-    this.kunde.fornavn = [];
-    this.kunde.etternavn = [];
-    this.kunde.tlf = [];
+
+    // this.kunde.fornavn = [];
+    // this.kunde.etternavn = [];
+    // this.kunde.tlf = [];
   }
   motta(sykkel_id) {
-    let mottak_ids = [];
-    for (let sykkel_id of Object.keys(this.checkedSykkel)) {
-      if (this.checkedSykkel[sykkel_id] != false) {
-        mottak_ids.push(sykkel_id);
-      }
-    }
-    mottak_ids = mottak_ids.toString();
-    mottakTjenester.mottak(mottak_ids);
-    console.log(mottak_ids);
+    mottakTjenester.hentSykkel(this.kunde, syklene => {
+      this.syklene = syklene;
+    });
+    mottakTjenester.hentUtstyr(this.kunde, utstyr => {
+      this.utstyr = utstyr;
+    });
   }
 
   check(sykkel_id) {
@@ -176,8 +176,30 @@ export class KundeListe extends Component {
     else this.checkedSykkel[sykkel_id] = true;
     for (let sykkel_id of Object.keys(this.checkedSykkel)) console.log(sykkel_id, this.checkedSykkel[sykkel_id]);
 
-    // if (this.checkedUtstyr[utstyr_id]) this.checkedUtstyr[utstyr_id] = false;
-    // else this.checkedUtstyr[utstyr_id] = true;
-    // for (let utstyr_id of Object.keys(this.checkedUtstyr)) console.log(utstyr_id, this.checkedUtstyr[utstyr_id]);
+    for (let sykkel_id of Object.keys(this.checkedSykkel)) {
+      if (this.checkedSykkel[sykkel_id] != false) {
+        mottakTjenester.mottak(sykkel_id);
+        console.log(sykkel_id);
+      } else {
+        mottakTjenester.IKKEmottak(sykkel_id);
+        console.log(sykkel_id);
+      }
+    }
+  }
+
+  utstyr_check(utstyr_id) {
+    if (this.checkedUtstyr[utstyr_id]) this.checkedUtstyr[utstyr_id] = false;
+    else this.checkedUtstyr[utstyr_id] = true;
+    for (let utstyr_id of Object.keys(this.checkedUtstyr)) console.log(utstyr_id, this.checkedUtstyr[utstyr_id]);
+
+    for (let utstyr_id of Object.keys(this.checkedUtstyr)) {
+      if (this.checkedUtstyr[utstyr_id] != false) {
+        mottakTjenester.Umottak(utstyr_id);
+        console.log(utstyr_id);
+      } else {
+        mottakTjenester.uIKKEmottak(utstyr_id);
+        console.log(utstyr_id);
+      }
+    }
   }
 }
