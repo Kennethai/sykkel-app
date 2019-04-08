@@ -79,8 +79,8 @@ export class InfoListe extends Component {
                     <td> {e1.k_tlf} </td>
                     <td> {e1.utleietid} </td>
                     <td> {e1.innleveringstid} </td>
-                    <td> {this.liste4.length > i ? this.liste4[i].sykler : null} </td>
-                    <td> {this.liste4.length > i ? this.liste4[i].utstyr : null} </td>
+                    <td> {this.liste3.length > i ? this.liste3[i].sykler : null} </td>
+                    <td> {this.liste3.length > i ? this.liste3[i].utstyr : null} </td>
                   </tr>
                 ))}
               </tbody>
@@ -127,44 +127,6 @@ export class InfoListe extends Component {
     );
   }
 
-  // <table className="table table-striped hover" size="sm">
-  //   <thead>
-  //     <tr>
-  //       <th> utleieid: </th>
-  //       <th> sykler: </th>
-  //       <th> utleieid: </th>
-  //       <th> utstyr: </th>
-  //     </tr>
-  //   </thead>
-  //   <tbody>
-  //     {this.utstyr.map(utstyrr => (
-  //       <tr key={utstyrr.utstyr_id}>
-  //         <td> {utstyrr.sutleie} </td>
-  //         <td> {utstyrr.sykler} </td>
-  //         <td> {utstyrr.uutleie} </td>
-  //         <td> {utstyrr.utstyr} </td>
-  //       </tr>
-  //     ))}
-  //   </tbody>
-  // </table>
-  //
-  // <table className="table table-striped hover" size="sm">
-  //   <thead>
-  //     <tr>
-  //       <th> Sykler: </th>
-  //       <th> Pris: </th>
-  //     </tr>
-  //   </thead>
-  //   <tbody>
-  //     {this.sykler.map(sykkel => (
-  //       <tr key={sykkel.sykkel_id}>
-  //         <td> {sykkel.sykler} </td>
-  //         <td> {sykkel.pris} </td>
-  //       </tr>
-  //     ))}
-  //   </tbody>
-  // </table>
-
   mounted() {
     infoService.hentAlt(this.kunde, liste2 => {
       this.liste2 = liste2;
@@ -177,20 +139,12 @@ export class InfoListe extends Component {
       this.utstyr = utstyr;
       console.log(this.utstyr);
     });
-
-    // infoService.sykler(this.kunde, sykler => {
-    //   this.sykler = sykler;
-    //   console.log(this.sykler);
-    // });
   }
 
   sok(kunde) {
     infoService.hentListe(this.kunde, liste => {
       this.liste = liste;
       console.log(this.liste);
-    });
-    infoService.utstyrr(this.kunde, liste4 => {
-      this.liste4 = liste4;
     });
 
     infoService.hentKunde(this.kunde, kunder => {
@@ -211,4 +165,3 @@ export class InfoListe extends Component {
     this.kunde.tlf = [];
   }
 }
-// <td> {Number(listen.s_utleiepris) + Number(listen.u_utleiepris)} </td>
