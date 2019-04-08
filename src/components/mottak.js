@@ -25,6 +25,8 @@ export class KundeListe extends Component {
   checkedSykkel = {};
   checkedUtstyr = {};
 
+  kundelager = [];
+
   render() {
     return (
       <div>
@@ -155,6 +157,7 @@ export class KundeListe extends Component {
         });
       }
     });
+
     // this.kunde.fornavn = [];
     // this.kunde.etternavn = [];
     // this.kunde.tlf = [];
