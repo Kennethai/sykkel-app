@@ -6,6 +6,7 @@ import { Utleie, VelgSykkel, VelgUtstyr } from './components/utleie.js';
 import { StatusListe } from './components/status.js';
 import { Varelageret, Sykkel, Utstyr } from './components/varelager.js';
 import { KundeListe } from './components/mottak.js';
+import { InfoListe } from './components/info.js';
 import createHashHistory from 'history/createHashHistory';
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
@@ -13,26 +14,33 @@ const history = createHashHistory(); // Use history.push(...) to programmaticall
 class Menu extends Component {
   render() {
     return (
-      <table>
+      <table className="navTable">
         <tbody>
           <tr>
-            <td>
-              <NavBar brand="Hjem" />
+            <td className="navbutton">
+              <NavLink to="/Utleie" className="NavLink_Style">
+                Utleie
+              </NavLink>
             </td>
-            <td>
-              <NavBar.Link to="/Utleie">Utleie</NavBar.Link>
+            <td className="navbutton">
+              <NavLink to="/Mottak" className="NavLink_Style">
+                Mottak
+              </NavLink>
             </td>
-            <td>
-              <NavBar.Link to="/Mottak">Mottak</NavBar.Link>
+            <td className="navbutton">
+              <NavLink to="/Varelager" className="NavLink_Style">
+                Varelager
+              </NavLink>
             </td>
-            <td>
-              <NavBar.Link to="/Varelager">Varelager</NavBar.Link>
+            <td className="navbutton">
+              <NavLink to="/Status" className="NavLink_Style">
+                Status
+              </NavLink>
             </td>
-            <td>
-              <NavBar.Link to="/Status">Status</NavBar.Link>
-            </td>
-            <td>
-              <NavBar.Link to="/Info">Info</NavBar.Link>
+            <td className="navbutton">
+              <NavLink to="/Info" className="NavLink_Style">
+                Info
+              </NavLink>
             </td>
           </tr>
         </tbody>
@@ -63,6 +71,7 @@ ReactDOM.render(
       <Route exact path="/Varelager/nySykkel" component={Sykkel} />
       <Route exact path="/Varelager/nyUtstyr" component={Utstyr} />
       <Route exact path="/Status" component={StatusListe} />
+      <Route exact path="/Info" component={InfoListe} />
     </div>
   </HashRouter>,
   document.getElementById('root')

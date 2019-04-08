@@ -16,15 +16,16 @@ export class StatusListe extends Component {
   yyyy = this.date.getFullYear();
   today = this.dd + '/' + this.mm + '/' + this.yyyy + ':' + ' ';
 
+  // her lagrer vi det som blir skrevet inn av bruker
   status = {
     sykkelId: '',
     kommentar: this.today + '',
     s_tilstand: ''
   };
 
+  // disse tar i mot svar fra databasen
   idSykkel = '';
-
-  utdata = [];
+  syklene = [];
 
   render() {
     return (
@@ -56,21 +57,42 @@ export class StatusListe extends Component {
               value={this.status.kommentar}
               onChange={e => (this.status.kommentar = e.target.value)}
             />
-            <div class="text-right">
+            <div className="text-right">
               <Button.Success onClick={this.oppdater}>Oppdater</Button.Success>
             </div>
           </Column>{' '}
           <br />
           <Column>
             <Form.Label>Søk på sykkel_Id: </Form.Label>
-            <Form.Input type="text" onChange={e => (this.idSykkel = e.target.value)} />
-            <div class="text-right">
+            <Form.Input type="text" value={this.idSykkel} onChange={e => (this.idSykkel = e.target.value)} />
+            <div className="text-right">
               <Button.Success onClick={this.søk}>Søk</Button.Success>
             </div>
           </Column>
           <br />
           <ul>
-            <div id="statusData" class="Liste" />
+            <div id="statusData" className="Liste">
+              <Column>
+                <table id="col_sykkel" className="table table-striped hover" size="sm">
+                  <thead>
+                    <tr>
+                      <th> Sykkel_ID: </th>
+                      <th> Status: </th>
+                      <th> Kommentar: </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.syklene.map(sykkel => (
+                      <tr key={sykkel.sykkel_id}>
+                        <td> {sykkel.sykkel_id} </td>
+                        <td> {sykkel.sykkel_status} </td>
+                        <td> {sykkel.kommentar} </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </Column>
+            </div>
           </ul>
         </div>
       </Card>
@@ -79,19 +101,23 @@ export class StatusListe extends Component {
 
   mounted() {}
 
+  // funksjon for å legge inn ny status på sykkel
   oppdater() {
     statusService.oppdaterStatus(this.status);
     alert('Status er oppdatert');
-    history.push('/status/');
   }
 
+  // funksjon for å hente eksisterende historikk om sykkel
   søk() {
-    statusService.søkStatus(this.idSykkel, idSykkel => {
-      this.utdata = idSykkel;
-      statusData.innerText = '';
-      Object.keys(this.utdata).forEach(function(key) {
-        statusData.innerText += key + ' ' + idSykkel[key] + '\n';
-      });
+    statusService.søkStatus(this.idSykkel, syklene => {
+      this.syklene = [];
+      this.syklene = syklene;
+      this.idSykkel = '';
+      console.log(syklene);
+      if (syklene.length == 0) {
+        alert('OBS! Finner ingen kommentar på denne sykkelen');
+        this.idSykkel = '';
+      }
     });
   }
 }
