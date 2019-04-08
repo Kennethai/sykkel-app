@@ -16,12 +16,14 @@ export class StatusListe extends Component {
   yyyy = this.date.getFullYear();
   today = this.dd + '/' + this.mm + '/' + this.yyyy + ':' + ' ';
 
+  // her lagrer vi det som blir skrevet inn av bruker
   status = {
     sykkelId: '',
     kommentar: this.today + '',
     s_tilstand: ''
   };
 
+  // disse tar i mot svar fra databasen
   idSykkel = '';
   syklene = [];
 
@@ -99,14 +101,13 @@ export class StatusListe extends Component {
 
   mounted() {}
 
+  // funksjon for å legge inn ny status på sykkel
   oppdater() {
     statusService.oppdaterStatus(this.status);
     alert('Status er oppdatert');
-    //this.status.sykkelId = '';
-    //  this.status.s_tilstand.value = '';
-    //this.status.kommentar = this.today + '';
   }
 
+  // funksjon for å hente eksisterende historikk om sykkel
   søk() {
     statusService.søkStatus(this.idSykkel, syklene => {
       this.syklene = [];

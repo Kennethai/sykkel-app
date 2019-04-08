@@ -1,9 +1,24 @@
+body {
+  background-image: url("../src/components/background_blurred.jpg");
+  background-color: rgba(255, 255, 255, 0.5);
+  background-size: cover;
+}
+
+#root {
+  background-color: rgba(255, 255, 255, 0.8);
+  width: 50%;
+  margin: auto;
+}
+
+
 /* Styler overskrift*/
 .Header {
-  font-family: Arial, Helvetica, serif;
-  font-size: 60px;
-  background-color: #f0f0f0;
-  font-weight: bold;
+  font-family: 'Faster One', cursive;
+  font-size: 4em;
+  background-color: HotPink;
+  color: Yellow;
+  text-shadow: 2px 2px black;
+  text-align: center;
 }
 
 /* Visualiserer lister */
@@ -19,4 +34,69 @@
 .Midtstille {
   margin: auto;
   padding: 10px;
+}
+
+.navTable {
+  background-color: black;
+  width: 100%;
+}
+
+.navbutton {
+}
+
+.NavLink_Style {
+  color: white;
+  padding: 12px;
+  font-size: 1.5em;
+  font-family: 'Contrail One', cursive;
+}
+
+.NavLink_Style:hover {
+  color: yellow;
+}
+
+.active {
+  color: Chartreuse;
+}
+
+.NavLink_Style:visited {
+  color: HotPink;
+}
+
+.btn-success {
+  background-color: HotPink;
+  font-family: 'Contrail One', cursive;
+}
+
+.btn-success:hover {
+  background-color: MediumVioletRed;
+}
+
+.register_menu {
+  background-color: black;
+  width: 100%;
+  padding-left: 40vw;
+}
+
+.register {
+  color: white;
+  font-family: 'Contrail One', cursive;
+  font-size: 1.2em;
+  padding: 25px 10px 10px 10px;
+}
+
+.register:hover {
+  color: yellow;
+}
+
+.form-control {
+  width: auto;
+  max-width: 40vw
+  min-width: 30vw;
+}
+
+#sykkelArea {
+  width: auto;
+  max-width: 40vw
+  min-width: 30vw;
 }

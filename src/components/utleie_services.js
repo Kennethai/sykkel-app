@@ -77,7 +77,7 @@ class UtleieTjenester {
     );
 
     connection.query(
-      'INSERT INTO utleid_sykler (utleie_id, sykkel_id) VALUES (?,?)',
+      'INSERT INTO utleid_sykkel (utleie_id, sykkel_id) VALUES (?,?)',
       [utleieId, sykkelId],
       (error, results) => {
         if (error) return console.error(error);

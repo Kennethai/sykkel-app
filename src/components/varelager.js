@@ -24,9 +24,14 @@ export class Varelageret extends Component {
   render() {
     return (
       <div>
-        <NavLink to="/Varelager/nySykkel">Registrer sykkel</NavLink>
-        &nbsp;&nbsp;
-        <NavLink to="/Varelager/nyUtstyr">Regitsrer utstyr</NavLink>
+        <div className="register_menu">
+          <NavLink to="/Varelager/nySykkel" className="register">
+            Registrer sykkel
+          </NavLink>
+          <NavLink to="/Varelager/nyUtstyr" className="register">
+            Registrer utstyr
+          </NavLink>
+        </div>
         <Card>
           <Column>
             <Form.Label>Sykkel-id:</Form.Label>
@@ -37,7 +42,9 @@ export class Varelageret extends Component {
             />
           </Column>
           <Column>
-            <Button.Success onClick={this.sykkel}>Søk</Button.Success>
+            <div className="text-right">
+              <Button.Success onClick={this.sykkel}>Søk</Button.Success>
+            </div>
           </Column>
           <Column>
             <Form.Label>Utstyrs-id:</Form.Label>
@@ -48,7 +55,9 @@ export class Varelageret extends Component {
             />
           </Column>
           <Column>
-            <Button.Success onClick={this.utstyrk}>Søk</Button.Success>
+            <div className="text-right">
+              <Button.Success onClick={this.utstyrk}>Søk</Button.Success>
+            </div>
           </Column>
         </Card>
         <Column>
