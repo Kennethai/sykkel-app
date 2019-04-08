@@ -43,10 +43,33 @@ export class Utleie extends Component {
   utleiedata = utleiedataLagring;
   kommentar = '';
 
+  //For å legge til dato i kommentar:
+  date = new Date();
+  dd = String(this.date.getDate()).padStart(2, '0');
+  mm = String(this.date.getMonth() + 1).padStart(2, '0');
+  yyyy = this.date.getFullYear();
+  today = this.dd + '/' + this.mm + '/' + this.yyyy + ':' + ' ';
+
   render() {
     return (
       <div>
         <Column>
+          <Form.Label>Søk opp eksisterende kunde:</Form.Label>
+          <Form.Input
+            type="text"
+            value={this.kunde.tlf}
+            onChange={e => (this.kunde.tlf = e.target.value)}
+            pattern=".{8,11}"
+            required
+          />
+          <Button.Success id="color_button" onClick={this.search}>
+            Legg inn
+          </Button.Success>
+        </Column>
+        <br />
+        <br />
+        <Column>
+          <h4>Ny kunde</h4>
           <Form.Label>Kunde fornavn:</Form.Label>
           <Form.Input type="text" value={this.kunde.fornavn} onChange={e => (this.kunde.fornavn = e.target.value)} />
 
@@ -74,24 +97,22 @@ export class Utleie extends Component {
           <div className="form-group">
             <label>Utlevering:</label>
             <select className="form-control" onChange={e => (this.utleiedata.utlevering = e.target.value)}>
-              <option value="1" defaultValue>
-                Base 1
+              <option value="Rallarvegen" defaultValue>
+                Rallarvegen
               </option>
-              <option value="2">Base 2</option>
-              <option value="3">Base 3</option>
-              <option value="4">Base 4</option>
+              <option value="Haugastøl">Haugastøl</option>
+              <option value="Finse">Finse</option>
             </select>
           </div>
 
           <div className="form-group">
             <label>Innlevering:</label>
             <select className="form-control" onChange={e => (this.utleiedata.innlevering = e.target.value)}>
-              <option value="1">Base 1</option>
-              <option value="2" defaultValue>
-                Base 2
+              <option value="Haugastøl" defaultValue>
+                Haugastøl
               </option>
-              <option value="3">Base 3</option>
-              <option value="4">Base 4</option>
+              <option value="Finse">Finse</option>
+              <option value="Rallarvegen">Rallarvegen</option>
             </select>
           </div>
         </Column>
@@ -132,15 +153,16 @@ export class Utleie extends Component {
         <Column>
           <div className="form-group">
             <label htmlFor="sykkelArea">Bestilling:</label>
+            <br />
             <textarea className="Liste" rows="5" id="sykkelArea" />
           </div>
         </Column>
 
         <Row>
           <Column>
-            <Button.Light onClick={this.delete}>Tøm Skjema</Button.Light>
-          </Column>
-          <Column>
+            <div className="text-center">
+              <Button.Light onClick={this.delete}>Tøm Skjema</Button.Light>
+            </div>
             <div className="text-right">
               <Button.Success onClick={this.create}>Legg inn</Button.Success>
             </div>
@@ -181,61 +203,68 @@ export class Utleie extends Component {
       console.log(this.kunde);
       console.log(this.utleiedata);
       this.utleiedata.kunde_nr = this.kunde.kunde_nr.toString();
-      if ((utleiedata.kunde_nr = '')) {
-        alert('Feil ved henting av kundenr, vennligst Force Reload og prøv igjen.');
-      }
-    });
+      utleieTjenester.opprettUtleie(this.utleiedata);
+      // henter utleie_id fra db
+      utleieTjenester.hentUtleieId(this.utleiedata, utleiedata => {
+        utleieId = utleiedata.utleie_id;
 
-    //sender info om utlånet til db
-    utleieTjenester.opprettUtleie(this.utleiedata);
+        //sender info om utlånet til db
 
-    // henter utleie_id fra db
-    utleieTjenester.hentUtleieId(this.utleiedata, utleiedata => {
-      utleieId = utleiedata.utleie_id;
-    });
+        this.kommentar = this.today + 'Sykkelen er utlånt av ' + this.kunde.k_fornavn + ' ' + this.kunde.k_etternavn;
 
-    this.kommentar = 'Sykkelen er utlånt av ' + this.kunde.k_fornavn + ' ' + this.kunde.k_etternavn;
-
-    let ids = [];
-    utleieTjenester.velgSykkel(sykkelValg, results => {
-      if (results != undefined) {
-        for (var i = 0; i < results.length; i++) {
-          ids.push(results[i].sykkel_id);
-          console.log(results[i].sykkel_id);
-        }
-      }
-    });
-    console.log(ids.toString());
-
-    // registrerer sykler for utlån i db
-    for (var i = 0; i < ids.length; i++) {
-      console.log('Oppdaterer kommentar for sykkel ' + ids[i] + '.');
-      utleieTjenester.utleieSykkel(utleieId, ids[i], this.kommentar);
-    }
-
-    // registrerer utstyr for utlån i db, dersom det blir lånt tilleggsutstyr
-    if (utstyrTeller > 0) {
-      let u_ids = [];
-      utleieTjenester.velgUtstyr(utstyrValg, results => {
-        if (results != undefined) {
-          for (var i = 0; i < results.length; i++) {
-            u_ids.push(results[i].utstyr_id);
-            console.log(results[i].utstyr_id);
+        let ids = [];
+        utleieTjenester.velgSykkel(sykkelValg, results => {
+          if (results != undefined) {
+            for (var i = 0; i < results.length; i++) {
+              ids.push(results[i].sykkel_id);
+              console.log(results[i].sykkel_id);
+            }
           }
-        }
-      });
-      console.log(u_ids.toString());
 
-      for (var i = 0; i < u_ids.length; i++) {
-        utleieTjenester.utleieUtstyr(utleieId, u_ids[i]);
-      }
-    }
+          // registrerer sykler for utlån i db
+          for (var i = 0; i < ids.length; i++) {
+            console.log('Oppdaterer kommentar for sykkel ' + ids[i] + '.');
+            utleieTjenester.utleieSykkel(utleieId, ids[i], this.kommentar);
+          }
+
+          // registrerer utstyr for utlån i db, dersom det blir lånt tilleggsutstyr
+          if (utstyrTeller > 0) {
+            let u_ids = [];
+            utleieTjenester.velgUtstyr(utstyrValg, results => {
+              if (results != undefined) {
+                for (var i = 0; i < results.length; i++) {
+                  u_ids.push(results[i].utstyr_id);
+                  console.log(results[i].utstyr_id);
+                }
+              }
+
+              console.log(u_ids.toString());
+
+              for (var i = 0; i < u_ids.length; i++) {
+                utleieTjenester.utleieUtstyr(utleieId, u_ids[i]);
+              }
+            });
+          }
+
+          console.log(ids.toString());
+        });
+      });
+    });
     alert('Utleie registert');
     history.push('/utleie/');
   }
 
   delete() {
     history.push('/utleie/');
+  }
+
+  search() {
+    utleieTjenester.hentKunde(this.kunde, kunde => {
+      this.kunde = kunde;
+      this.kunde.fornavn = this.kunde.k_fornavn;
+      this.kunde.etternavn = this.kunde.k_etternavn;
+      this.kunde.epost = this.kunde.k_epost;
+    });
   }
 }
 

@@ -14,26 +14,33 @@ const history = createHashHistory(); // Use history.push(...) to programmaticall
 class Menu extends Component {
   render() {
     return (
-      <table>
+      <table className="navTable">
         <tbody>
           <tr>
-            <td>
-              <NavBar brand="Hjem" />
+            <td className="navbutton">
+              <NavLink to="/Utleie" className="NavLink_Style">
+                Utleie
+              </NavLink>
             </td>
-            <td>
-              <NavBar.Link to="/Utleie">Utleie</NavBar.Link>
+            <td className="navbutton">
+              <NavLink to="/Mottak" className="NavLink_Style">
+                Mottak
+              </NavLink>
             </td>
-            <td>
-              <NavBar.Link to="/Mottak">Mottak</NavBar.Link>
+            <td className="navbutton">
+              <NavLink to="/Varelager" className="NavLink_Style">
+                Varelager
+              </NavLink>
             </td>
-            <td>
-              <NavBar.Link to="/Varelager">Varelager</NavBar.Link>
+            <td className="navbutton">
+              <NavLink to="/Status" className="NavLink_Style">
+                Status
+              </NavLink>
             </td>
-            <td>
-              <NavBar.Link to="/Status">Status</NavBar.Link>
-            </td>
-            <td>
-              <NavBar.Link to="/Info">Info</NavBar.Link>
+            <td className="navbutton">
+              <NavLink to="/Info" className="NavLink_Style">
+                Info
+              </NavLink>
             </td>
           </tr>
         </tbody>
