@@ -86,42 +86,39 @@ export class InfoListe extends Component {
                 </tbody>
               </table>
             </div>
-            <Card>
-              <Row>
-                <h3>
-                  <b>&nbsp;Alle utleier: </b>
-                </h3>
 
-                <table className="table table-striped hover">
-                  <thead>
-                    <tr>
-                      <th> Utleie ID: </th>
-                      <th> Fornavn: </th>
-                      <th> Etternavn: </th>
-                      <th> Tlf: </th>
-                      <th> Ut: </th>
-                      <th> Inn: </th>
-                      <th> Sykler: </th>
-                      <th> Utstyr: </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.liste2.map((e2, i) => (
-                      <tr key={e2.kunde_nr}>
-                        <td> {e2.utleie_id} </td>
-                        <td> {e2.k_fornavn} </td>
-                        <td> {e2.k_etternavn} </td>
-                        <td> {e2.k_tlf} </td>
-                        <td> {e2.utleietid} </td>
-                        <td> {e2.innleveringstid} </td>
-                        <td> {this.liste3.length > i ? this.liste3[i].sykler : null} </td>
-                        <td> {this.liste3.length > i ? this.liste3[i].utstyr : null} </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </Row>
-            </Card>
+            <h3>
+              <b>&nbsp;Alle utleier: </b>
+            </h3>
+
+            <table className="table table-striped hover">
+              <thead>
+                <tr>
+                  <th> Utleie ID: </th>
+                  <th> Fornavn: </th>
+                  <th> Etternavn: </th>
+                  <th> Tlf: </th>
+                  <th> Ut: </th>
+                  <th> Inn: </th>
+                  <th> Sykler: </th>
+                  <th> Utstyr: </th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.liste2.map((e2, i) => (
+                  <tr key={e2.kunde_nr}>
+                    <td> {e2.utleie_id} </td>
+                    <td> {e2.k_fornavn} </td>
+                    <td> {e2.k_etternavn} </td>
+                    <td> {e2.k_tlf} </td>
+                    <td> {e2.utleietid} </td>
+                    <td> {e2.innleveringstid} </td>
+                    <td> {this.liste3.length > i ? this.liste3[i].sykler : null} </td>
+                    <td> {this.liste3.length > i ? this.liste3[i].utstyr : null} </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </Column>
       </Card>

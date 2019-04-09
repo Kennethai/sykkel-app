@@ -132,14 +132,9 @@ body {
   margin: auto;
 }
 
+#col_sykkel,
+#col_utstyr,
+#tabellar,
 .container-fluid {
-  margin: auto;
-}
-
-#col_sykkel {
-  margin: auto;
-}
-
-#col_utstyr {
   margin: auto;
 }
