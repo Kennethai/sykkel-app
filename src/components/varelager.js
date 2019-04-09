@@ -24,7 +24,6 @@ export class Varelageret extends Component {
   render() {
     return (
       <div>
-
         <div className="register_menu">
           <NavLink to="/Varelager/nySykkel" className="register">
             Registrer sykkel
@@ -34,7 +33,6 @@ export class Varelageret extends Component {
           </NavLink>
         </div>
         <Card>
-
           <Column>
             <Form.Label>Sykkel-id:</Form.Label>
             <Form.Input
@@ -84,7 +82,6 @@ export class Varelageret extends Component {
                   <b>Sykler:</b>
                 </h4>
                 <table className="table table-striped hover" size="sm">
-
                   <thead>
                     <tr>
                       <th> ID: </th>
@@ -267,6 +264,14 @@ export class Sykkel extends Component {
   render() {
     return (
       <div>
+        <div className="register_menu">
+          <NavLink to="/Varelager/nySykkel" className="register">
+            Registrer sykkel
+          </NavLink>
+          <NavLink to="/Varelager/nyUtstyr" className="register">
+            Registrer utstyr
+          </NavLink>
+        </div>
         <Card title="Legg inn sykkel">
           <Column>
             <div className="form-group">
@@ -351,7 +356,15 @@ export class Utstyr extends Component {
   render() {
     return (
       <div>
-        <Card title="Legg inn ustyr">
+        <div className="register_menu">
+          <NavLink to="/Varelager/nySykkel" className="register">
+            Registrer sykkel
+          </NavLink>
+          <NavLink to="/Varelager/nyUtstyr" className="register">
+            Registrer utstyr
+          </NavLink>
+        </div>
+        <Card title="Legg inn utstyr">
           <Column>
             <div className="form-group">
               <label htmlFor="type">Type:</label>
