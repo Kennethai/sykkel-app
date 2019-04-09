@@ -68,10 +68,11 @@ export class InfoListe extends Component {
                   <th> Innlevering: </th>
                   <th> Sykler: </th>
                   <th> Utstyr: </th>
+                  <th> Pris: </th>
                 </tr>
               </thead>
               <tbody>
-                {this.liste.map((e1, i) => (
+                {this.liste.map((e1, a) => (
                   <tr key={e1.kunde_nr}>
                     <td> {e1.utleie_id} </td>
                     <td> {e1.k_fornavn} </td>
@@ -79,8 +80,9 @@ export class InfoListe extends Component {
                     <td> {e1.k_tlf} </td>
                     <td> {e1.utleietid} </td>
                     <td> {e1.innleveringstid} </td>
-                    <td> {this.liste3.length > i ? this.liste3[i].sykler : null} </td>
-                    <td> {this.liste3.length > i ? this.liste3[i].utstyr : null} </td>
+                    <td> {this.liste4.length > a ? this.liste4[a].sykler : null} </td>
+                    <td> {this.liste4.length > a ? this.liste4[a].utstyr : null} </td>
+                    <td>{e1.pris} </td>
                   </tr>
                 ))}
               </tbody>
@@ -145,6 +147,9 @@ export class InfoListe extends Component {
     infoService.hentListe(this.kunde, liste => {
       this.liste = liste;
       console.log(this.liste);
+    });
+    infoService.utstyrr(this.kunde, liste4 => {
+      this.liste4 = liste4;
     });
 
     infoService.hentKunde(this.kunde, kunder => {
