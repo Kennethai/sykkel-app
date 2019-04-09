@@ -3,6 +3,7 @@ import { connection } from '../mysql_connection';
 //---------------STATUS----------------
 
 class StatusService {
+  //Oppdaterer tabell sykkel i databasen, samt legger til kommentar, valgt status og id i tabell sykkel_kommentar i databasen
   oppdaterStatus(status, success) {
     connection.query(
       'UPDATE sykkel SET s_tilstand=? WHERE sykkel_id=?',
@@ -21,6 +22,7 @@ class StatusService {
     );
   }
 
+  //Henter ut sykkel_id, status og kommentar fra tabell sykkel_kommentar i databasen, basert på sykkel_id i input-feltet.
   søkStatus(idSykkel, success) {
     connection.query(
       'SELECT sykkel_id, sykkel_status, kommentar FROM sykkel_kommentar WHERE sykkel_id=?',

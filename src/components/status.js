@@ -18,11 +18,12 @@ export class StatusListe extends Component {
 
   status = {
     sykkelId: '',
-    kommentar: this.today + '',
+    kommentar: this.today + '', //this.today henter dagens dato og legger dette inn automatisk i input-feltet til "kommentar"
     s_tilstand: ''
   };
 
   idSykkel = '';
+
   syklene = [];
 
   render() {
@@ -43,6 +44,7 @@ export class StatusListe extends Component {
                 id="statusMeny"
                 onChange={e => (this.status.s_tilstand = e.target.value)}
               >
+                {' '}
                 <option value="">Velg status</option>
                 <option value="Ledig">Ledig</option>
                 <option value="Reperasjon">Reperasjon</option>
@@ -56,6 +58,7 @@ export class StatusListe extends Component {
               onChange={e => (this.status.kommentar = e.target.value)}
             />
             <div className="text-right">
+              {' '}
               <Button.Success onClick={this.oppdater}>Oppdater</Button.Success>
             </div>
           </Column>{' '}
@@ -108,11 +111,17 @@ export class StatusListe extends Component {
   }
 
   søk() {
+    //data lagres i idSykkel, og hentes fra databasen
     statusService.søkStatus(this.idSykkel, syklene => {
+      //blanker ut, tilfelle det ligger noe der fra før.
       this.syklene = [];
+      //Legger inn info lagret i syklene
       this.syklene = syklene;
+      //Blanker ut input-feltet når funksjonen er gjort
       this.idSykkel = '';
+      //Benyttet til feilsøking underveis.
       console.log(syklene);
+      //Hvis det ikke er noen kommentar lagt inn på sykkelid, kommer det en alert om det, og input-feltet blir også blanket ut
       if (syklene.length == 0) {
         alert('OBS! Finner ingen kommentar på denne sykkelen');
         this.idSykkel = '';
