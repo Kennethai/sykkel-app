@@ -33,13 +33,11 @@ class Menu extends Component {
                 Varelager
               </NavLink>
             </td>
-
             <td className="navbutton">
               <NavLink to="/Status" className="NavLink_Style">
                 Status
               </NavLink>
             </td>
-
             <td className="navbutton">
               <NavLink to="/Info" className="NavLink_Style">
                 Info

@@ -73,6 +73,15 @@ body {
   font-family: 'Contrail One', cursive;
 }
 
+.NavLink_S {
+  color: white;
+  font-family: 'Contrail One', cursive;
+}
+
+.NavLink_S:hover {
+  color: yellow;
+}
+
 .NavLink_Style:hover {
   color: yellow;
 }

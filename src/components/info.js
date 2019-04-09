@@ -56,6 +56,7 @@ export class InfoListe extends Component {
           <ul>
             <div id="infoData" className="Liste" />
           </ul>
+
           <div id="tabellar">
             <div id="liste1" className="container-fluid">
               <table className="table table-striped hover">
@@ -72,16 +73,17 @@ export class InfoListe extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.liste.map(listen => (
-                    <tr key={listen.kunde_nr}>
-                      <td> {listen.k_fornavn} </td>
-                      <td> {listen.k_etternavn} </td>
-                      <td> {listen.k_tlf} </td>
-                      <td> {listen.sykler} </td>
-                      <td> {listen.utstyr} </td>
-                      <td> {listen.utleietid} </td>
-                      <td> {listen.innleveringstid} </td>
-                      <td> {Number(listen.spris) + Number(listen.upris)} </td>
+                  {this.liste.map(e1 => (
+                    <tr key={e1.kunde_nr}>
+                      <td> {e1.uu == null ? e1.us : e1.uu}</td>
+                      <td> {e1.k_fornavn} </td>
+                      <td> {e1.k_etternavn} </td>
+                      <td> {e1.k_tlf} </td>
+                      <td> {e1.utleietid} </td>
+                      <td> {e1.innleveringstid} </td>
+                      <td> {e1.sykler}</td>
+                      <td> {e1.utstyr}</td>
+                      <td>{e1.pris} </td>
                     </tr>
                   ))}
                 </tbody>
@@ -92,35 +94,36 @@ export class InfoListe extends Component {
                 <h3>
                   <b>&nbsp;Alle utleier: </b>
                 </h3>
-
-                <table className="table table-striped hover" size="sm">
-                  <thead>
-                    <tr>
-                      <th> Utleie ID: </th>
-                      <th> Fornavn: </th>
-                      <th> Etternavn: </th>
-                      <th> Tlf: </th>
-                      <th> Ut: </th>
-                      <th> Inn: </th>
-                      <th> Sykler: </th>
-                      <th> Utstyr: </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.liste2.map(e2 => (
-                      <tr key={e2.kunde_nr}>
-                        <td> {e2.uu == null ? e2.us : e2.uu}</td>
-                        <td> {e2.k_fornavn} </td>
-                        <td> {e2.k_etternavn} </td>
-                        <td> {e2.k_tlf} </td>
-                        <td> {e2.utleietid} </td>
-                        <td> {e2.innleveringstid} </td>
-                        <td> {e2.sykler} </td>
-                        <td> {e2.utstyr} </td>
+                <div id="liste1" className="container-fluid">
+                  <table className="table table-striped hover" size="sm">
+                    <thead>
+                      <tr>
+                        <th> Utleie ID: </th>
+                        <th> Fornavn: </th>
+                        <th> Etternavn: </th>
+                        <th> Tlf: </th>
+                        <th> Ut: </th>
+                        <th> Inn: </th>
+                        <th> Sykler: </th>
+                        <th> Utstyr: </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {this.liste2.map(e2 => (
+                        <tr key={e2.kunde_nr}>
+                          <td> {e2.uu == null ? e2.us : e2.uu}</td>
+                          <td> {e2.k_fornavn} </td>
+                          <td> {e2.k_etternavn} </td>
+                          <td> {e2.k_tlf} </td>
+                          <td> {e2.utleietid} </td>
+                          <td> {e2.innleveringstid} </td>
+                          <td> {e2.sykler} </td>
+                          <td> {e2.utstyr} </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </Row>
             </Card>
           </div>
