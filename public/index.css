@@ -1,24 +1,41 @@
 body {
   background-image: url("../src/components/background_blurred.jpg");
   background-color: rgba(255, 255, 255, 0.5);
+  background-attachment: fixed;
   background-size: cover;
+  background-repeat: no-repeat;
+  background-position: left 0vw top 5vh;
 }
 
 #root {
+  min-height: 100vh;
   background-color: rgba(255, 255, 255, 0.8);
   width: 50%;
   margin: auto;
+  padding: 120px 5px 5px 5px;
 }
 
 
 /* Styler overskrift*/
 .Header {
+  position: fixed;
+  width: 100%;
+  z-index: 10;
   font-family: 'Faster One', cursive;
   font-size: 4em;
   background-color: HotPink;
   color: Yellow;
   text-shadow: 2px 2px black;
   text-align: center;
+}
+
+.contents {
+  margin-top: 120px;
+}
+
+.card {
+  background-color: rgba(255, 0, 0, 0);
+  border: none;
 }
 
 /* Visualiserer lister */
@@ -37,6 +54,10 @@ body {
 }
 
 .navTable {
+  position: fixed;
+  margin-left: -25vw;
+  margin-top: -40px;
+  z-index: 9;
   background-color: black;
   width: 100%;
 }
@@ -73,9 +94,13 @@ body {
 }
 
 .register_menu {
+  position: fixed;
+  z-index: 8;
   background-color: black;
-  width: 100%;
-  padding-left: 40vw;
+  width: 100vw;
+  margin-left: -25vw;
+  margin-top: -12px;
+  padding: 2px 0 2px 35vw;
 }
 
 .register {
@@ -99,4 +124,8 @@ body {
   width: auto;
   max-width: 40vw
   min-width: 30vw;
+}
+
+.table-striped{
+  background-color: rgba(200, 200, 200, 1);
 }
