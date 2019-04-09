@@ -103,10 +103,18 @@ class UtleieTjenester {
     }
   }
 
-  utleieUtstyr(utleieId, utstyrId) {
+  utleieUtstyr(utleieId, utstyrId, kommentar) {
     connection.query('UPDATE utstyr SET u_tilstand = "Utleid" WHERE utstyr_id = ?;', [utstyrId], (error, results) => {
       if (error) return console.error(error);
     });
+
+    connection.query(
+      'INSERT INTO utstyr_kommentar (utstyr_id, Kommentar, utstyr_status) VALUES (?, ?, ?);',
+      [utleieId, kommentar, 'Utleid'],
+      (error, results) => {
+        if (error) return console.error(error);
+      }
+    );
 
     connection.query(
       'INSERT INTO utleid_utstyr (utleie_id, utstyr_id) VALUES (?,?)',

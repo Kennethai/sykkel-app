@@ -244,7 +244,7 @@ export class Utleie extends Component {
 
         //sender info om utlånet til db
 
-        this.kommentar = this.today + 'Sykkelen er utlånt av ' + this.kunde.k_fornavn + ' ' + this.kunde.k_etternavn;
+        this.kommentar = this.today + 'Utlånt av ' + this.kunde.k_fornavn + ' ' + this.kunde.k_etternavn;
 
         let ids = [];
         utleieTjenester.velgSykkel(sykkelValg, results => {
@@ -275,7 +275,7 @@ export class Utleie extends Component {
               console.log(u_ids.toString());
 
               for (var i = 0; i < u_ids.length; i++) {
-                utleieTjenester.utleieUtstyr(utleieId, u_ids[i]);
+                utleieTjenester.utleieUtstyr(utleieId, u_ids[i], this.kommentar);
               }
             });
           }
