@@ -264,6 +264,7 @@ export class Utleie extends Component {
       this.kunde.fornavn = this.kunde.k_fornavn;
       this.kunde.etternavn = this.kunde.k_etternavn;
       this.kunde.epost = this.kunde.k_epost;
+      this.kunde.tlf = this.kunde.k_tlf;
     });
   }
 }
@@ -304,11 +305,12 @@ export class VelgSykkel extends Component {
           <Form.Input type="number" onChange={e => (sykkelValg.Grusracer = e.target.value)} />
           <Form.Label>Tandem:</Form.Label>
           <Form.Input type="number" onChange={e => (sykkelValg.Tandem = e.target.value)} />
+          <br />
+          <Row>
+            <Button.Success onClick={this.create}>Legg inn</Button.Success>
+            <Button.Light onClick={this.cancel}>Tilbake</Button.Light>
+          </Row>
         </Column>
-        <Row>
-          <Button.Success onClick={this.create}>Legg inn</Button.Success>
-          <Button.Light onClick={this.cancel}>Tilbake</Button.Light>
-        </Row>
       </div>
     );
   }
@@ -354,11 +356,12 @@ export class VelgUtstyr extends Component {
           <Form.Input type="number" onChange={e => (utstyrValg.Barnesete = e.target.value)} />
           <Form.Label>Drikkesekk:</Form.Label>
           <Form.Input type="number" onChange={e => (utstyrValg.Drikkesekk = e.target.value)} />
+          <br />
+          <Row>
+            <Button.Success onClick={this.create}>Legg inn</Button.Success>
+            <Button.Light onClick={this.cancel}>Tilbake</Button.Light>
+          </Row>
         </Column>
-        <Row>
-          <Button.Success onClick={this.create}>Legg inn</Button.Success>
-          <Button.Light onClick={this.cancel}>Tilbake</Button.Light>
-        </Row>
       </div>
     );
   }
