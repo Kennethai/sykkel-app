@@ -1,5 +1,5 @@
 body {
-  background-image: url("../src/components/background_blurred.jpg");
+  background-image: url('../src/components/background_blurred.jpg');
   background-color: rgba(255, 255, 255, 0.5);
   background-attachment: fixed;
   background-size: cover;
@@ -13,8 +13,8 @@ body {
   width: 50%;
   margin: auto;
   padding: 120px 5px 5px 5px;
+  overflow: visible;
 }
-
 
 /* Styler overskrift*/
 .Header {
@@ -40,11 +40,12 @@ body {
 
 /* Visualiserer lister */
 .Liste {
+  margin: auto;
   border-radius: 7px;
   border: 2px solid #d0d0d0;
   background-color: #f0f0f0;
   padding: 15px;
-  width: 92.5%;
+  width: 90%;
 }
 
 /*Midtstille diverse*/
@@ -116,16 +117,24 @@ body {
 
 .form-control {
   width: auto;
-  max-width: 40vw
+  max-width: 40vw;
   min-width: 30vw;
 }
 
 #sykkelArea {
   width: auto;
-  max-width: 40vw
+  max-width: 40vw;
   min-width: 30vw;
 }
 
-.table-striped{
+.table-striped {
   background-color: rgba(200, 200, 200, 1);
+  margin: auto;
+}
+
+#col_sykkel,
+#col_utstyr,
+#tabellar,
+.container-fluid {
+  margin: auto;
 }
