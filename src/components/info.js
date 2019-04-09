@@ -56,8 +56,43 @@ export class InfoListe extends Component {
           <ul>
             <div id="infoData" className="Liste" />
           </ul>
-          <div id="liste1">
-            <table className="table table-striped hover" size="sm">
+          <div id="tabellar">
+            <div id="liste1" className="container-fluid">
+              <table className="table table-striped hover">
+                <thead>
+                  <tr>
+                    <th> Fornavn: </th>
+                    <th> Etternavn: </th>
+                    <th> Tlf: </th>
+                    <th> Sykler: </th>
+                    <th> Utstyr: </th>
+                    <th> Ut: </th>
+                    <th> Inn: </th>
+                    <th> Pris: </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.liste.map(listen => (
+                    <tr key={listen.kunde_nr}>
+                      <td> {listen.k_fornavn} </td>
+                      <td> {listen.k_etternavn} </td>
+                      <td> {listen.k_tlf} </td>
+                      <td> {listen.sykler} </td>
+                      <td> {listen.utstyr} </td>
+                      <td> {listen.utleietid} </td>
+                      <td> {listen.innleveringstid} </td>
+                      <td> {Number(listen.spris) + Number(listen.upris)} </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <h3>
+              <b>&nbsp;Alle utleier: </b>
+            </h3>
+
+            <table className="table table-striped hover">
               <thead>
                 <tr>
                   <th> Utleie_id: </th>
@@ -124,6 +159,7 @@ export class InfoListe extends Component {
               </table>
             </Row>
           </Card>
+
         </Column>
       </Card>
     );

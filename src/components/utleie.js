@@ -28,13 +28,29 @@ let kundeLagring = {
 let utleiedataLagring = {
   selger_id: selgerdata.selger_id,
   avdeling: selgerdata.avdeling,
-  utlevering: '1',
-  innlevering: '2',
+  utlevering: '',
+  innlevering: '',
   fradato: '',
   tildato: '',
   fraKl: '',
   tilKl: '',
   kunde_nr: ''
+};
+
+let sykkelPriser = {
+  Tursykkel: 100,
+  Terreng: 120,
+  Downhill: 150,
+  Grusracer: 200,
+  Tandem: 175
+};
+
+let utstyrPriser = {
+  Hjelm: 10,
+  Sykkelveske: 20,
+  Sykkelvogn: 100,
+  Barnesete: 50,
+  Drikkesekk: 70
 };
 
 export class Utleie extends Component {
@@ -50,16 +66,33 @@ export class Utleie extends Component {
   yyyy = this.date.getFullYear();
   today = this.dd + '/' + this.mm + '/' + this.yyyy + ':' + ' ';
 
+  prisBeregningSykkel =
+    Number(GetPropertyValue(sykkelValg, 'Tursykkel')) * sykkelPriser.Tursykkel +
+    Number(GetPropertyValue(sykkelValg, 'Terreng')) * sykkelPriser.Terreng +
+    Number(GetPropertyValue(sykkelValg, 'Downhill')) * sykkelPriser.Downhill +
+    Number(GetPropertyValue(sykkelValg, 'Grusracer')) * sykkelPriser.Grusracer +
+    Number(GetPropertyValue(sykkelValg, 'Tandem')) * sykkelPriser.Tandem;
+
+  prisBeregningUtstyr =
+    Number(GetPropertyValue(utstyrValg, 'Hjelm')) * utstyrPriser.Hjelm +
+    Number(GetPropertyValue(utstyrValg, 'Sykkelveske')) * utstyrPriser.Sykkelveske +
+    Number(GetPropertyValue(utstyrValg, 'Sykkelvogn')) * utstyrPriser.Sykkelvogn +
+    Number(GetPropertyValue(utstyrValg, 'Barnesete')) * utstyrPriser.Barnesete +
+    Number(GetPropertyValue(utstyrValg, 'Drikkesekk')) * utstyrPriser.Drikkesekk;
+
+  totalPris = this.prisBeregningSykkel + this.prisBeregningUtstyr;
+
   render() {
     return (
       <div>
         <Column>
-          <Form.Label>Søk opp eksisterende kunde:</Form.Label>
+          <Form.Label>Søk opp eksisterende kunde på telefonnummer:</Form.Label>
           <Form.Input
             type="text"
             value={this.kunde.tlf}
             onChange={e => (this.kunde.tlf = e.target.value)}
             pattern=".{8,11}"
+            placeholder="123 45 678"
             required
           />
           <Button.Success id="color_button" onClick={this.search}>
@@ -70,73 +103,74 @@ export class Utleie extends Component {
         <br />
         <Column>
           <h4>Ny kunde</h4>
-          <Form.Label>Kunde fornavn:</Form.Label>
-          <Form.Input type="text" value={this.kunde.fornavn} onChange={e => (this.kunde.fornavn = e.target.value)} />
+          <form id="ny_kunde">
+            <Form.Label>Kunde fornavn:</Form.Label>
+            <Form.Input type="text" value={this.kunde.fornavn} onChange={e => (this.kunde.fornavn = e.target.value)} />
 
-          <Form.Label>Kunde etternavn:</Form.Label>
-          <Form.Input
-            type="text"
-            value={this.kunde.etternavn}
-            onChange={e => (this.kunde.etternavn = e.target.value)}
-          />
+            <Form.Label>Kunde etternavn:</Form.Label>
+            <Form.Input
+              type="text"
+              value={this.kunde.etternavn}
+              onChange={e => (this.kunde.etternavn = e.target.value)}
+            />
 
-          <Form.Label>Epost:</Form.Label>
-          <Form.Input type="text" value={this.kunde.epost} onChange={e => (this.kunde.epost = e.target.value)} />
+            <Form.Label>Epost:</Form.Label>
+            <Form.Input type="text" value={this.kunde.epost} onChange={e => (this.kunde.epost = e.target.value)} />
 
-          <Form.Label>Tlf:</Form.Label>
-          <Form.Input
-            type="text"
-            value={this.kunde.tlf}
-            onChange={e => (this.kunde.tlf = e.target.value)}
-            pattern=".{8,11}"
-            required
-          />
+            <Form.Label>Tlf:</Form.Label>
+            <Form.Input
+              type="text"
+              value={this.kunde.tlf}
+              onChange={e => (this.kunde.tlf = e.target.value)}
+              pattern=".{8,11}"
+              required
+            />
+
+            <div className="form-group">
+              <label>Utlevering:</label>
+              <select className="form-control" onChange={e => (this.utleiedata.utlevering = e.target.value)}>
+                <option value="" selected disabled hidden>
+                  Velg utleveringssted her
+                </option>
+                <option value="Rallarvegen">Rallarvegen</option>
+                <option value="Haugastøl">Haugastøl</option>
+                <option value="Finse">Finse</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>Innlevering:</label>
+              <select className="form-control" onChange={e => (this.utleiedata.innlevering = e.target.value)}>
+                <option value="" selected disabled hidden>
+                  Velg innleveringssted her
+                </option>
+                <option value="Haugastøl" defaultValue>
+                  Haugastøl
+                </option>
+                <option value="Finse">Finse</option>
+                <option value="Rallarvegen">Rallarvegen</option>
+              </select>
+            </div>
+
+            <Form.Label>Leie fra:</Form.Label>
+            <Form.Input
+              type="date"
+              value={this.utleiedata.fradato}
+              onChange={e => (this.utleiedata.fradato = e.target.value)}
+              pattern=".{10,10}"
+              required
+            />
+
+            <Form.Label>Leie til:</Form.Label>
+            <Form.Input
+              type="date"
+              value={this.utleiedata.tildato}
+              onChange={e => (this.utleiedata.tildato = e.target.value)}
+              pattern=".{10,10}"
+              required
+            />
+          </form>
         </Column>
-
-        <Column>
-          <div className="form-group">
-            <label>Utlevering:</label>
-            <select className="form-control" onChange={e => (this.utleiedata.utlevering = e.target.value)}>
-              <option value="Rallarvegen" defaultValue>
-                Rallarvegen
-              </option>
-              <option value="Haugastøl">Haugastøl</option>
-              <option value="Finse">Finse</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label>Innlevering:</label>
-            <select className="form-control" onChange={e => (this.utleiedata.innlevering = e.target.value)}>
-              <option value="Haugastøl" defaultValue>
-                Haugastøl
-              </option>
-              <option value="Finse">Finse</option>
-              <option value="Rallarvegen">Rallarvegen</option>
-            </select>
-          </div>
-        </Column>
-
-        <Column>
-          <Form.Label>Leie fra:</Form.Label>
-          <Form.Input
-            type="date"
-            value={this.utleiedata.fradato}
-            onChange={e => (this.utleiedata.fradato = e.target.value)}
-            pattern=".{10,10}"
-            required
-          />
-
-          <Form.Label>Leie til:</Form.Label>
-          <Form.Input
-            type="date"
-            value={this.utleiedata.tildato}
-            onChange={e => (this.utleiedata.tildato = e.target.value)}
-            pattern=".{10,10}"
-            required
-          />
-        </Column>
-
         <Column>
           <NavLink to="/utleie/sykkel" onClick={this.lagring}>
             Velg sykkel
@@ -161,7 +195,7 @@ export class Utleie extends Component {
         <Row>
           <Column>
             <div className="text-center">
-              <Button.Light onClick={this.delete}>Tøm Skjema</Button.Light>
+              <Button.Light onClick={this.resetForm}>Tøm Skjema</Button.Light>
             </div>
             <div className="text-right">
               <Button.Success onClick={this.create}>Legg inn</Button.Success>
@@ -210,7 +244,7 @@ export class Utleie extends Component {
 
         //sender info om utlånet til db
 
-        this.kommentar = this.today + 'Sykkelen er utlånt av ' + this.kunde.k_fornavn + ' ' + this.kunde.k_etternavn;
+        this.kommentar = this.today + 'Utlånt av ' + this.kunde.k_fornavn + ' ' + this.kunde.k_etternavn;
 
         let ids = [];
         utleieTjenester.velgSykkel(sykkelValg, results => {
@@ -241,21 +275,36 @@ export class Utleie extends Component {
               console.log(u_ids.toString());
 
               for (var i = 0; i < u_ids.length; i++) {
-                utleieTjenester.utleieUtstyr(utleieId, u_ids[i]);
+                utleieTjenester.utleieUtstyr(utleieId, u_ids[i], this.kommentar);
               }
             });
           }
-
-          console.log(ids.toString());
         });
       });
     });
-    alert('Utleie registert');
-    history.push('/utleie/');
+    alert('Utleie registert\nTotal pris kr ' + this.totalPris);
   }
 
-  delete() {
-    history.push('/utleie/');
+  resetForm() {
+    ny_kunde.reset();
+    this.kunde = [];
+    this.utleiedata = [];
+    kundeLagring = {
+      fornavn: '',
+      etternavn: '',
+      epost: '',
+      tlf: ''
+    };
+    utleiedataLagring = {
+      utlevering: '',
+      innlevering: '',
+      fradato: '',
+      tildato: '',
+      fraKl: '',
+      tilKl: '',
+      kunde_nr: ''
+    };
+    sykkelValg = {};
   }
 
   search() {
@@ -279,7 +328,7 @@ let sykkelValg = {
 };
 
 // sammenlagt antall
-let sykkelTeller;
+// let sykkelTeller;
 // henter antall av hver type
 function GetPropertyValue(sykkelValg, dataToRetrieve) {
   return dataToRetrieve
@@ -316,12 +365,12 @@ export class VelgSykkel extends Component {
   }
 
   create() {
-    sykkelTeller =
-      Number(GetPropertyValue(sykkelValg, 'Tursykkel')) +
-      Number(GetPropertyValue(sykkelValg, 'Terreng')) +
-      Number(GetPropertyValue(sykkelValg, 'Downhill')) +
-      Number(GetPropertyValue(sykkelValg, 'Grusracer')) +
-      Number(GetPropertyValue(sykkelValg, 'Tandem'));
+    // sykkelTeller =
+    //   Number(GetPropertyValue(sykkelValg, 'Tursykkel')) +
+    //   Number(GetPropertyValue(sykkelValg, 'Terreng')) +
+    //   Number(GetPropertyValue(sykkelValg, 'Downhill')) +
+    //   Number(GetPropertyValue(sykkelValg, 'Grusracer')) +
+    //   Number(GetPropertyValue(sykkelValg, 'Tandem'));
     history.push('/utleie/');
   }
 
