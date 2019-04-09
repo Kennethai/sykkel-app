@@ -25,7 +25,14 @@ export class KundeListe extends Component {
   checkedSykkel = {};
   checkedUtstyr = {};
 
-  kundelager = [];
+  //For å hnete ut dagens dato
+  date = new Date();
+  dd = String(this.date.getDate()).padStart(2, '0');
+  mm = String(this.date.getMonth() + 1).padStart(2, '0');
+  yyyy = this.date.getFullYear();
+  today = this.dd + '/' + this.mm + '/' + this.yyyy + ':' + ' ';
+
+  ny_kommentar = this.today + ' Levert';
 
   render() {
     return (
@@ -171,17 +178,17 @@ export class KundeListe extends Component {
     });
   }
 
-  check(sykkel_id) {
+  check(sykkel_id, ny_kommentar) {
     if (this.checkedSykkel[sykkel_id]) this.checkedSykkel[sykkel_id] = false;
     else this.checkedSykkel[sykkel_id] = true;
     for (let sykkel_id of Object.keys(this.checkedSykkel)) console.log(sykkel_id, this.checkedSykkel[sykkel_id]);
 
     for (let sykkel_id of Object.keys(this.checkedSykkel)) {
       if (this.checkedSykkel[sykkel_id] != false) {
-        mottakTjenester.mottak(sykkel_id);
+        mottakTjenester.mottak(sykkel_id, this.ny_kommentar);
         console.log(sykkel_id);
       } else {
-        mottakTjenester.IKKEmottak(sykkel_id);
+        mottakTjenester.IKKEmottak(sykkel_id, this.ny_kommentar);
         console.log(sykkel_id);
       }
     }
