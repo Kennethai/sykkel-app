@@ -35,3 +35,37 @@ class StatusService {
 }
 
 export let statusService = new StatusService();
+
+class UtstyrStatus {
+  oppdaterUstatus(status, success) {
+    connection.query(
+      'UPDATE sykkel SET u_tilstand=? WHERE utstyr_id=?',
+      [status.u_tilstand, status.utstyrId],
+      (error, results) => {
+        connection.query(
+          'INSERT INTO utstyr_kommentar (kommentar, utstyr_status, utstyr_id) values (?,?,?)',
+          [status.kommentar, status.u_tilstand, status.utstyrId],
+          (error, results) => {
+            if (error) return console.error(error);
+
+            success();
+          }
+        );
+      }
+    );
+  }
+
+  søkUstatus(idUtstyr, success) {
+    connection.query(
+      'SELECT utstyr_id, utstyr_status, kommentar FROM utstyr_kommentar WHERE utstyr_id=?',
+      [idUtstyr],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+}
+
+export let utstyrStatus = new UtstyrStatus();

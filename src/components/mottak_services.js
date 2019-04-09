@@ -32,28 +32,57 @@ class MottakTjenester {
       }
     );
   }
-  mottak(sykkel_id, success) {
+  mottak(sykkel_id, ny_kommentar, success) {
     connection.query('UPDATE sykkel SET s_tilstand = "Ledig" WHERE sykkel_id=?', [sykkel_id], (error, results) => {
       if (error) return console.error(error);
-      success(results[0]);
+      connection.query(
+        'INSERT INTO sykkel_kommentar (kommentar, sykkel_status, sykkel_id) values (?, "Ledig",?)',
+        [ny_kommentar, sykkel_id],
+        (error, results) => {
+          if (error) return console.error(error);
+          success(results[0]);
+        }
+      );
     });
   }
-  IKKEmottak(sykkel_id, success) {
+  IKKEmottak(sykkel_id, ny_kommentar, success) {
     connection.query('UPDATE sykkel SET s_tilstand = "Utleid" WHERE sykkel_id=?', [sykkel_id], (error, results) => {
       if (error) return console.error(error);
-      success(results[0]);
+      connection.query(
+        'DELETE FROM sykkel_kommentar WHERE kommentar=? AND sykkel_status="Ledig" AND sykkel_id=? ',
+        [ny_kommentar, sykkel_id],
+        (error, results) => {
+          if (error) return console.error(error);
+          success(results[0]);
+        }
+      );
     });
   }
-  Umottak(utstyr_id, success) {
+  Umottak(utstyr_id, ny_kommentar, success) {
     connection.query('UPDATE utstyr SET u_tilstand = "Ledig" WHERE utstyr_id=?', [utstyr_id], (error, results) => {
       if (error) return console.error(error);
-      success(results[0]);
+      connection.query(
+        'INSERT INTO utstyr_kommentar (kommentar, utstyr_status, utstyr_id) values (?, "Ledig",?)',
+        [ny_kommentar, utstyr_id],
+        (error, results) => {
+          if (error) return console.error(error);
+          success(results[0]);
+        }
+      );
     });
   }
-  uIKKEmottak(utstyr_id, success) {
+
+  uIKKEmottak(utstyr_id, ny_kommentar, success) {
     connection.query('UPDATE utstyr SET u_tilstand = "Utleid" WHERE utstyr_id=?', [utstyr_id], (error, results) => {
       if (error) return console.error(error);
-      success(results[0]);
+      connection.query(
+        'DELETE FROM utstyr_kommentar WHERE kommentar=? AND utstyr_status="Ledig" AND utstyr_id=? ',
+        [ny_kommentar, utstyr_id],
+        (error, results) => {
+          if (error) return console.error(error);
+          success(results[0]);
+        }
+      );
     });
   }
 }
