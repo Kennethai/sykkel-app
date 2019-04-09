@@ -33,13 +33,14 @@ class Menu extends Component {
                 Varelager
               </NavLink>
             </td>
-
             <td className="navbutton">
               <NavLink to="/Status" className="NavLink_Style">
-                SykkelStatus <NavLink to="/uStatus">UtsyrStatus</NavLink>
+                SykkelStatus{' '}
+                <NavLink to="/uStatus" className="NavLink_S">
+                  UtsyrStatus
+                </NavLink>
               </NavLink>
             </td>
-
             <td className="navbutton">
               <NavLink to="/Info" className="NavLink_Style">
                 Info
