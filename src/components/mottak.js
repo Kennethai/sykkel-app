@@ -194,17 +194,17 @@ export class KundeListe extends Component {
     }
   }
 
-  utstyr_check(utstyr_id) {
+  utstyr_check(utstyr_id, ny_kommentar) {
     if (this.checkedUtstyr[utstyr_id]) this.checkedUtstyr[utstyr_id] = false;
     else this.checkedUtstyr[utstyr_id] = true;
     for (let utstyr_id of Object.keys(this.checkedUtstyr)) console.log(utstyr_id, this.checkedUtstyr[utstyr_id]);
 
     for (let utstyr_id of Object.keys(this.checkedUtstyr)) {
       if (this.checkedUtstyr[utstyr_id] != false) {
-        mottakTjenester.Umottak(utstyr_id);
+        mottakTjenester.Umottak(utstyr_id, this.ny_kommentar);
         console.log(utstyr_id);
       } else {
-        mottakTjenester.uIKKEmottak(utstyr_id);
+        mottakTjenester.uIKKEmottak(utstyr_id, this.ny_kommentar);
         console.log(utstyr_id);
       }
     }

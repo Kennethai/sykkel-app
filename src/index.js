@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { Utleie, VelgSykkel, VelgUtstyr } from './components/utleie.js';
 import { StatusListe } from './components/status.js';
+import { UstatusListe } from './components/status.js';
 import { Varelageret, Sykkel, Utstyr } from './components/varelager.js';
 import { KundeListe } from './components/mottak.js';
 import { InfoListe } from './components/info.js';
@@ -32,11 +33,13 @@ class Menu extends Component {
                 Varelager
               </NavLink>
             </td>
+
             <td className="navbutton">
               <NavLink to="/Status" className="NavLink_Style">
-                Status
+                SykkelStatus <NavLink to="/uStatus">UtsyrStatus</NavLink>
               </NavLink>
             </td>
+
             <td className="navbutton">
               <NavLink to="/Info" className="NavLink_Style">
                 Info
@@ -71,6 +74,8 @@ ReactDOM.render(
       <Route exact path="/Varelager/nySykkel" component={Sykkel} />
       <Route exact path="/Varelager/nyUtstyr" component={Utstyr} />
       <Route exact path="/Status" component={StatusListe} />
+
+      <Route exact path="/uStatus/" component={UstatusListe} />
       <Route exact path="/Info" component={InfoListe} />
     </div>
   </HashRouter>,

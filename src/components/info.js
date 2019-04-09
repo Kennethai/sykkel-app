@@ -72,16 +72,16 @@ export class InfoListe extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.liste.map((e1, a) => (
+                {this.liste.map(e1 => (
                   <tr key={e1.kunde_nr}>
-                    <td> {e1.utleie_id} </td>
+                    <td> {e1.uu == null ? e1.us : e1.uu}</td>
                     <td> {e1.k_fornavn} </td>
                     <td> {e1.k_etternavn} </td>
                     <td> {e1.k_tlf} </td>
                     <td> {e1.utleietid} </td>
                     <td> {e1.innleveringstid} </td>
-                    <td> {this.liste4.length > a ? this.liste4[a].sykler : null} </td>
-                    <td> {this.liste4.length > a ? this.liste4[a].utstyr : null} </td>
+                    <td> {e1.sykler}</td>
+                    <td> {e1.utstyr}</td>
                     <td>{e1.pris} </td>
                   </tr>
                 ))}
@@ -108,16 +108,16 @@ export class InfoListe extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.liste2.map((e2, i) => (
+                  {this.liste2.map(e2 => (
                     <tr key={e2.kunde_nr}>
-                      <td> {e2.utleie_id} </td>
+                      <td> {e2.uu == null ? e2.us : e2.uu}</td>
                       <td> {e2.k_fornavn} </td>
                       <td> {e2.k_etternavn} </td>
                       <td> {e2.k_tlf} </td>
                       <td> {e2.utleietid} </td>
                       <td> {e2.innleveringstid} </td>
-                      <td> {this.liste3.length > i ? this.liste3[i].sykler : null} </td>
-                      <td> {this.liste3.length > i ? this.liste3[i].utstyr : null} </td>
+                      <td> {e2.sykler} </td>
+                      <td> {e2.utstyr} </td>
                     </tr>
                   ))}
                 </tbody>
@@ -133,14 +133,14 @@ export class InfoListe extends Component {
     infoService.hentAlt(this.kunde, liste2 => {
       this.liste2 = liste2;
     });
-    infoService.utstyr(this.kunde, liste3 => {
-      this.liste3 = liste3;
-    });
+    // infoService.utstyr(this.kunde, liste3 => {
+    //   this.liste3 = liste3;
+    // });
 
-    infoService.utstyr(this.kunde, utstyr => {
-      this.utstyr = utstyr;
-      console.log(this.utstyr);
-    });
+    // infoService.utstyr(this.kunde, utstyr => {
+    //   this.utstyr = utstyr;
+    //   console.log(this.utstyr);
+    // });
   }
 
   sok(kunde) {
@@ -148,9 +148,9 @@ export class InfoListe extends Component {
       this.liste = liste;
       console.log(this.liste);
     });
-    infoService.utstyrr(this.kunde, liste4 => {
-      this.liste4 = liste4;
-    });
+    // infoService.utstyrr(this.kunde, liste4 => {
+    //   this.liste4 = liste4;
+    // });
 
     infoService.hentKunde(this.kunde, kunder => {
       this.kunder = [];
