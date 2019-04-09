@@ -13,6 +13,7 @@ body {
   width: 50%;
   margin: auto;
   padding: 120px 5px 5px 5px;
+  overflow: visible;
 }
 
 /* Styler overskrift*/
@@ -40,14 +41,11 @@ body {
 /* Visualiserer lister */
 .Liste {
   margin: auto;
-  width: 95%;
-  min-width: 50%;
-  max-width: 100%;
   border-radius: 7px;
   border: 2px solid #d0d0d0;
   background-color: #f0f0f0;
   padding: 15px;
-  /* width: 92.5%; */
+  width: 90%;
 }
 
 /*Midtstille diverse*/
@@ -130,12 +128,18 @@ body {
 }
 
 .table-striped {
-  color: red;
   background-color: rgba(200, 200, 200, 1);
+  margin: auto;
 }
 
-#tabellar {
-  width: auto;
-  min-width: 30%;
-  max-width: 90%;
+.container-fluid {
+  margin: auto;
+}
+
+#col_sykkel {
+  margin: auto;
+}
+
+#col_utstyr {
+  margin: auto;
 }

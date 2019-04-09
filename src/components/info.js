@@ -56,7 +56,7 @@ export class InfoListe extends Component {
             <div id="infoData" className="Liste" />
           </ul>
           <div id="tabellar">
-            <div id="liste1">
+            <div id="liste1" className="container-fluid">
               <table className="table table-striped hover">
                 <thead>
                   <tr>
@@ -65,8 +65,8 @@ export class InfoListe extends Component {
                     <th> Tlf: </th>
                     <th> Sykler: </th>
                     <th> Utstyr: </th>
-                    <th> Uteleie: </th>
-                    <th> Innlevering: </th>
+                    <th> Ut: </th>
+                    <th> Inn: </th>
                     <th> Pris: </th>
                   </tr>
                 </thead>
@@ -92,15 +92,15 @@ export class InfoListe extends Component {
                   <b>&nbsp;Alle utleier: </b>
                 </h3>
 
-                <table className="table table-striped hover" size="sm">
+                <table className="table table-striped hover">
                   <thead>
                     <tr>
-                      <th> Utleie_id: </th>
+                      <th> Utleie ID: </th>
                       <th> Fornavn: </th>
                       <th> Etternavn: </th>
                       <th> Tlf: </th>
-                      <th> Uteleie: </th>
-                      <th> Innlevering: </th>
+                      <th> Ut: </th>
+                      <th> Inn: </th>
                       <th> Sykler: </th>
                       <th> Utstyr: </th>
                     </tr>
