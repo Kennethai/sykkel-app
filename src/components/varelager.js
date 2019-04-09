@@ -123,7 +123,7 @@ export class Varelageret extends Component {
                       <th> Navn: </th>
                       <th> Type: </th>
                       <th> Tilhørighet: </th>
-                      <th> Passer til: </th>
+                      <th> Passer: </th>
                       <th> Pris: </th>
                       <th> År: </th>
                       <th> Tilstand: </th>

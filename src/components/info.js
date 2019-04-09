@@ -34,7 +34,7 @@ export class InfoListe extends Component {
   render() {
     return (
       <Card>
-        <p> Fyll ut alle feltene for iformasjon om spesifikk kunde. </p>
+        <p> Fyll ut alle feltene for informasjon om spesifikk kunde. </p>
         <Column>
           <Column>
             <Form.Label>Fornavn:</Form.Label>
@@ -62,14 +62,13 @@ export class InfoListe extends Component {
               <table className="table table-striped hover">
                 <thead>
                   <tr>
-                    <th> Utleie_id: </th>
                     <th> Fornavn: </th>
                     <th> Etternavn: </th>
                     <th> Tlf: </th>
-                    <th> Uteleie: </th>
-                    <th> Innlevering: </th>
                     <th> Sykler: </th>
                     <th> Utstyr: </th>
+                    <th> Ut: </th>
+                    <th> Inn: </th>
                     <th> Pris: </th>
                   </tr>
                 </thead>
@@ -90,7 +89,6 @@ export class InfoListe extends Component {
                 </tbody>
               </table>
             </div>
-
             <Card>
               <Row>
                 <h3>
@@ -100,12 +98,12 @@ export class InfoListe extends Component {
                   <table className="table table-striped hover" size="sm">
                     <thead>
                       <tr>
-                        <th> Utleie_id: </th>
+                        <th> Utleie ID: </th>
                         <th> Fornavn: </th>
                         <th> Etternavn: </th>
                         <th> Tlf: </th>
-                        <th> Uteleie: </th>
-                        <th> Innlevering: </th>
+                        <th> Ut: </th>
+                        <th> Inn: </th>
                         <th> Sykler: </th>
                         <th> Utstyr: </th>
                       </tr>

@@ -30,6 +30,14 @@ export class UstatusListe extends Component {
   render() {
     return (
       <div>
+        <div className="substatus">
+          <NavLink to="/Status/" className="register">
+            Status sykkel
+          </NavLink>
+          <NavLink to="/uStatus/" className="register">
+            Status utstyr
+          </NavLink>
+        </div>
         <Card>
           <Column>
             <Form.Label>Utstyr_Id:</Form.Label>
@@ -144,6 +152,14 @@ export class StatusListe extends Component {
   render() {
     return (
       <div>
+        <div className="substatus">
+          <NavLink to="/Status/" className="register">
+            Status sykkel
+          </NavLink>
+          <NavLink to="/uStatus/" className="register">
+            Status utstyr
+          </NavLink>
+        </div>
         <Card>
           <Column>
             <Form.Label>Sykkel_Id:</Form.Label>
