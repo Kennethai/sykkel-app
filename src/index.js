@@ -36,7 +36,7 @@ class Menu extends Component {
 
             <td className="navbutton">
               <NavLink to="/Status" className="NavLink_Style">
-                SykkelStatus <NavLink to="/uStatus">UtsyrStatus</NavLink>
+                Status
               </NavLink>
             </td>
 
@@ -74,8 +74,7 @@ ReactDOM.render(
       <Route exact path="/Varelager/nySykkel" component={Sykkel} />
       <Route exact path="/Varelager/nyUtstyr" component={Utstyr} />
       <Route exact path="/Status" component={StatusListe} />
-
-      <Route exact path="/uStatus/" component={UstatusListe} />
+      <Route exact path="/uStatus" component={UstatusListe} />
       <Route exact path="/Info" component={InfoListe} />
     </div>
   </HashRouter>,

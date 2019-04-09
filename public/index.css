@@ -94,7 +94,8 @@ body {
   background-color: MediumVioletRed;
 }
 
-.register_menu {
+.register_menu,
+.substatus {
   position: fixed;
   z-index: 8;
   background-color: black;
@@ -102,6 +103,10 @@ body {
   margin-left: -25vw;
   margin-top: -12px;
   padding: 2px 0 2px 35vw;
+}
+
+.substatus {
+  padding-left: 60vw;
 }
 
 .register {
