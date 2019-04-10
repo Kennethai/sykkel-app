@@ -38,7 +38,7 @@ export class KundeListe extends Component {
     return (
       <div>
         <Card>
-          <p> Fyll ut alle feltene. </p>
+          <p> Fyll ut alle feltene! </p>
           <Row>
             <Column>
               <Form.Label>Fornavn:</Form.Label>
