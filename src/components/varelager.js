@@ -261,6 +261,14 @@ export class Sykkel extends Component {
     beskrivelse: ''
   };
 
+  sykkelPriser = {
+    Tursykkel: 100,
+    Terreng: 120,
+    Downhill: 150,
+    Grusracer: 200,
+    Tandem: 175
+  };
+
   render() {
     return (
       <div>
@@ -280,11 +288,11 @@ export class Sykkel extends Component {
                 <option value="" selected disabled hidden>
                   Velg sykkeltype her
                 </option>
-                <option value="Tur">Tursykkel</option>
+                <option value="Tursykkel">Tursykkel</option>
                 <option value="Terreng">Terrengsykkel</option>
                 <option value="Tandem">Tandemsykkel</option>
                 <option value="Downhill">Downhillsykkel</option>
-                <option value="Racing">Racingsykkel</option>
+                <option value="Grusracer">Racingsykkel</option>
               </select>
             </div>
           </Column>
@@ -294,9 +302,6 @@ export class Sykkel extends Component {
 
           <Form.Label>Årsklasse:</Form.Label>
           <Form.Input type="number" value={this.sykkel.aar} onChange={e => (this.sykkel.aar = e.target.value)} />
-
-          <Form.Label>Pris:</Form.Label>
-          <Form.Input type="text" value={this.sykkel.pris} onChange={e => (this.sykkel.pris = e.target.value)} />
 
           <Column>
             <div className="form-group">
@@ -334,6 +339,8 @@ export class Sykkel extends Component {
   }
 
   create() {
+    this.sykkel.pris = this.sykkelPriser[this.sykkel.type];
+
     regSykkel.opprettSykkel(this.sykkel);
     alert('Sykkelen er lagt til');
     history.push('/Varelager/NySykkel');
@@ -351,6 +358,14 @@ export class Utstyr extends Component {
     pris: '',
     tilstand: '',
     merke: ''
+  };
+
+  utstyrPriser = {
+    Hjelm: 10,
+    Sykkelveske: 20,
+    Sykkelvogn: 100,
+    Barnesete: 50,
+    Drikkesekk: 70
   };
 
   render() {
@@ -373,14 +388,10 @@ export class Utstyr extends Component {
                   Velg utstyrstype her
                 </option>
                 <option value="Hjelm">Hjelm</option>
-                <option value="Racinghjelm">Racinghjelm</option>
-                <option value="Downhillhjelm">Downhillhjelm</option>
                 <option value="Barnesete">Barnesete</option>
                 <option value="Sykkelveske">Sykkelveske</option>
-                <option value="Racingdress">Racingdress</option>
                 <option value="Drikkesekk">Drikkesekk</option>
                 <option value="Sykkelvogn">Sykkelvogn</option>
-                <option value="Diverse">Diverse</option>
               </select>
             </div>
           </Column>
@@ -404,10 +415,6 @@ export class Utstyr extends Component {
 
           <Form.Label>Merke:</Form.Label>
           <Form.Input type="text" value={this.utstyr.merke} onChange={e => (this.utstyr.merke = e.target.value)} />
-
-          <Form.Label>Utleiepris:</Form.Label>
-          <Form.Input type="number" value={this.utstyr.pris} onChange={e => (this.utstyr.pris = e.target.value)} />
-
           <Column>
             <div className="form-group">
               <label htmlFor="type">Tilstand:</label>
@@ -434,6 +441,7 @@ export class Utstyr extends Component {
   }
 
   create() {
+    this.utstyr.pris = this.utstyrPriser[this.utstyr.type];
     regUtstyr.opprettUtstyr(this.utstyr);
     alert('Utstyret er lagt til');
     history.push('/Varelager/NyUtstyr');

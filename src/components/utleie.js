@@ -80,7 +80,7 @@ export class Utleie extends Component {
     Number(GetPropertyValue(utstyrValg, 'Barnesete')) * utstyrPriser.Barnesete +
     Number(GetPropertyValue(utstyrValg, 'Drikkesekk')) * utstyrPriser.Drikkesekk;
 
-  totalPris = this.prisBeregningSykkel + this.prisBeregningUtstyr;
+  totalPris = this.prisBeregningSykkel + this.prisBeregningUtstyr * rabatt;
 
   render() {
     return (
@@ -328,7 +328,7 @@ let sykkelValg = {
 };
 
 // sammenlagt antall
-// let sykkelTeller;
+let sykkelTeller;
 // henter antall av hver type
 function GetPropertyValue(sykkelValg, dataToRetrieve) {
   return dataToRetrieve
@@ -365,12 +365,12 @@ export class VelgSykkel extends Component {
   }
 
   create() {
-    // sykkelTeller =
-    //   Number(GetPropertyValue(sykkelValg, 'Tursykkel')) +
-    //   Number(GetPropertyValue(sykkelValg, 'Terreng')) +
-    //   Number(GetPropertyValue(sykkelValg, 'Downhill')) +
-    //   Number(GetPropertyValue(sykkelValg, 'Grusracer')) +
-    //   Number(GetPropertyValue(sykkelValg, 'Tandem'));
+    sykkelTeller =
+      Number(GetPropertyValue(sykkelValg, 'Tursykkel')) +
+      Number(GetPropertyValue(sykkelValg, 'Terreng')) +
+      Number(GetPropertyValue(sykkelValg, 'Downhill')) +
+      Number(GetPropertyValue(sykkelValg, 'Grusracer')) +
+      Number(GetPropertyValue(sykkelValg, 'Tandem'));
     history.push('/utleie/');
   }
 
@@ -429,3 +429,17 @@ export class VelgUtstyr extends Component {
     history.push('/utleie/');
   }
 }
+
+let rabatt = '';
+
+if (sykkelTeller > 3 && sykkelTeller < 6) {
+  rabatt = 0.9;
+} else {
+  if (sykkelTeller > 5) {
+    rabatt = 0.75;
+  } else {
+    rabatt = 1;
+  }
+}
+
+console.log(rabatt);
