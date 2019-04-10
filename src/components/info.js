@@ -22,11 +22,16 @@ export class InfoListe extends Component {
 
   kunder = [];
 
+  utleie = {
+    utleieid: ''
+  };
+
   liste = [];
 
   liste2 = [];
-  liste3 = [];
+
   liste4 = [];
+  liste5 = [];
 
   utstyr = [];
   sykler = [];
@@ -34,20 +39,11 @@ export class InfoListe extends Component {
   render() {
     return (
       <Card>
-        <p> Fyll ut alle feltene for informasjon om spesifikk kunde. </p>
         <Column>
           <Column>
-            <Form.Label>Fornavn:</Form.Label>
-            <Form.Input type="text" value={this.kunde.fornavn} onChange={e => (this.kunde.fornavn = e.target.value)} />
-            <Form.Label>Etternavn:</Form.Label>
-            <Form.Input
-              type="text"
-              value={this.kunde.etternavn}
-              onChange={e => (this.kunde.etternavn = e.target.value)}
-            />
+            <p> Søk opp spesifikk kunde. </p>
             <Form.Label>Tlf:</Form.Label>
             <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
-
             <div className="text-right">
               <Button.Success onClick={this.sok}>Søk</Button.Success>
             </div>
@@ -62,14 +58,14 @@ export class InfoListe extends Component {
               <table className="table table-striped hover">
                 <thead>
                   <tr>
+                    <th> Utleie ID: </th>
                     <th> Fornavn: </th>
                     <th> Etternavn: </th>
                     <th> Tlf: </th>
-                    <th> Sykler: </th>
-                    <th> Utstyr: </th>
                     <th> Ut: </th>
                     <th> Inn: </th>
-                    <th> Pris: </th>
+                    <th> Sykler: </th>
+                    <th> Utstyr: </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -89,42 +85,74 @@ export class InfoListe extends Component {
                 </tbody>
               </table>
             </div>
-            <Card>
-              <Row>
-                <h3>
-                  <b>&nbsp;Alle utleier: </b>
-                </h3>
-                <div id="liste1" className="container-fluid">
-                  <table className="table table-striped hover" size="sm">
-                    <thead>
-                      <tr>
-                        <th> Utleie ID: </th>
-                        <th> Fornavn: </th>
-                        <th> Etternavn: </th>
-                        <th> Tlf: </th>
-                        <th> Ut: </th>
-                        <th> Inn: </th>
-                        <th> Sykler: </th>
-                        <th> Utstyr: </th>
+            <br />
+            <Column>
+              <p> Finn sykler og utstyr i utleien. </p>
+              <Form.Label>Utleie-id:</Form.Label>
+              <Form.Input
+                type="number"
+                value={this.utleie.utleieid}
+                onChange={e => (this.utleie.utleieid = e.target.value)}
+              />
+              <div className="text-right">
+                <Button.Success onClick={this.sok_id}>Søk</Button.Success>
+              </div>
+              <br />
+              <div id="liste1" className="container-fluid">
+                <table className="table table-striped hover" size="sm">
+                  <thead>
+                    <tr>
+                      <th> Utleie ID: </th>
+                      <th> Sykkel_id: </th>
+                      <th> Utstyr_id: </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.liste4.map((li, i) => (
+                      <tr key={li.utleie_id}>
+                        <td> {li.uu == null ? li.us : li.uu}</td>
+                        <td> {li.sykkel_id} </td>
+                        <td> {this.liste5.length > i ? this.liste5[i].utstyr_id : null} </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {this.liste2.map(e2 => (
-                        <tr key={e2.kunde_nr}>
-                          <td> {e2.uu == null ? e2.us : e2.uu}</td>
-                          <td> {e2.k_fornavn} </td>
-                          <td> {e2.k_etternavn} </td>
-                          <td> {e2.k_tlf} </td>
-                          <td> {e2.utleietid} </td>
-                          <td> {e2.innleveringstid} </td>
-                          <td> {e2.sykler} </td>
-                          <td> {e2.utstyr} </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </Row>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Column>
+            <Card>
+              <h3>
+                <b>&nbsp;Alle utleier: </b>
+              </h3>
+              <div id="liste1" className="container-fluid">
+                <table className="table table-striped hover" size="sm">
+                  <thead>
+                    <tr>
+                      <th> Utleie ID: </th>
+                      <th> Fornavn: </th>
+                      <th> Etternavn: </th>
+                      <th> Tlf: </th>
+                      <th> Ut: </th>
+                      <th> Inn: </th>
+                      <th> Sykler: </th>
+                      <th> Utstyr: </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.liste2.map(e2 => (
+                      <tr key={e2.kunde_nr}>
+                        <td> {e2.uu == null ? e2.us : e2.uu}</td>
+                        <td> {e2.k_fornavn} </td>
+                        <td> {e2.k_etternavn} </td>
+                        <td> {e2.k_tlf} </td>
+                        <td> {e2.utleietid} </td>
+                        <td> {e2.innleveringstid} </td>
+                        <td> {e2.sykler} </td>
+                        <td> {e2.utstyr} </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </Card>
           </div>
         </Column>
@@ -136,14 +164,21 @@ export class InfoListe extends Component {
     infoService.hentAlt(this.kunde, liste2 => {
       this.liste2 = liste2;
     });
-    // infoService.utstyr(this.kunde, liste3 => {
-    //   this.liste3 = liste3;
-    // });
+  }
 
-    // infoService.utstyr(this.kunde, utstyr => {
-    //   this.utstyr = utstyr;
-    //   console.log(this.utstyr);
-    // });
+  sok_id(utleie) {
+    infoService.idInfo(this.utleie, liste4 => {
+      this.liste4 = liste4;
+      console.log(this.liste4);
+      if (this.liste4.length == 0) {
+        alert('Utleie-idn du har skrevet inn eksisterer ikke.');
+      }
+    });
+    infoService.UidInfo(this.utleie, liste5 => {
+      this.liste5 = liste5;
+      console.log(this.liste5);
+    });
+    this.utleie.utleieid = [];
   }
 
   sok(kunde) {
