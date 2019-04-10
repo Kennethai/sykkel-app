@@ -176,7 +176,6 @@ export class InfoListe extends Component {
       this.liste5 = liste5;
       console.log(this.liste5);
     });
-    this.utleie.utleieid = [];
   }
 
   sok(kunde) {
