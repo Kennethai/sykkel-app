@@ -24,7 +24,6 @@ export class Varelageret extends Component {
   render() {
     return (
       <div>
-        //Undermenyene
         <div className="register_menu">
           <NavLink to="/Varelager/nySykkel" className="register">
             Registrer sykkel

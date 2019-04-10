@@ -37,7 +37,7 @@ export class InfoListe extends Component {
       <Card>
         <Column>
           <Column>
-            //Søke opp kunde på telefonnummer.
+            /*Søke opp kunde på telefonnummer.*/
             <p> Søk opp spesifikk kunde. </p>
             <Form.Label>Tlf:</Form.Label>
             <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
@@ -49,7 +49,7 @@ export class InfoListe extends Component {
           <ul>
             <div id="infoData" className="Liste" />
           </ul>
-          //Tabeller som viser informasjon når siden laster.
+          //Liste med info, kun en spesifikk oppsøkt kunde.
           <div id="tabellar">
             <div id="liste1" className="container-fluid">
               <table className="table table-striped hover">
@@ -63,6 +63,7 @@ export class InfoListe extends Component {
                     <th> Inn: </th>
                     <th> Sykler: </th>
                     <th> Utstyr: </th>
+                    <th> Pris: </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -76,6 +77,7 @@ export class InfoListe extends Component {
                       <td> {e1.innleveringstid} </td>
                       <td> {e1.sykler}</td>
                       <td> {e1.utstyr}</td>
+                      <td> {Number(e1.spris) + Number(e1.upris)} </td>
                     </tr>
                   ))}
                 </tbody>
@@ -115,42 +117,42 @@ export class InfoListe extends Component {
                 </table>
               </div>
             </Column>
-            <Card>
-              <h3>
-                <b>&nbsp;Alle utleier: </b>
-              </h3>
-              //Liste med info, kun en spesifikk oppsøkt kunde.
-              <div id="liste1" className="container-fluid">
-                <table className="table table-striped hover" size="sm">
-                  <thead>
-                    <tr>
-                      <th> Utleie ID: </th>
-                      <th> Fornavn: </th>
-                      <th> Etternavn: </th>
-                      <th> Tlf: </th>
-                      <th> Ut: </th>
-                      <th> Inn: </th>
-                      <th> Sykler: </th>
-                      <th> Utstyr: </th>
+            <h3>
+              <b>&nbsp;Alle utleier: </b>
+            </h3>
+            //Tabeller som viser informasjon når siden laster.
+            <div id="liste1" className="container-fluid">
+              <table className="table table-striped hover" size="sm">
+                <thead>
+                  <tr>
+                    <th> Utleie ID: </th>
+                    <th> Fornavn: </th>
+                    <th> Etternavn: </th>
+                    <th> Tlf: </th>
+                    <th> Ut: </th>
+                    <th> Inn: </th>
+                    <th> Sykler: </th>
+                    <th> Utstyr: </th>
+                    <th> Pris: </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.liste2.map(e2 => (
+                    <tr key={e2.kunde_nr}>
+                      <td> {e2.uu == null ? e2.us : e2.uu}</td>
+                      <td> {e2.k_fornavn} </td>
+                      <td> {e2.k_etternavn} </td>
+                      <td> {e2.k_tlf} </td>
+                      <td> {e2.utleietid} </td>
+                      <td> {e2.innleveringstid} </td>
+                      <td> {e2.sykler} </td>
+                      <td> {e2.utstyr} </td>
+                      <td> {Number(e2.spris) + Number(e2.upris)} </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {this.liste2.map(e2 => (
-                      <tr key={e2.kunde_nr}>
-                        <td> {e2.uu == null ? e2.us : e2.uu}</td>
-                        <td> {e2.k_fornavn} </td>
-                        <td> {e2.k_etternavn} </td>
-                        <td> {e2.k_tlf} </td>
-                        <td> {e2.utleietid} </td>
-                        <td> {e2.innleveringstid} </td>
-                        <td> {e2.sykler} </td>
-                        <td> {e2.utstyr} </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </Card>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </Column>
       </Card>
