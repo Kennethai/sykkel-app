@@ -24,6 +24,7 @@ export class Varelageret extends Component {
   render() {
     return (
       <div>
+        //Undermenyene
         <div className="register_menu">
           <NavLink to="/Varelager/nySykkel" className="register">
             Registrer sykkel
@@ -34,6 +35,7 @@ export class Varelageret extends Component {
         </div>
         <Card>
           <Column>
+            //Søke på sykkel_id
             <Form.Label>Sykkel-id:</Form.Label>
             <Form.Input
               type="number"
@@ -42,11 +44,13 @@ export class Varelageret extends Component {
             />
           </Column>
           <Column>
+            //Knapp for å søke
             <div className="text-right">
               <Button.Success onClick={this.sykkel}>Søk</Button.Success>
             </div>
           </Column>
           <Column>
+            //Søke på sykkel_id
             <Form.Label>Utstyrs-id:</Form.Label>
             <Form.Input
               type="number"
@@ -55,21 +59,21 @@ export class Varelageret extends Component {
             />
           </Column>
           <Column>
+            //knapp for å søke
             <div className="text-right">
               <Button.Success onClick={this.utstyrk}>Søk</Button.Success>
             </div>
           </Column>
         </Card>
-
         <div className="Midtstille">
           <Button.Success onClick={this.sykkeltabell}> SYKKEL </Button.Success>&nbsp;&nbsp;
           <Button.Success onClick={this.utstyrtabell}> UTSTYR </Button.Success>
         </div>
-
         <br />
         <ul>
           <div className="Liste" id="utdata">
             {' '}
+            //Div for å skrive ut info om sykkel og utstyr
           </div>
           <div id="utdata2"> </div>
         </ul>
@@ -80,6 +84,7 @@ export class Varelageret extends Component {
                 <h4>
                   <b>Sykler:</b>
                 </h4>
+                //Tabell for alle eksisterende sykler
                 <table className="table table-striped hover" size="sm">
                   <thead>
                     <tr>
@@ -115,6 +120,7 @@ export class Varelageret extends Component {
                 <h4>
                   <b> Utstyr:</b>
                 </h4>
+                //Tabell for alle eksisterende utstyr
                 <table className="table table-striped hover" size="sm">
                   <thead>
                     <tr>
@@ -151,6 +157,7 @@ export class Varelageret extends Component {
     );
   }
 
+  //knapp for å vise tabellen for alle sykler
   sykkeltabell() {
     varelager.hentSykkeltabell(this.sykler, sykler => {
       this.sykler = sykler;
@@ -166,6 +173,7 @@ export class Varelageret extends Component {
     });
   }
 
+  //knapp for å vise tabellen for alle utstyr
   utstyrtabell() {
     varelager.hentUtstyrtabell(this.utstyr, utstyr => {
       this.utstyr = utstyr;
@@ -180,11 +188,13 @@ export class Varelageret extends Component {
     });
   }
 
+  //knapp for å vise informasjon om en spsifikk sykkel
   sykkel() {
     varelager.hentsykkel(this.info, merinfo => {
       this.merinfo = [];
       this.merinfo = merinfo;
       utdata.innerText = '';
+      //sjekker om sykkelen eksisterer eller alerter, hvis den eksisterer kjøres informasjonen ut.
       if (this.merinfo == undefined) {
         alert('Sykkel med denne IDn finnes ikke!');
       } else {
@@ -194,11 +204,14 @@ export class Varelageret extends Component {
       }
     });
   }
+
+  //knapp for å vise informasjon om et spsifikk utstyr
   utstyrk() {
     varelager.hentutstyr(this.info, merinfo => {
       this.merinfo = [];
       this.merinfo = merinfo;
       utdata.innerText = '';
+      //sjekker om utstyret eksisterer eller alerter, hvis det eksisterer kjøres informasjonen ut.
       if (this.merinfo == undefined) {
         alert('Utstyr med denne IDn finnes ikke!');
       } else {
@@ -404,5 +417,3 @@ export class Utstyr extends Component {
     history.push('/Varelager/');
   }
 }
-
-// ---------------------------------------------------------------------

@@ -11,11 +11,6 @@ const history = createHashHistory(); // Use history.push(...) to programmaticall
 
 export class KundeListe extends Component {
   kunde = [];
-  //  {
-  //   fornavn: '',
-  //   etternavn: '',
-  //   tlf: ''
-  // };
 
   kunder = [];
 
@@ -32,12 +27,14 @@ export class KundeListe extends Component {
   yyyy = this.date.getFullYear();
   today = this.dd + '/' + this.mm + '/' + this.yyyy + ':' + ' ';
 
+  //Ny kommentar som skal legges inn i spørringen.
   ny_kommentar = this.today + ' Levert';
 
   render() {
     return (
       <div>
         <Card>
+          //Her søkes kunden opp.
           <p> Fyll ut alle feltene! </p>
           <Row>
             <Column>
@@ -62,17 +59,17 @@ export class KundeListe extends Component {
                 value={this.kunde.tlf}
                 onChange={e => (this.kunde.tlf = e.target.value)}
               />
-
+              //Knapp for å søke opp kunde med utleid utstyr og sykler.
               <div className="text-right">
                 <Button.Success onClick={this.sok}>Søk</Button.Success>
               </div>
             </Column>
           </Row>
-
           <ul>
             <div className="Liste" id="utdata" />
           </ul>
         </Card>
+        //Her er tabellen med utleide sykler og checkbokser.
         <div className="container-fluid">
           <div className="row">
             <Column>
@@ -97,6 +94,7 @@ export class KundeListe extends Component {
               </table>
             </Column>
             <Column>
+              //Her er tabellen med utleide utstyr og checkbokser.
               <table id="col_utstyr" className="table table-striped hover" size="sm">
                 <thead>
                   <tr>
@@ -132,17 +130,7 @@ export class KundeListe extends Component {
     );
   }
 
-  mounted(kunde) {
-    // mottakTjenester.hentData(this.kunde, kunde => {
-    //   this.kunde = kunde;
-    // });
-    // Object.keys(this.info).forEach(function(key) {
-    //   console.log(key, this.info[key]);
-    // });
-    // Object.keys(kunde).forEach(function(key) {
-    //   console.log(key, kunde[key]);
-    // });
-  }
+  //Her kjøres funksjonen for å hente ut tabellene for utleiede sykler og utstyr.
   sok() {
     mottakTjenester.hentSykkel(this.kunde, syklene => {
       this.syklene = syklene;
@@ -151,6 +139,7 @@ export class KundeListe extends Component {
       this.utstyr = utstyr;
     });
 
+    //Her hentes kunde og kjøres ut i en div dersom kundne eksisterer. Hvis ikke kjører alert.
     mottakTjenester.hentKunde(this.kunde, kunder => {
       this.kunder = [];
       this.kunder = kunder;
@@ -165,9 +154,7 @@ export class KundeListe extends Component {
       }
     });
 
-    // this.kunde.fornavn = [];
-    // this.kunde.etternavn = [];
-    // this.kunde.tlf = [];
+    //Motta-knappen oppdaterer tabellene slik at man kan se utstyr og sykler som gjenstår.
   }
   motta(sykkel_id) {
     mottakTjenester.hentSykkel(this.kunde, syklene => {
@@ -178,6 +165,7 @@ export class KundeListe extends Component {
     });
   }
 
+  //Her sjekker man av boksene og velger hva som skal når man sjekker og av-sjekker boksene for sykler.
   check(sykkel_id, ny_kommentar) {
     if (this.checkedSykkel[sykkel_id]) this.checkedSykkel[sykkel_id] = false;
     else this.checkedSykkel[sykkel_id] = true;
@@ -194,6 +182,7 @@ export class KundeListe extends Component {
     }
   }
 
+  //Her sjekker man av boksene og velger hva som skal når man sjekker og av-sjekker boksene for utstyr.
   utstyr_check(utstyr_id, ny_kommentar) {
     if (this.checkedUtstyr[utstyr_id]) this.checkedUtstyr[utstyr_id] = false;
     else this.checkedUtstyr[utstyr_id] = true;

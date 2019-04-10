@@ -3,6 +3,7 @@ import { connection } from '../mysql_connection';
 //---------------STATUS----------------
 
 class StatusService {
+  //Her oppdaters status på sykkelen og det legegs til en kommentar.
   oppdaterStatus(status, success) {
     connection.query(
       'UPDATE sykkel SET s_tilstand=? WHERE sykkel_id=?',
@@ -21,6 +22,7 @@ class StatusService {
     );
   }
 
+  //Her finner man alle kommentarene og status på den valgte sykkelen.
   søkStatus(idSykkel, success) {
     connection.query(
       'SELECT sykkel_id, sykkel_status, kommentar FROM sykkel_kommentar WHERE sykkel_id=? ORDER BY kommentar DESC',
@@ -37,6 +39,7 @@ class StatusService {
 export let statusService = new StatusService();
 
 class UtstyrStatus {
+  //Her oppdaters status på utstyret og det legegs til en kommentar.
   oppdaterUstatus(status, success) {
     connection.query(
       'UPDATE sykkel SET u_tilstand=? WHERE utstyr_id=?',
@@ -55,6 +58,7 @@ class UtstyrStatus {
     );
   }
 
+  //Her finner man alle kommentarene og status på det valgte utstyret.
   søkUstatus(idUtstyr, success) {
     connection.query(
       'SELECT utstyr_id, utstyr_status, kommentar FROM utstyr_kommentar WHERE utstyr_id=?',
