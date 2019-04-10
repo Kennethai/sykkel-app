@@ -102,7 +102,6 @@ export class InfoListe extends Component {
                 <table className="table table-striped hover" size="sm">
                   <thead>
                     <tr>
-                      <th> Utleie ID: </th>
                       <th> Sykkel_id: </th>
                       <th> Utstyr_id: </th>
                     </tr>
@@ -110,7 +109,6 @@ export class InfoListe extends Component {
                   <tbody>
                     {this.liste4.map((li, i) => (
                       <tr key={li.utleie_id}>
-                        <td> {li.uu == null ? li.us : li.uu}</td>
                         <td> {li.sykkel_id} </td>
                         <td> {this.liste5.length > i ? this.liste5[i].utstyr_id : null} </td>
                       </tr>
