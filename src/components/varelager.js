@@ -61,12 +61,11 @@ export class Varelageret extends Component {
           </Column>
         </Card>
 
-        <Column>
-          <div className="Midtstille">
-            <Button.Success onClick={this.sykkeltabell}> SYKKEL </Button.Success>&nbsp;&nbsp;
-            <Button.Success onClick={this.utstyrtabell}> UTSTYR </Button.Success>
-          </div>
-        </Column>
+        <div className="Midtstille">
+          <Button.Success onClick={this.sykkeltabell}> SYKKEL </Button.Success>&nbsp;&nbsp;
+          <Button.Success onClick={this.utstyrtabell}> UTSTYR </Button.Success>
+        </div>
+
         <br />
         <ul>
           <div className="Liste" id="utdata">
@@ -152,30 +151,6 @@ export class Varelageret extends Component {
     );
   }
 
-  // <Card title="Utstyr">
-  //   <List>
-  //     {this.utstyr.map(utstyret => (
-  //       <List.Item key={utstyret.utstyr_id}>
-  //         ID: {utstyret.utstyr_id}, Navn: {utstyret.u_navn}, Type: {utstyret.utstyrstype}, Tilhørighet:{' '}
-  //         {utstyret.u_tilhorighet}, Sykkeltilhørighet: {utstyret.u_sykkeltype}, Pris: {utstyret.u_utleiepris}{' '}
-  //         Tilstand: {utstyret.u_tilstand}
-  //       </List.Item>
-  //     ))}
-  //   </List>
-  // </Card>
-
-  // <Card title="Sykkel">
-  //   <List>
-  //     {this.sykler.map(sykkel => (
-  //       <List.Item key={sykkel.sykkel_id}>
-  //         ID: {sykkel.sykkel_id}, Navn: {sykkel.sykkelnavn}, Type: {sykkel.sykkeltype}, Pris:{' '}
-  //         {sykkel.s_utleiepris}, Tilhørighet: {sykkel.s_tilhorighet}, År: {sykkel.s_aar}, Tilstand:{' '}
-  //         {sykkel.s_tilstand}, Beskrivelse: {sykkel.s_beskrivelse}, Kommentar: {sykkel.Kommentar}
-  //       </List.Item>
-  //     ))}
-  //   </List>
-  // </Card>
-
   sykkeltabell() {
     varelager.hentSykkeltabell(this.sykler, sykler => {
       this.sykler = sykler;
@@ -204,21 +179,6 @@ export class Varelageret extends Component {
       }
     });
   }
-  // varelager.hentSykkeltabell(this.info, info => {
-  //   this.info = info;
-  //   console.log(this.info);
-  //   utdata.innerText = '';
-  //   Object.keys(this.info).forEach(function(key) {
-  //     utdata.innerText += key + ' ' + info[key] + '\n';
-  //   });
-  // });
-  // varelager.hentUtstyrtabell(this.info, info => {
-  //   this.info = info;
-  //   console.log(this.info);
-  //   Object.keys(this.info).forEach(function(key) {
-  //     utdata2.innerText += key + ' ' + info[key] + '\n';
-  //   });
-  // });
 
   sykkel() {
     varelager.hentsykkel(this.info, merinfo => {
@@ -281,21 +241,19 @@ export class Sykkel extends Component {
           </NavLink>
         </div>
         <Card title="Legg inn sykkel">
-          <Column>
-            <div className="form-group">
-              <label htmlFor="type">Type:</label>
-              <select className="form-control" id="type" onChange={e => (this.sykkel.type = e.target.value)}>
-                <option value="" selected disabled hidden>
-                  Velg sykkeltype her
-                </option>
-                <option value="Tursykkel">Tursykkel</option>
-                <option value="Terreng">Terrengsykkel</option>
-                <option value="Tandem">Tandemsykkel</option>
-                <option value="Downhill">Downhillsykkel</option>
-                <option value="Grusracer">Racingsykkel</option>
-              </select>
-            </div>
-          </Column>
+          <div className="form-group">
+            <label htmlFor="type">Type:</label>
+            <select className="form-control" id="type" onChange={e => (this.sykkel.type = e.target.value)}>
+              <option value="" selected disabled hidden>
+                Velg sykkeltype her
+              </option>
+              <option value="Tursykkel">Tursykkel</option>
+              <option value="Terreng">Terrengsykkel</option>
+              <option value="Tandem">Tandemsykkel</option>
+              <option value="Downhill">Downhillsykkel</option>
+              <option value="Grusracer">Racingsykkel</option>
+            </select>
+          </div>
 
           <Form.Label>Merke:</Form.Label>
           <Form.Input type="text" value={this.sykkel.merke} onChange={e => (this.sykkel.merke = e.target.value)} />
@@ -303,18 +261,16 @@ export class Sykkel extends Component {
           <Form.Label>Årsklasse:</Form.Label>
           <Form.Input type="number" value={this.sykkel.aar} onChange={e => (this.sykkel.aar = e.target.value)} />
 
-          <Column>
-            <div className="form-group">
-              <label htmlFor="type">Tilstand:</label>
-              <select className="form-control" id="type" onChange={e => (this.sykkel.tilstand = e.target.value)}>
-                <option value="" selected disabled hidden>
-                  Velg sykkelstatus her
-                </option>
-                <option value="Ledig">Ledig</option>
-                <option value="Utleid">Utleid</option>
-              </select>
-            </div>
-          </Column>
+          <div className="form-group">
+            <label htmlFor="type">Tilstand:</label>
+            <select className="form-control" id="type" onChange={e => (this.sykkel.tilstand = e.target.value)}>
+              <option value="" selected disabled hidden>
+                Velg sykkelstatus her
+              </option>
+              <option value="Ledig">Ledig</option>
+              <option value="Utleid">Utleid</option>
+            </select>
+          </div>
 
           <Form.Label>Sykkelens tilhørighet:</Form.Label>
           <Form.Input type="text" value={this.sykkel.sted} onChange={e => (this.sykkel.sted = e.target.value)} />
@@ -380,50 +336,48 @@ export class Utstyr extends Component {
           </NavLink>
         </div>
         <Card title="Legg inn utstyr">
-          <Column>
-            <div className="form-group">
-              <label htmlFor="type">Type:</label>
-              <select className="form-control" id="type" onChange={e => (this.utstyr.type = e.target.value)}>
-                <option value="" selected disabled hidden>
-                  Velg utstyrstype her
-                </option>
-                <option value="Hjelm">Hjelm</option>
-                <option value="Barnesete">Barnesete</option>
-                <option value="Sykkelveske">Sykkelveske</option>
-                <option value="Drikkesekk">Drikkesekk</option>
-                <option value="Sykkelvogn">Sykkelvogn</option>
-              </select>
-            </div>
-          </Column>
+          <div className="form-group">
+            <label htmlFor="type">Type:</label>
+            <select className="form-control" id="type" onChange={e => (this.utstyr.type = e.target.value)}>
+              <option value="" selected disabled hidden>
+                Velg utstyrstype her
+              </option>
+              <option value="Hjelm">Hjelm</option>
+              <option value="Barnesete">Barnesete</option>
+              <option value="Sykkelveske">Sykkelveske</option>
+              <option value="Drikkesekk">Drikkesekk</option>
+              <option value="Sykkelvogn">Sykkelvogn</option>
+            </select>
+          </div>
 
-          <Column>
-            <div className="form-group">
-              <label htmlFor="type">Passer til sykkel:</label>
-              <select className="form-control" id="type" onChange={e => (this.utstyr.stype = e.target.value)}>
-                <option value="" selected disabled hidden>
-                  Velg hvilke sykkeltype utstyret passer til
-                </option>
-                <option value="Alle">Alle</option>
-                <option value="Tur">Tursykkel</option>
-                <option value="Terreng">Terrengsykkel</option>
-                <option value="Tandem">Tandemsykkel</option>
-                <option value="Downhill">Downhillsykkel</option>
-                <option value="Racing">Racingsykkel</option>
-              </select>
-            </div>
-          </Column>
+          <div className="form-group">
+            <label htmlFor="type">Passer til sykkel:</label>
+            <select className="form-control" id="type" onChange={e => (this.utstyr.stype = e.target.value)}>
+              <option value="" selected disabled hidden>
+                Velg hvilke sykkeltype utstyret passer til
+              </option>
+              <option value="Alle">Alle</option>
+              <option value="Tur">Tursykkel</option>
+              <option value="Terreng">Terrengsykkel</option>
+              <option value="Tandem">Tandemsykkel</option>
+              <option value="Downhill">Downhillsykkel</option>
+              <option value="Racing">Racingsykkel</option>
+            </select>
+          </div>
 
           <Form.Label>Merke:</Form.Label>
           <Form.Input type="text" value={this.utstyr.merke} onChange={e => (this.utstyr.merke = e.target.value)} />
-          <Column>
-            <div className="form-group">
-              <label htmlFor="type">Tilstand:</label>
-              <select className="form-control" id="type" onChange={e => (this.utstyr.tilstand = e.target.value)}>
-                <option value="Ledig">Ledig</option>
-                <option value="Utleid">Utleid</option>
-              </select>
-            </div>
-          </Column>
+
+          <div className="form-group">
+            <label htmlFor="type">Tilstand:</label>
+            <select className="form-control" id="type" onChange={e => (this.utstyr.tilstand = e.target.value)}>
+              <option value="" selected disabled hidden>
+                Velg utstyrstatus her
+              </option>
+              <option value="Ledig">Ledig</option>
+              <option value="Utleid">Utleid</option>
+            </select>
+          </div>
 
           <Form.Label>Sykkelens tilhørighet:</Form.Label>
           <Form.Input type="text" value={this.utstyr.sted} onChange={e => (this.utstyr.sted = e.target.value)} />
