@@ -23,7 +23,7 @@ class StatusService {
 
   søkStatus(idSykkel, success) {
     connection.query(
-      'SELECT sykkel_id, sykkel_status, kommentar FROM sykkel_kommentar WHERE sykkel_id=?',
+      'SELECT sykkel_id, sykkel_status, kommentar FROM sykkel_kommentar WHERE sykkel_id=? ORDER BY kommentar DESC',
       [idSykkel],
       (error, results) => {
         if (error) return console.error(error);
