@@ -122,7 +122,7 @@ export class InfoListe extends Component {
             </h3>
             //Tabeller som viser informasjon når siden laster.
             <div id="liste1" className="container-fluid">
-              <table className="table table-striped hover" size="sm">
+              <table id="infolisten" className="table table-striped hover" size="sm">
                 <thead>
                   <tr>
                     <th> Utleie ID: </th>
