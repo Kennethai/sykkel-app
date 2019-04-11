@@ -33,11 +33,17 @@ export class InfoListe extends Component {
   sykler = [];
 
   render() {
+    //Siden det ikke virker å kommentere lengre ned i koden, kommer her steg for steg om hva som skjer i return:
+    //Søke opp kunde på telefonnummer.
+    //Div hvor det legges inn infp om kundne
+    //Liste med info, kun en spesifikk oppsøkt kunde.
+    //Søk opp utleie-id og finn hvilke sykler og utstyr som er leid på id'n.
+    //Liste som viser hva utleie-id'n inneholder.
+    //Tabeller som viser informasjon når siden laster.
     return (
       <Card>
         <Column>
           <Column>
-            /*Søke opp kunde på telefonnummer.*/
             <p> Søk opp spesifikk kunde. </p>
             <Form.Label>Tlf:</Form.Label>
             <Form.Input type="text" value={this.kunde.tlf} onChange={e => (this.kunde.tlf = e.target.value)} />
@@ -49,7 +55,6 @@ export class InfoListe extends Component {
           <ul>
             <div id="infoData" className="Liste" />
           </ul>
-          //Liste med info, kun en spesifikk oppsøkt kunde.
           <div id="tabellar">
             <div id="liste1" className="container-fluid">
               <table className="table table-striped hover">
@@ -85,7 +90,6 @@ export class InfoListe extends Component {
             </div>
             <br />
             <Column>
-              //Søk opp utleie-id og finn hvilke sykler og utstyr som er leid på id'n.
               <p> Finn sykler og utstyr i utleien. </p>
               <Form.Label>Utleie-id:</Form.Label>
               <Form.Input
@@ -97,7 +101,6 @@ export class InfoListe extends Component {
                 <Button.Success onClick={this.sok_id}>Søk</Button.Success>
               </div>
               <br />
-              //Liste som viser hva utleie-id'n inneholder.
               <div id="liste1" className="container-fluid">
                 <table className="table table-striped hover" size="sm">
                   <thead>
@@ -120,7 +123,6 @@ export class InfoListe extends Component {
             <h3>
               <b>&nbsp;Alle utleier: </b>
             </h3>
-            //Tabeller som viser informasjon når siden laster.
             <div id="liste1" className="container-fluid">
               <table className="table table-striped hover" size="sm">
                 <thead>

@@ -20,7 +20,7 @@ export class KundeListe extends Component {
   checkedSykkel = {};
   checkedUtstyr = {};
 
-  //For å hnete ut dagens dato
+  //For å hente ut dagens dato
   date = new Date();
   dd = String(this.date.getDate()).padStart(2, '0');
   mm = String(this.date.getMonth() + 1).padStart(2, '0');
@@ -31,10 +31,15 @@ export class KundeListe extends Component {
   ny_kommentar = this.today + ' Levert';
 
   render() {
+    //Oversikt over det som skjer i return, ettersom det ikke kan kommenteres inn i return.
+    //Her søkes kunden opp.
+    //Knapp for å søke opp kunde med utleid utstyr og sykler.
+    //Tabellen med utleide sykler og checkbokser.
+    //Tabellen med utleide utstyr og checkbokser.
+
     return (
       <div>
         <Card>
-          //Her søkes kunden opp.
           <p> Fyll ut alle feltene! </p>
           <Row>
             <Column>
@@ -59,7 +64,6 @@ export class KundeListe extends Component {
                 value={this.kunde.tlf}
                 onChange={e => (this.kunde.tlf = e.target.value)}
               />
-              //Knapp for å søke opp kunde med utleid utstyr og sykler.
               <div className="text-right">
                 <Button.Success onClick={this.sok}>Søk</Button.Success>
               </div>
@@ -69,7 +73,6 @@ export class KundeListe extends Component {
             <div className="Liste" id="utdata" />
           </ul>
         </Card>
-        //Her er tabellen med utleide sykler og checkbokser.
         <div className="container-fluid">
           <div className="row">
             <Column>
@@ -94,7 +97,6 @@ export class KundeListe extends Component {
               </table>
             </Column>
             <Column>
-              //Her er tabellen med utleide utstyr og checkbokser.
               <table id="col_utstyr" className="table table-striped hover" size="sm">
                 <thead>
                   <tr>

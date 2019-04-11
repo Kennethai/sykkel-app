@@ -22,6 +22,15 @@ export class Varelageret extends Component {
   utstyr = [];
 
   render() {
+    //Oversikt over det som skjer i return, ettersom det ikke kan kommenteres inn i return.
+    //Søke på sykkel_id
+    //Knapp for å søke
+    //Søke på sykkel_id
+    //knapp for å søke
+    //Div for å skrive ut info om sykkel og utstyr
+    //Tabell for alle eksisterende sykler
+    //Tabell for alle eksisterende utstyr
+
     return (
       <div>
         <div className="register_menu">
@@ -34,7 +43,6 @@ export class Varelageret extends Component {
         </div>
         <Card>
           <Column>
-            //Søke på sykkel_id
             <Form.Label>Sykkel-id:</Form.Label>
             <Form.Input
               type="number"
@@ -43,13 +51,11 @@ export class Varelageret extends Component {
             />
           </Column>
           <Column>
-            //Knapp for å søke
             <div className="text-right">
               <Button.Success onClick={this.sykkel}>Søk</Button.Success>
             </div>
           </Column>
           <Column>
-            //Søke på sykkel_id
             <Form.Label>Utstyrs-id:</Form.Label>
             <Form.Input
               type="number"
@@ -58,7 +64,6 @@ export class Varelageret extends Component {
             />
           </Column>
           <Column>
-            //knapp for å søke
             <div className="text-right">
               <Button.Success onClick={this.utstyrk}>Søk</Button.Success>
             </div>
@@ -72,7 +77,6 @@ export class Varelageret extends Component {
         <ul>
           <div className="Liste" id="utdata">
             {' '}
-            //Div for å skrive ut info om sykkel og utstyr
           </div>
           <div id="utdata2"> </div>
         </ul>
@@ -83,7 +87,6 @@ export class Varelageret extends Component {
                 <h4>
                   <b>Sykler:</b>
                 </h4>
-                //Tabell for alle eksisterende sykler
                 <table className="table table-striped hover" size="sm">
                   <thead>
                     <tr>
@@ -119,7 +122,6 @@ export class Varelageret extends Component {
                 <h4>
                   <b> Utstyr:</b>
                 </h4>
-                //Tabell for alle eksisterende utstyr
                 <table className="table table-striped hover" size="sm">
                   <thead>
                     <tr>
