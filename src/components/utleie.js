@@ -87,18 +87,20 @@ export class Utleie extends Component {
     return (
       <div>
         <Column>
-          <Form.Label>Søk opp eksisterende kunde på telefonnummer:</Form.Label>
-          <Form.Input
-            type="text"
-            value={this.kunde.tlf}
-            onChange={e => (this.kunde.tlf = e.target.value)}
-            pattern=".{8,11}"
-            placeholder="123 45 678"
-            required
-          />
-          <Button.Success id="color_button" onClick={this.search}>
-            Legg inn
-          </Button.Success>
+          <form id="søk_kunde">
+            <Form.Label>Søk opp eksisterende kunde på telefonnummer:</Form.Label>
+            <Form.Input
+              type="text"
+              value={this.kunde.tlf}
+              onChange={e => (this.kunde.tlf = e.target.value)}
+              pattern=".{8,11}"
+              placeholder="123 45 678"
+              required
+            />
+            <Button.Success id="color_button" onClick={this.search}>
+              Legg inn
+            </Button.Success>
+          </form>
         </Column>
         <br />
         <br />
@@ -288,6 +290,7 @@ export class Utleie extends Component {
 
   // tømmer skjemaet og all mellomlagring
   resetForm() {
+    søk_kunde.reset();
     ny_kunde.reset();
     this.kunde = [];
     this.utleiedata = [];
