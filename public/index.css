@@ -152,3 +152,9 @@ body {
 .container-fluid {
   margin: auto;
 }
+
+@media (max-width: 1280px) {
+  #infolisten {
+    margin-left: -6%;
+  }
+}

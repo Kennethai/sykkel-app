@@ -124,7 +124,7 @@ export class InfoListe extends Component {
               <b>&nbsp;Alle utleier: </b>
             </h3>
             <div id="liste1" className="container-fluid">
-              <table className="table table-striped hover" size="sm">
+              <table id="infolisten" className="table table-striped hover" size="sm">
                 <thead>
                   <tr>
                     <th> Utleie ID: </th>
