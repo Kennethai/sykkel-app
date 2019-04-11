@@ -39,7 +39,8 @@ class Varelager {
 }
 
 export let varelager = new Varelager();
-
+// BRUKES TIL REGISTRERING AV NY SYKKEL
+// her sender vi input fra registreringssiden til databasen
 class RegSykkel {
   opprettSykkel(sykkel) {
     connection.query(
@@ -53,6 +54,9 @@ class RegSykkel {
   }
 }
 export let regSykkel = new RegSykkel();
+
+// BRUKES TIL REGISTRERING AV NYTT UTSTYR
+// her sender vi input fra registreringssiden til databasen
 
 class RegUtstyr {
   opprettUtstyr(utstyr) {

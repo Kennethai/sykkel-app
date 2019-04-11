@@ -12,6 +12,7 @@ import createHashHistory from 'history/createHashHistory';
 import { Card, List, Row, Column, NavBar, Button, Form } from './widgets';
 const history = createHashHistory(); // Use history.push(...) to programmatically change path, for instance after successfully saving a student
 
+// oppretter navigeringsmeny på toppen av applikasjonen, på tvers av alle sidene
 class Menu extends Component {
   render() {
     return (

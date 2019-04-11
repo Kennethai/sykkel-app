@@ -225,6 +225,7 @@ export class Varelageret extends Component {
 }
 
 export class Sykkel extends Component {
+  // her lagrer vi info om sykkelen som skal sendes til db
   sykkel = {
     type: '',
     merke: '',
@@ -235,6 +236,7 @@ export class Sykkel extends Component {
     beskrivelse: ''
   };
 
+  // gir hver sykkeltype en bestemt pris (samme som i utleie.js)
   sykkelPriser = {
     Tursykkel: 100,
     Terreng: 120,
@@ -243,6 +245,7 @@ export class Sykkel extends Component {
     Tandem: 175
   };
 
+  // inputfelt for registrering av sykkel. Sykkeltype og tilstand har drop-down meny
   render() {
     return (
       <div>
@@ -308,18 +311,22 @@ export class Sykkel extends Component {
     );
   }
 
+  // lagre-knappen oppretter en sykkel, gir sykkelen en pris basert på sykkeltype og sender brukeren en alert
   create() {
     this.sykkel.pris = this.sykkelPriser[this.sykkel.type];
 
     regSykkel.opprettSykkel(this.sykkel);
     alert('Sykkelen er lagt til');
-    history.push('/Varelager/NySykkel');
+    history.push('/Varelager/');
   }
+
+  // avbryt knappen sender brukeren tilbake til varelager
   cancel() {
     history.push('/Varelager');
   }
 }
 
+// fungerer på samme måte som for registrering av Sykkel
 export class Utstyr extends Component {
   utstyr = {
     type: '',
@@ -393,7 +400,7 @@ export class Utstyr extends Component {
             </select>
           </div>
 
-          <Form.Label>Sykkelens tilhørighet:</Form.Label>
+          <Form.Label>Utstyrets tilhørighet:</Form.Label>
           <Form.Input type="text" value={this.utstyr.sted} onChange={e => (this.utstyr.sted = e.target.value)} />
         </Card>
         <Row>
@@ -412,7 +419,7 @@ export class Utstyr extends Component {
     this.utstyr.pris = this.utstyrPriser[this.utstyr.type];
     regUtstyr.opprettUtstyr(this.utstyr);
     alert('Utstyret er lagt til');
-    history.push('/Varelager/NyUtstyr');
+    history.push('/Varelager/');
   }
   cancel() {
     history.push('/Varelager/');

@@ -37,6 +37,7 @@ let utleiedataLagring = {
   kunde_nr: ''
 };
 
+// forhåndsbestemte priser (bør flyttes til eget dokument ved videre arbeid)
 let sykkelPriser = {
   Tursykkel: 100,
   Terreng: 120,
@@ -285,6 +286,7 @@ export class Utleie extends Component {
     alert('Utleie registert\nTotal pris kr ' + this.totalPris);
   }
 
+  // tømmer skjemaet og all mellomlagring
   resetForm() {
     ny_kunde.reset();
     this.kunde = [];
@@ -307,6 +309,7 @@ export class Utleie extends Component {
     sykkelValg = {};
   }
 
+  // søker opp og lagrer informasjon om eksisterende kunde for bruk i nytt utleie
   search() {
     utleieTjenester.hentKunde(this.kunde, kunde => {
       this.kunde = kunde;
@@ -329,6 +332,7 @@ let sykkelValg = {
 
 // sammenlagt antall
 let sykkelTeller;
+
 // henter antall av hver type
 function GetPropertyValue(sykkelValg, dataToRetrieve) {
   return dataToRetrieve
@@ -364,6 +368,7 @@ export class VelgSykkel extends Component {
     );
   }
 
+  // valgte antall blir lagret ved input, her oppdaterer vi telleren og sender brukeren tilbake for å fortsette innsending av skjema
   create() {
     sykkelTeller =
       Number(GetPropertyValue(sykkelValg, 'Tursykkel')) +
@@ -430,16 +435,15 @@ export class VelgUtstyr extends Component {
   }
 }
 
+// her lager vi mengden rabatt som skal gis basert på telleren av totalt antall sykler
 let rabatt = '';
 
 if (sykkelTeller > 3 && sykkelTeller < 6) {
-  rabatt = 0.9;
+  rabatt = 0.9; // 4 sykler eller mer gir 10% rabatt
 } else {
   if (sykkelTeller > 5) {
-    rabatt = 0.75;
+    rabatt = 0.75; // 6 sykler eller mer gir 25% rabatt
   } else {
     rabatt = 1;
   }
 }
-
-console.log(rabatt);

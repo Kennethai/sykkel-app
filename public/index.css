@@ -1,3 +1,4 @@
+/* Bakgrunn */
 body {
   background-image: url('../src/components/background_blurred.jpg');
   background-color: rgba(255, 255, 255, 0.5);
@@ -7,6 +8,7 @@ body {
   background-position: left 0vw top 5vh;
 }
 
+/* Boksen for Iinnhold på alle sidene */
 #root {
   min-height: 100vh;
   background-color: rgba(255, 255, 255, 0.8);
@@ -29,10 +31,12 @@ body {
   text-align: center;
 }
 
+/* flytter innholdet nedom navigasjonsmenyen */
 .contents {
   margin-top: 120px;
 }
 
+/* konteiner for deler av innhold, overstyrer bootstrap */
 .card {
   background-color: rgba(255, 0, 0, 0);
   border: none;
@@ -54,6 +58,7 @@ body {
   padding: 10px;
 }
 
+/* Navigasjonsmeny */
 .navTable {
   position: fixed;
   margin-left: -25vw;
@@ -86,6 +91,7 @@ body {
   color: yellow;
 }
 
+/* Lenke for siden man er inne på */
 .active {
   color: Chartreuse;
 }
@@ -94,6 +100,7 @@ body {
   color: HotPink;
 }
 
+/* Knapper for innsending */
 .btn-success {
   background-color: HotPink;
   font-family: 'Contrail One', cursive;
@@ -103,6 +110,7 @@ body {
   background-color: MediumVioletRed;
 }
 
+/* Undermeny på navigasjonsmeny for de sidene som har undersider */
 .register_menu,
 .substatus {
   position: fixed;
@@ -129,23 +137,27 @@ body {
   color: yellow;
 }
 
+/* Input felt */
 .form-control {
   width: auto;
   max-width: 40vw;
   min-width: 30vw;
 }
 
+/* Tekstfelt for liste over valgte sykler og utstyr */
 #sykkelArea {
   width: auto;
   max-width: 40vw;
   min-width: 30vw;
 }
 
+/* Tabeller */
 .table-striped {
   background-color: rgba(200, 200, 200, 1);
   margin: auto;
 }
 
+/* Posisjonering av tabeller */
 #col_sykkel,
 #col_utstyr,
 #tabellar,
@@ -153,6 +165,7 @@ body {
   margin: auto;
 }
 
+/* Justerer tabellen på info når skjermbreidde reduseres til <= 1280px */
 @media (max-width: 1280px) {
   #infolisten {
     margin-left: -6%;

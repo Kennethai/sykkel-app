@@ -1,6 +1,7 @@
 import { connection } from '../mysql_connection';
 
 class UtleieTjenester {
+  // henter info om kunde fra db
   hentKunde(kunde, success) {
     connection.query('SELECT * FROM kunde WHERE k_tlf=?', [kunde.tlf], (error, results) => {
       if (error) return console.error(error);
@@ -9,6 +10,7 @@ class UtleieTjenester {
     });
   }
 
+  // legger inn ny kunde i db, IGNORE skal stanse identiske rader fra å bli opprettet
   opprettKunde(kunde) {
     connection.query(
       'INSERT IGNORE kunde (k_fornavn, k_etternavn, k_epost, k_tlf) values (?,?,?,?)',
@@ -19,6 +21,7 @@ class UtleieTjenester {
     );
   }
 
+  // henter ID til det nyeste utleie (for å kunne fylle inn som fremmednøkkel i resten av tabellene)
   hentUtleieId(utleiedata, success) {
     connection.query('SELECT utleie_id FROM utleie ORDER BY utleie_id DESC', (error, results) => {
       if (error) return console.error(error);
@@ -27,6 +30,7 @@ class UtleieTjenester {
     });
   }
 
+  // legger inn valgt info om utleie i db
   opprettUtleie(utleiedata) {
     connection.query(
       'INSERT INTO utleie (utleietid, innleveringstid, utsted, innsted, selger_id, avdelings_id, kunde_nr) VALUES(?,?,?,?,?,?,?)',
@@ -45,6 +49,7 @@ class UtleieTjenester {
     );
   }
 
+  // finner ledige sykler av rett type
   velgSykkel(sykkelValg, success) {
     let type = ['Tursykkel', 'Terreng', 'Downhill', 'Grusracer', 'Tandem'];
 
@@ -63,6 +68,7 @@ class UtleieTjenester {
     }
   }
 
+  // oppdaterer de valgte syklene i db som utlånt og med relevant info
   utleieSykkel(utleieId, sykkelId, kommentar) {
     connection.query('UPDATE sykkel SET s_tilstand = "Utleid" WHERE sykkel_id = ?;', [sykkelId], (error, results) => {
       if (error) return console.error(error);
@@ -85,6 +91,7 @@ class UtleieTjenester {
     );
   }
 
+  // finner ledig utstyr av rett type
   velgUtstyr(utstyrValg, success) {
     let type = ['Hjelm', 'Sykkelveske', 'Sykkelvogn', 'Barnesete', 'Drikkesekk'];
 
@@ -103,6 +110,7 @@ class UtleieTjenester {
     }
   }
 
+  // leier ut det valgte utstyret med relevant info
   utleieUtstyr(utleieId, utstyrId, kommentar) {
     connection.query('UPDATE utstyr SET u_tilstand = "Utleid" WHERE utstyr_id = ?;', [utstyrId], (error, results) => {
       if (error) return console.error(error);
@@ -126,4 +134,5 @@ class UtleieTjenester {
   }
 }
 
+// export lar klassen kalles på tvers av dokument
 export let utleieTjenester = new UtleieTjenester();
