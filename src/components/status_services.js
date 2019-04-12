@@ -42,7 +42,7 @@ class UtstyrStatus {
   //Her oppdaters status på utstyret og det legegs til en kommentar.
   oppdaterUstatus(status, success) {
     connection.query(
-      'UPDATE sykkel SET u_tilstand=? WHERE utstyr_id=?',
+      'UPDATE utstyr SET u_tilstand=? WHERE utstyr_id=?',
       [status.u_tilstand, status.utstyrId],
       (error, results) => {
         connection.query(
